@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk '/## Getting Started/,/## System Info/' armmotion/README.md)",
+      "Bash(cp \"/home/frlab/Centroidal dynamics of a humanoid robot.pdf\" \"/home/frlab/research-wiki/AI-Sessions/raw/papers/2013-orin-centroidal-dynamics.pdf\" *)",
+      "Bash(grep -niA4 'subtree\\\\|com.*vel\\\\|pelvis\\\\|whole.body' /tmp/research-wiki-repos/mj-rl/NOTES.md)",
+      "Bash(xargs -n1 basename)",
+      "Bash(perl -0pi -e 's/\\\\n+\\\\z/\\\\n/' AI-Sessions/wiki/research/concepts/transformer.md AI-Sessions/wiki/research/concepts/ppo.md AI-Sessions/wiki/research/concepts/lipm.md AI-Sessions/wiki/research/concepts/centroidal.md)",
+      "Bash(awk '{print $6,$7}')",
+      "Bash(rg -c '\\\\[\\\\[' AI-Sessions/wiki/research/concepts/*.md)",
+      "Bash(rg -c '\\\\[\\\\[' prompts/*.md)",
+      "Bash(grep -v '`\\\\[\\\\[')",
+      "Bash(grep -v '`')",
+      "Bash(rg -l '\\\\[\\\\[save\\\\]\\\\]' prompts/*.md)",
+      "Bash(chmod +x scripts/wiki_doctor.sh)",
+      "Bash(./scripts/wiki_doctor.sh)"
+    ],
+    "additionalDirectories": [
+      "/home/frlab",
+      "/home/frlab/DL_GNN_Transformer"
+    ]
+  }
+}

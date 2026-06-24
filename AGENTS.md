@@ -1,80 +1,38 @@
-# AGENTS.md
+# Agent Entry
 
-이 파일은 Codex 또는 다른 AI 에이전트가 이 vault(`research-wiki`)에서 작업할 때 따르는 규칙입니다. Claude Code용 `CLAUDE.md`와 동기화되어야 하며, 한쪽 규칙을 바꾸면 다른 쪽도 맞춥니다.
+이 저장소는 휴머노이드 RL 연구를 오래 이어가기 위한 **Research Agent Harness Wiki**입니다. Claude Code와 Codex 등 여러 에이전트가 같은 vault를 공유하므로 `CLAUDE.md`와 `AGENTS.md`는 의미가 같아야 합니다.
 
-## 역할
+## Start Order (context 절약 4계층)
 
-당신은 이 Obsidian vault를 사용하는 연구 업무 에이전트입니다. 답변만 하는 챗봇이 아니라, 연구 맥락을 읽고, 필요한 내용을 저장하고, 다음 세션이 이어받을 수 있게 정리하는 운영자입니다.
+1. **자동**: 이 파일은 항상 context에 있습니다(얇게 유지).
+2. **init**: `architecture.md`(구조·인벤토리) → `AI-Sessions/wiki/harness/state/brief.md`(현재 상태) → 이어받으면 `handoff.md`. 운용 규칙 본체는 `AI-Sessions/wiki/harness/policies/agent-policy.md`(+ `patterns/agent-patterns.md`).
+3. **영역 라우터(조건부)**: 운용 작업이면 `harness.md`, 연구 작업이면 `research.md` 중 해당하는 것만 읽고 거기서 detail로 라우팅합니다.
+4. **명령형 작업**: `prompts/<command>.md`만 추가로 읽습니다.
 
-## 업무 프로필
+`log.md`는 최근 흐름 복원이 필요할 때만 봅니다.
 
-주 사용자는 **연구 엔지니어**(개발 + 논문 리서치), 현재 **1인** 워크플로입니다. 단 Claude Code와 Codex 등 **여러 에이전트가 같은 vault를 공유**하므로 누가 이어받아도 맥락이 끊기지 않게 기록합니다.
+## Core Rules
 
-목적: **논문 인사이트**와 **GitHub 레퍼런스 구현체의 최신 구현 방법**을 축적하고, 그 근거로 **조언하고 함께 구현하는** 공부/연구 프로세스를 지원합니다. 주 raw 입력은 (1) 논문, (2) 레퍼런스 구현 GitHub 레포, (3) 사용자 아이디어·인사이트입니다.
+- `AI-Sessions/raw/`는 사용자가 명시적으로 요청하지 않는 한 수정하거나 삭제하지 않습니다.
+- compiled research knowledge는 `AI-Sessions/wiki/research/` 아래에 씁니다.
+- agent operation, decisions, errors, patterns, archive, policies, templates, evals는 `AI-Sessions/wiki/harness/` 아래에 씁니다. 파일명은 `{도메인}-{타입}`으로 짓습니다(`agent-*`=init 로드, `{domain}-*`=그 작업 때 로드).
+- 삭제보다 `status: obsolete` 또는 archive 처리를 우선합니다.
+- `CLAUDE.md`와 `AGENTS.md`를 의미상 동기화합니다.
+- 모든 policy를 기본으로 읽지 않습니다. 현재 작업에 필요한 policy만 on demand로 읽습니다.
+- recall·system-reminder·brief·요약에 적힌 파일 내용은 스냅샷입니다. 파일을 수정·삭제하거나 구조를 판단하기 전에 실제 파일을 `Read`로 검증합니다. (근거: `AI-Sessions/wiki/harness/patterns/agent-patterns.md`)
+- wiki 구조, wikilink, map/index, archive, prompt routing을 변경한 뒤에는 `scripts/wiki_doctor.sh`를 실행합니다. ERROR는 완료 보고 전에 고치거나 못 고친 이유를 보고하고, 그대로 두는 WARN은 이유를 남깁니다.
 
-## 작업 시작 전
+## Command Routing
 
-1. `index.md`를 읽고 vault의 현재 구조를 파악합니다.
-2. `log.md`에서 최근 작업 흐름을 확인합니다.
-3. 관련 프로젝트가 있다면 `AI-Sessions/wiki/projects/`를 먼저 확인합니다.
-4. raw 자료가 필요하면 `AI-Sessions/raw/`를 읽되 수정하지 않습니다.
+- `save` -> `prompts/save.md`
+- `reference` -> `prompts/reference.md`
+- `query` -> `prompts/query.md`
+- `ingest` -> `prompts/ingest.md`
+- `lint` -> `prompts/lint.md`
+- `reflect` -> `prompts/reflect.md`
+- `archive` -> `prompts/archive.md`
 
-## Commands (자연어 명령)
+## Shared Protocol
 
-사용자는 자연어로 말할 수 있습니다. 아래 키워드(영어 고정)로 의도를 매핑합니다.
-
-- `save`: 현재 작업 결과를 wiki에 저장합니다. ("저장해줘", "옵시디언에 남겨줘")
-- `reference`: 기존 wiki와 log를 참조해 현재 연구·구현에 필요한 맥락·조언을 복원합니다. ("우리가 정리해둔 거 참조해줘", "이전 맥락 불러와줘")
-- `ingest`: raw 자료(논문/레포/아이디어)를 읽어 wiki 문서로 정리합니다. ("이 논문 정리해줘", "이 레포 분석해줘")
-- `lint`: 폴더 구조, 링크, 저장 규칙 위반을 점검합니다. ("위키 점검해줘")
-
-## Wiki 카테고리
-
-- `wiki/papers/`: 논문 인사이트 노트
-- `wiki/sources/`: 레퍼런스 구현 GitHub 레포 분석 및 외부 자료
-- `wiki/concepts/`: 반복 사용 ML/연구 개념, 알고리즘, 용어
-- `wiki/experiments/`: 실험 기록 (가설·설정·결과·해석)
-- `wiki/ideas/`: 사용자 아이디어·인사이트
-- `wiki/decisions/`: 기술·연구 방향 의사결정
-- `wiki/errors/`: 실패한 실험·접근
-- `wiki/projects/`: 연구·개발 프로젝트 맥락
-- `wiki/design/`: 시스템·모델 아키텍처 설계
-- `wiki/dev-tasks/`: 함께 구현하는 작업 단위, 구현 메모
-
-## Ingest 규칙
-
-`ingest`는 새 노트만 만드는 게 아니라 **기존 노트를 갱신하고 모순을 표시하는** 살아있는 문서화입니다 (카파시 위키 핵심). 새 문서를 만들기 전에 `index.md`로 관련 노트를 찾아 같은 주제가 있으면 갱신하고, 상충 내용은 덮어쓰지 말고 `> ⚠️ 상충:` 메모로 표시한 뒤 사용자에게 알립니다.
-
-- 논문 → `wiki/papers/`에 인사이트 노트, 반복 개념은 `wiki/concepts/`로 분리
-- 레퍼런스 구현 레포 → `wiki/sources/`에 아키텍처·핵심 파일·실행법·가져올 패턴 분석, 대응 논문 노트와 `[[링크]]`
-- 아이디어 → `wiki/ideas/`에 저장, 굳어지면 `wiki/decisions/`로 승격
-
-raw 원본은 어떤 경우에도 수정하지 않습니다.
-
-## 저장 규칙 (Save Filter)
-
-저장 전에 반드시 5가지 필터를 적용합니다.
-
-1. 반복해서 재사용될 정보인가?
-2. 인수인계에 필요한 정보인가?
-3. 근거 추적이 필요한가?
-4. 다시 반복하면 안 되는 실패나 리스크인가?
-5. 앞으로 맞춰야 하는 공통 규칙·설계·구현 패턴인가?
-
-하나도 해당하지 않으면 저장하지 말고, 저장하지 않은 이유를 짧게 설명합니다.
-
-## 파일 수정 범위
-
-- `AI-Sessions/raw/`: 읽기 전용
-- `AI-Sessions/wiki/`: 생성 및 수정 가능
-- `AI-Sessions/conversations/`: 세션 인수인계 저장 가능
-- `index.md`: 새 중요 문서가 생기면 링크 추가
-- `log.md`: 중요한 작업 완료 후 한 줄 로그 추가
-- `CLAUDE.md`, `AGENTS.md`: 사용자가 규칙 보강을 요청한 경우에만 수정 (수정 시 양쪽 동기화)
-
-## 작업 완료 보고
-
-- 생성/수정한 파일
-- 참조한 파일
-- 저장하지 않은 정보가 있다면 그 이유
-- 다음 작업자가 먼저 확인해야 할 문서
+자세한 read/write 규칙은 `AI-Sessions/wiki/harness/policies/agent-policy.md`를 사용합니다.
+구조 검증 기준은 `vault-manifest.yaml`과 `scripts/wiki_doctor.sh`를 따릅니다.

@@ -1,0 +1,72 @@
+schema_version: harness-v1
+
+entry_files:
+  - architecture.md
+  - AI-Sessions/wiki/harness/state/brief.md
+
+handoff_file: AI-Sessions/wiki/harness/state/handoff.md
+
+top_level_groups:
+  raw: AI-Sessions/raw/
+  research: AI-Sessions/wiki/research/
+  harness: AI-Sessions/wiki/harness/
+  maps: AI-Sessions/wiki/maps/
+  prompts: prompts/
+  docs: .
+
+allowed_research_dirs:
+  - papers
+  - sources
+  - concepts
+  - ideas
+  - experiments
+
+allowed_harness_dirs:
+  - state
+  - decisions
+  - errors
+  - patterns
+  - archive
+  - policies
+  - templates
+  - evals
+
+# C4 whitelist과 동일 — wiki_doctor.sh C4가 현재 이 목록을 하드코딩하여 관리한다.
+# 나중에 wiki_doctor가 이 파일을 읽도록 연결하면 단일 관리 가능.
+allowed_concepts:
+  - transformer
+  - ppo
+  - lipm
+  - centroidal
+
+commands:
+  save: prompts/save.md
+  reference: prompts/reference.md
+  query: prompts/query.md
+  ingest: prompts/ingest.md
+  lint: prompts/lint.md
+  reflect: prompts/reflect.md
+  archive: prompts/archive.md
+
+doctor:
+  script: scripts/wiki_doctor.sh
+  required_after:
+    - structure_change
+    - map_change
+    - wikilink_update
+    - archive
+    - prompt_routing_change
+
+state_limits:
+  brief_max_lines: 80
+  handoff_max_lines: 120
+  log_max_lines: 30
+
+raw_policy:
+  default: read_only
+  graph_visible_wikilink_allowed: false
+
+graph_registration:
+  required_for_new_active_docs: true
+  raw_graph_links_allowed: false
+  archive_active_hub_exposure_allowed: false

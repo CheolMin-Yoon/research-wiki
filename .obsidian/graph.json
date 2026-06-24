@@ -1,0 +1,51 @@
+{
+  "collapse-filter": true,
+  "search": "path:architecture.md OR path:harness.md OR path:research.md OR path:README.md OR path:AGENTS.md OR path:CLAUDE.md OR path:log.md OR path:prompts/ OR path:AI-Sessions/wiki/maps/ OR path:AI-Sessions/wiki/research/ideas/ OR path:AI-Sessions/wiki/research/concepts/ OR path:AI-Sessions/wiki/research/papers/ OR path:AI-Sessions/wiki/research/experiments/ OR path:AI-Sessions/wiki/research/sources/ OR path:AI-Sessions/wiki/harness/",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "tag:#tier/top",
+      "color": {
+        "a": 1,
+        "rgb": 16726832
+      }
+    },
+    {
+      "query": "tag:#tier/upper OR path:architecture.md OR path:harness.md OR path:research.md OR path:README.md OR path:CLAUDE.md OR path:AGENTS.md OR path:log.md",
+      "color": {
+        "a": 1,
+        "rgb": 16749824
+      }
+    },
+    {
+      "query": "tag:#tier/mid",
+      "color": {
+        "a": 1,
+        "rgb": 3458905
+      }
+    },
+    {
+      "query": "tag:#tier/low",
+      "color": {
+        "a": 1,
+        "rgb": 689407
+      }
+    }
+  ],
+  "collapse-display": false,
+  "showArrow": false,
+  "textFadeMultiplier": -3,
+  "nodeSizeMultiplier": 2.396875,
+  "lineSizeMultiplier": 4.1578125,
+  "collapse-forces": false,
+  "centerStrength": 0.302083333333333,
+  "repelStrength": 13.2291666666667,
+  "linkStrength": 1,
+  "linkDistance": 307,
+  "scale": 0.13348388671875,
+  "close": false
+}
