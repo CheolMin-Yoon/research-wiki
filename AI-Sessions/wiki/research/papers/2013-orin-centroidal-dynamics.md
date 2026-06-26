@@ -32,6 +32,5 @@ Physical Feature Graph에서는 CoM, CMM, CAM을 raw joint state와 다른 안�
 
 ## Links
 
-- concepts: centroidal
-- related papers: 2025-lee-humanoid-arm-cam-marl
-
+- concepts: [[centroidal]]
+- related papers: [[AI-Sessions/wiki/research/papers/2025-lee-humanoid-arm-cam-marl|2025-lee-humanoid-arm-cam-marl]]

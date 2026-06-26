@@ -15,7 +15,6 @@ date: YYYY-MM-DD
 status: planned | running | done | invalid | archived
 project:
 source:
-related_policy:
 ---
 
 # Experiment: <name>
@@ -53,4 +52,5 @@ related_policy:
 ## Next Experiment
 
 ## Links
+<관련 paper/source/concept/idea/policy를 [[wikilink]]로 연결. `related_*` frontmatter를 쓰면 여기에 mirror>
 ```

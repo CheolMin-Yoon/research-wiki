@@ -5,7 +5,7 @@
 ## Start Order (context 절약 4계층)
 
 1. **자동**: 이 파일은 항상 context에 있습니다(얇게 유지).
-2. **init**: `architecture.md`(구조·인벤토리) → `AI-Sessions/wiki/harness/state/brief.md`(현재 상태) → 이어받으면 `handoff.md`. 운용 규칙 본체는 `AI-Sessions/wiki/harness/policies/agent-policy.md`(+ `patterns/agent-patterns.md`).
+2. **init**: `architecture.md`(구조 지도) → `AI-Sessions/wiki/harness/state/brief.md`(현재 상태) → 이어받으면 `handoff.md`. 운용 규칙 본체는 `AI-Sessions/wiki/harness/policies/agent-policy.md`(+ `patterns/agent-patterns.md`).
 3. **영역 라우터(조건부)**: 운용 작업이면 `harness.md`, 연구 작업이면 `research.md` 중 해당하는 것만 읽고 거기서 detail로 라우팅합니다.
 4. **명령형 작업**: `prompts/<command>.md`만 추가로 읽습니다.
 

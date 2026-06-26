@@ -30,6 +30,5 @@ PPO의 핵심은 old policy 대비 probability ratio를 사용하되, ratio를 c
 
 ## Links
 
-- concepts: ppo
-- related papers: 2025-rsl-rl-library, 2024-lee-footstep-planning-rl, 2025-lee-humanoid-arm-cam-marl
-
+- concepts: [[ppo]]
+- related papers: [[AI-Sessions/wiki/research/papers/2025-rsl-rl-library|2025-rsl-rl-library]], [[AI-Sessions/wiki/research/papers/2024-lee-footstep-planning-rl|2024-lee-footstep-planning-rl]], [[AI-Sessions/wiki/research/papers/2025-lee-humanoid-arm-cam-marl|2025-lee-humanoid-arm-cam-marl]]

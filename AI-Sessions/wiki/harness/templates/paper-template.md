@@ -31,5 +31,5 @@ source:
 <사용자 연구/구현과 연결되는 지점. 추측이면 명시>
 
 ## Links
-<관련 source/concept/idea 링크. raw는 graph-visible wikilink로 직접 연결하지 않음>
+<관련 source/concept/idea/experiment를 [[wikilink]]로 연결. `related_*` frontmatter를 쓰면 여기에 mirror. raw는 graph-visible wikilink로 직접 연결하지 않음>
 ```

@@ -1,9 +1,9 @@
 ---
 tags: [tier/low]
 type: handoff
-date: 2026-06-24
+date: 2026-06-25
 status: active
-last_agent: Claude
+last_agent: Codex
 suggested_next_agent:
 mode: verification
 ---
@@ -12,46 +12,43 @@ mode: verification
 
 ## Current Goal
 
-harness 도메인 재구성이 완료되었다. 다음 작업은 Obsidian UI에서 3 섬·tier 색·새 도메인 파일 확인, 또는 실제 연구 작업(ingest/query)이다.
+Body Transformer 코드 수준 이해와 wiki hardening 1차는 완료됐다. 다음 작업은 `05~06` 노트북 shape/interface 점검과 병행해 mjlab built-in G1 tracking baseline을 재현하는 것이다.
 
-## Last Completed (2026-06-24) — harness 도메인 재구성
+## Next Experiment
 
-파일명 `{도메인}-{타입}` 규칙으로 harness 지식을 재구성했다(누적 정리 이력은 log.md):
-- **policies** → `agent-policy`(init 운용 본체, 구 core-agent-protocol) / `obsidian-policy`(구 graph+migration) / `error-policy` / `research-policy`(구 concept-promotion) / `archive-policy`(구 gc-policy).
-- **decisions** 5개 → `obsidian-decisions`(graph 결정 통합, four-top-level은 내부 superseded 섹션) + `harness-decisions`(execution-first/records-refactor/workspace 통합).
-- **patterns**: 폴더 `anti-patterns`→`patterns`, 파일 → `agent-patterns`.
-- **archive**: `garbage-collection`/ 해체 → `archive/`(obsolete-index + setup-log), gc-policy는 archive-policy로 이동.
-- **루트 라우터** `harness.md`/`research.md` 신설(plain-path로 detail 안내, 섬 연결 안 함). `architecture.md` Harness/Research 섹션 슬림화.
-- **Start Order 4계층화**(자동 CLAUDE/AGENTS → init architecture+brief+agent-policy → 조건부 라우터 → detail), CLAUDE/AGENTS 동기화(C9).
-- vault-manifest allowed_harness_dirs, wiki_doctor C10 exclusion·C21 dir 목록 갱신. wiki_doctor ERROR=0 WARN=0, cross-island 0.
+실험 노트: `AI-Sessions/wiki/research/experiments/2026-06-25-g1-tracking-baseline.md`
 
-## Next Action
+재현 변수:
 
-- Obsidian UI에서 3 섬(research/harness/docs)·tier 색(빨~파)·도메인 파일명 확인.
-- 실제 연구 작업이 생기면 ingest/save/query로 진행. 새 노트는 `{도메인}-{타입}` + `tier/*` 태그.
-- 구조 변경 시 `scripts/wiki_doctor.sh` 실행(ERROR=0 유지).
+```bash
+cd /home/frlab/mj_rl
+conda activate mjlab_env
+export MOTION=/tmp/mjlab_cache/lafan1_dance1_subject1_demo_motion.npz
+```
+
+바로 할 일:
+
+1. `python -m mjlab.scripts.demo`로 viewer 확인.
+2. `$MOTION`으로 `Mjlab-Tracking-Flat-Unitree-G1` smoke training 1 iteration 실행.
+3. sanity training 100 iteration으로 `/home/frlab/mj_rl/models/motion_tracking.best.pt` export 확인.
+4. run record를 실험 노트에 기록한다.
+5. baseline이 정상 실행되면 같은 task/reward/motion에서 BoT actor 교체 실험을 계획한다.
+
+## Current Facts
+
+- `Mjlab-Tracking-Flat-Unitree-G1` task는 built-in이지만 train에는 `--env.commands.motion.motion-file` 또는 `--registry-name`이 필요하다.
+- demo assets는 `/tmp/mjlab_cache/demo_ckpt.pt`, `/tmp/mjlab_cache/lafan1_dance1_subject1_demo_motion.npz`에 캐시돼 있다.
+- best checkpoint export는 `/home/frlab/mj_rl/scripts/train.py`를 사용할 때만 동작한다.
+- 구현 사실 정본은 [[AI-Sessions/wiki/research/sources/body-transformer-code|body-transformer-code]], 논문 통합 방식은 [[AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer|2024-sferrazza-body-transformer]]에 둔다.
 
 ## Dirty / Sensitive Files
 
-- `.obsidian/graph.json`은 Obsidian이 켜져 있으면 덮어쓴다. **이번 세션에 Obsidian이 켜진 채라 colorGroups가 비워졌고 다시 채워 넣었다 — 앱 종료 후 다시 저장돼야 tier 색이 유지된다.**
-- `AI-Sessions/raw/`는 손대지 않는다.
-
-## Do Not Touch
-
-- `AI-Sessions/raw/`
-- 사용자 승인 없는 source of truth 삭제
-
-## Open Questions
-
-- Obsidian 종료 상태에서 tier 색·3 섬 분리가 의도대로 보이는지 확인 필요.
+- `.obsidian/graph.json`은 Obsidian 종료 상태에서만 안정적으로 수정한다.
+- `AI-Sessions/raw/`는 사용자 승인 없이 수정·삭제하지 않는다.
 
 ## Relevant Files
 
 - architecture.md, harness.md, research.md
-- scripts/wiki_doctor.sh, vault-manifest.yaml, .obsidian/graph.json
-- AI-Sessions/wiki/harness/policies/{agent,obsidian,error,research,archive}-policy.md
-- AI-Sessions/wiki/harness/decisions/{obsidian,harness}-decisions.md
-
-## Notes
-
-중복 basename archive는 graph 문제를 만들 수 있으므로 archive 문서는 active 문서와 다른 slug를 사용한다. 라우터(harness.md/research.md)는 다른 섬 파일을 wikilink가 아닌 plain-path로 가리켜 섬 분리를 유지한다.
+- scripts/wiki_doctor.sh, vault-manifest.yaml
+- AI-Sessions/wiki/harness/policies/{agent,obsidian,research,archive}-policy.md
+- AI-Sessions/wiki/harness/patterns/{agent-patterns,research-patterns}.md

@@ -7,7 +7,7 @@ tags: [tier/low]
 ```text
 지금 작업하려는 주제에 대해 옵시디언을 참조(reference)해줘.
 
-먼저 architecture.md, log.md, AI-Sessions/wiki/harness/state/brief.md를 확인해줘.
+먼저 architecture.md, AI-Sessions/wiki/harness/state/brief.md를 확인해줘. 최근 흐름 복원이 필요할 때만 log.md를 추가로 봐줘.
 
 그다음 AI-Sessions/wiki/maps, AI-Sessions/wiki/research, AI-Sessions/wiki/harness 안에서 관련 노트만 찾아서:
 

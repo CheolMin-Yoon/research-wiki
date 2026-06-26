@@ -10,7 +10,7 @@ source: AI-Sessions/raw/repos/2025-rsl-rl-library.md
 
 ## Summary
 
-로보틱스용 GPU on-policy RL 라이브러리다. raw repo stub의 pinned commit `016c7ede710e358b7d6c205642e2540804d6281f`를 checkout해 확인했으며, mj_rl의 PPO 학습 백엔드와 custom model 통합 기준으로 둔다. 논문과 코드 모두 PPO core를 단순하게 유지하면서 robotics-specific extension을 붙이는 방향이다.
+로보틱스용 GPU on-policy RL 라이브러리다. raw repo stub의 checked commit `016c7ede710e358b7d6c205642e2540804d6281f`를 checkout해 확인했으며, mj_rl의 PPO 학습 백엔드와 custom model 통합 기준으로 둔다. 논문과 코드 모두 PPO core를 단순하게 유지하면서 robotics-specific extension을 붙이는 방향이다.
 
 ## 핵심 파일
 

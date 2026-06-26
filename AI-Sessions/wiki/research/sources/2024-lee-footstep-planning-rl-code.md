@@ -10,7 +10,7 @@ source: AI-Sessions/raw/repos/2024-lee-footstep-planning-rl.md
 
 ## Summary
 
-2024 Lee footstep 논문의 공식 IsaacGym 구현이다. raw repo stub의 pinned commit `9474713074f69e87807cfce07ac4db490664a54c`를 checkout해 확인했으며, 3D-LIPM footstep planner와 model-free PPO controller를 분리해 둔 구조가 핵심이다. mj_rl의 eICP/LIPM footstep task를 검증할 때 reference dynamics와 reward 구성을 대조하는 기준으로 쓴다.
+2024 Lee footstep 논문의 공식 IsaacGym 구현이다. raw repo stub의 checked commit `9474713074f69e87807cfce07ac4db490664a54c`를 checkout해 확인했으며, 3D-LIPM footstep planner와 model-free PPO controller를 분리해 둔 구조가 핵심이다. mj_rl의 eICP/LIPM footstep task를 검증할 때 reference dynamics와 reward 구성을 대조하는 기준으로 쓴다.
 
 ## 핵심 파일
 

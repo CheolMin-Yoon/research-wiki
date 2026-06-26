@@ -11,7 +11,7 @@ tags: [tier/low]
 
 1. 오래된 log, superseded decision, obsolete error, 완료된 task를 찾아줘.
 2. 삭제하지 않고 archive 문서로 보존하거나 status: obsolete 처리해줘.
-3. architecture.md와 active map에서 active link를 제거해줘.
+3. research.md 인벤토리와 active map에서 active link를 제거해줘. 구조 지도 자체가 바뀌는 경우에만 architecture.md도 갱신해줘.
 4. 필요하면 AI-Sessions/wiki/harness/archive/obsolete-index.md에 기록해줘.
 5. brief.md를 갱신해줘.
 

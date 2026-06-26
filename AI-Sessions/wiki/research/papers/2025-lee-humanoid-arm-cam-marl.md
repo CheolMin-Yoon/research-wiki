@@ -33,6 +33,5 @@ Physical Feature Graph 관점에서는 CAM이 observation/reward에 들어갈 �
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/2025-lee-humanoid-arm-cam-marl.md
-- source note: 2025-lee-humanoid-arm-cam-marl-code
-- concepts: centroidal, ppo
-
+- source note: [[AI-Sessions/wiki/research/sources/2025-lee-humanoid-arm-cam-marl-code|2025-lee-humanoid-arm-cam-marl-code]]
+- concepts: [[centroidal]], [[ppo]]

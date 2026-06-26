@@ -33,6 +33,5 @@ Physical Feature Graph 관점에서는 CoM, velocity, ICP, footstep이 raw obser
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/2024-lee-footstep-planning-rl.md
-- source note: 2024-lee-footstep-planning-rl-code
-- concepts: lipm, ppo
-
+- source note: [[AI-Sessions/wiki/research/sources/2024-lee-footstep-planning-rl-code|2024-lee-footstep-planning-rl-code]]
+- concepts: [[lipm]], [[ppo]]

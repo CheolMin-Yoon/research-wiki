@@ -10,7 +10,7 @@ source: AI-Sessions/raw/repos/2025-lee-humanoid-arm-cam-marl.md
 
 ## Summary
 
-2025 Lee arm-CAM 논문의 공식 IsaacLab 구현이다. raw repo stub의 pinned commit `d176a14bd2ae4d7acaa8770a76931d2c3bbd205d`를 checkout해 확인했으며, 팔과 다리를 modular actor-critic으로 나누고 CAM을 observation/reward/analysis 축으로 쓰는 구조가 핵심이다. mj_rl의 centroidal 또는 modular policy task를 만들 때 CAM 계산, arm/leg 분리, 분석 recorder 패턴을 참고한다.
+2025 Lee arm-CAM 논문의 공식 IsaacLab 구현이다. raw repo stub의 checked commit `d176a14bd2ae4d7acaa8770a76931d2c3bbd205d`를 checkout해 확인했으며, 팔과 다리를 modular actor-critic으로 나누고 CAM을 observation/reward/analysis 축으로 쓰는 구조가 핵심이다. mj_rl의 centroidal 또는 modular policy task를 만들 때 CAM 계산, arm/leg 분리, 분석 recorder 패턴을 참고한다.
 
 ## 핵심 파일
 

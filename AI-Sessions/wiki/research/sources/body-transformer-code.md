@@ -10,7 +10,7 @@ source: AI-Sessions/raw/repos/2024-sferrazza-body-transformer.md
 
 ## Summary
 
-2024 Body Transformer 논문의 공식 구현이다. raw repo stub의 pinned commit `008d8cd514322252b53f4d5e3dd5c2fc47c7b9cd`를 checkout해 확인했으며, robot body graph를 attention mask로 넣는 imitation learning 및 RL 코드가 핵심이다. mj_rl graph policy에는 network pattern만 참고하고, 환경별 mapping과 A1 sim-to-real 코드는 그대로 이식하지 않는다.
+2024 Body Transformer 논문의 공식 구현이다. raw repo stub의 checked commit `008d8cd514322252b53f4d5e3dd5c2fc47c7b9cd`를 checkout해 확인했으며, robot body graph를 attention mask로 넣는 imitation learning 및 RL 코드가 핵심이다. mj_rl graph policy에는 network pattern만 참고하고, 환경별 mapping과 A1 sim-to-real 코드는 그대로 이식하지 않는다.
 
 ## 핵심 파일
 
@@ -21,12 +21,30 @@ source: AI-Sessions/raw/repos/2024-sferrazza-body-transformer.md
 - `reinforcement_learning/`: IsaacGymEnvs/rl_games 기반 RL 쪽 통합 코드.
 - `a1_walk/`: Unitree A1 sim-to-real 관련 코드와 onboard 실행 자료.
 
+## 구현 세부 (코드 검증, 2026-06-25)
+
+### q / k / v 처리
+q/k/v는 **커스터마이징 없음**. `nn.TransformerEncoderLayer` 내부 `nn.MultiheadAttention.in_proj_weight` (shape: 3\*d\_model × d\_model) 이 Q/K/V를 한 번에 사영한다. RL 학습 파라미터는 이 weight 행렬 전체다.
+
+### Tokenizer — 왜 node별 별도 Linear인가
+각 body node의 obs 차원이 다르기 때문 (`[q, dq]`=2, IMU=6, …). node별 `nn.Linear(obs_dim_i → embed_dim)`으로 모두 같은 embed\_dim 토큰으로 압축한 뒤 Transformer에 넣는다. Transformer 단계부터는 node 간 차이가 없다.
+
+### is\_mixed 패턴
+`MaskedTransformerEncoder.forward`에서 `is_mixed=True`이면 layer 인덱스 홀/짝으로 masked↔unmasked를 교대한다. hard mask만 쓰면 정보가 local에 갇히므로 global attention layer를 사이사이에 끼워 보완하는 방식.
+
+### SoftBiasTransformer = Graphormer Spatial Encoding
+SPD를 learnable scalar로 매핑(`nn.Embedding(max_spd+1, 1)`)해 attention logit에 additive bias로 더한다. Graphormer의 Spatial Encoding과 구조가 동일하며, hard mask보다 soft한 graph inductive bias를 제공한다.
+
+### mask 부호 주의
+PyTorch `src_mask`에서 `True`=**blocked**. 코드에서 `mask=~self.adjacency_matrix`로 invert하는 이유다.
+
 ## 가져올 패턴
 
 - observation을 body/node 단위 token으로 나누고, detokenizer에서 action dimension으로 다시 모으는 구조.
 - kinematic adjacency 또는 shortest-path 정보를 attention mask로 주입하는 방식.
 - vanilla Transformer, soft-bias Transformer, hard mask BodyTransformer를 분리해 비교하는 class 구조.
 - graph policy를 만들 때 core network를 environment wrapper와 분리해야 한다는 점.
+- is\_mixed: hard mask만 쓰면 정보가 local에 갇히는 문제를 masked/unmasked layer 교대로 완화.
 
 ## 주의점
 

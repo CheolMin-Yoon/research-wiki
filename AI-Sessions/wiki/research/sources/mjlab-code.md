@@ -10,7 +10,7 @@ source: AI-Sessions/raw/repos/2025-mjlab.md
 
 ## Summary
 
-MuJoCo Warp와 Isaac Lab 스타일 manager API를 결합한 robotics RL framework다. raw repo stub의 pinned commit `efdcadc8b281553fd3e1be2a9a88db9553356e8a`를 checkout해 확인했으며, mj_rl의 simulation/environment 기반이 되는 source다. 직접 구현 대상이라기보다 manager, entity, sensor, actuator, task registry의 의미를 정확히 이해하기 위한 reference로 둔다.
+MuJoCo Warp와 Isaac Lab 스타일 manager API를 결합한 robotics RL framework다. raw repo stub의 checked commit `efdcadc8b281553fd3e1be2a9a88db9553356e8a`를 checkout해 확인했으며, mj_rl의 simulation/environment 기반이 되는 source다. 직접 구현 대상이라기보다 manager, entity, sensor, actuator, task registry의 의미를 정확히 이해하기 위한 reference로 둔다.
 
 ## 핵심 파일
 

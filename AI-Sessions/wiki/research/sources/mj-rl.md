@@ -10,7 +10,7 @@ source: AI-Sessions/raw/repos/mj-rl.md
 
 ## Summary
 
-사용자의 active Unitree G1 humanoid locomotion RL repo다. raw repo stub의 pinned commit `017c485efe6024cb26825084e422cc778b4b5920`를 checkout해 확인했으며, mjlab + rsl_rl 기반으로 eICP footstep, centroidal, graph_centroidal task가 공존한다. source note에서는 구현 상태와 가져올 패턴만 남기고, 프로젝트 허브나 graph backbone으로 쓰지 않는다.
+사용자의 active Unitree G1 humanoid locomotion RL repo다. raw repo stub의 checked commit `017c485efe6024cb26825084e422cc778b4b5920`를 checkout해 확인했으며, mjlab + rsl_rl 기반으로 eICP footstep, centroidal, graph_centroidal task가 공존한다. source note에서는 구현 상태와 가져올 패턴만 남기고, 프로젝트 허브나 graph backbone으로 쓰지 않는다.
 
 ## 핵심 파일
 

@@ -29,6 +29,5 @@ Robotics 환경에 맞춰 VecEnv interface, TensorDict observation, timeout hand
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/2025-rsl-rl-library.md
-- source note: rsl-rl-code
-- concepts: ppo
-
+- source note: [[AI-Sessions/wiki/research/sources/rsl-rl-code|rsl-rl-code]]
+- concepts: [[ppo]]

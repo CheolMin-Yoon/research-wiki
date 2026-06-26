@@ -1,6 +1,6 @@
 # Harness Index
 
-harness 운용 지식의 읽기 라우터다. **harness 작업이 필요할 때만** 이 파일을 읽고, 여기서 가리키는 detail 1장만 추가로 연다. (context 절약 Tier 2 — 자세한 계층은 `architecture.md` 참조)
+harness 운용 지식의 읽기 라우터다. **harness 작업이 필요할 때만** 이 파일을 읽고, 여기서 가리키는 필요한 detail만 추가로 연다. (context 절약 Tier 2 — 자세한 계층은 `architecture.md` 참조)
 
 ## init에 함께 읽는 것 (`agent-*`)
 

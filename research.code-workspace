@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "name": "research-wiki",
+      "path": "/home/frlab/research-wiki"
+    },
+    {
+      "name": "DL_GNN_Transformer",
+      "path": "/home/frlab/DL_GNN_Transformer"
+    },
+    {
+      "name": "mj_rl",
+      "path": "/home/frlab/mj_rl"
+    }
+  ],
+  "settings": {}
+}

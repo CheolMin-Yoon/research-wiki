@@ -28,6 +28,5 @@ Transformer는 scaled dot-product attention, multi-head attention, position-wise
 
 ## Links
 
-- concepts: transformer
-- related papers: 2024-sferrazza-body-transformer
-
+- concepts: [[transformer]]
+- related papers: [[AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer|2024-sferrazza-body-transformer]]

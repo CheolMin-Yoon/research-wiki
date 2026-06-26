@@ -10,7 +10,7 @@ source: AI-Sessions/raw/repos/modern-robotics.md
 
 ## Summary
 
-사용자의 Modern Robotics 교재 기반 robotics math reference repo다. raw repo stub의 pinned commit `ee49b600f058349e2d045ad76fad1d035cd0045f`를 checkout해 확인했으며, SO(3)/SE(3), forward/inverse kinematics, Jacobian, closed-chain, trajectory generation을 Python/PyTorch로 검증하는 성격이다. mj_rl의 math utils와 frame sanity check에 연결할 수 있는 수식 기준으로 둔다.
+사용자의 Modern Robotics 교재 기반 robotics math reference repo다. raw repo stub의 checked commit `ee49b600f058349e2d045ad76fad1d035cd0045f`를 checkout해 확인했으며, SO(3)/SE(3), forward/inverse kinematics, Jacobian, closed-chain, trajectory generation을 Python/PyTorch로 검증하는 성격이다. mj_rl의 math utils와 frame sanity check에 연결할 수 있는 수식 기준으로 둔다.
 
 ## 핵심 파일
 

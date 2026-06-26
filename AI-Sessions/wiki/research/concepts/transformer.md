@@ -22,6 +22,7 @@ self-attention은 임의의 두 위치를 $O(1)$ path length로 연결해 long-r
 
 - [[AI-Sessions/wiki/research/papers/2017-vaswani-attention|2017-vaswani-attention]] — 원전. scaled dot-product / multi-head attention 정의
 - [[AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer|2024-sferrazza-body-transformer]] — attention에 robot embodiment graph mask를 씌워 구조를 주입
+- [[AI-Sessions/wiki/research/papers/2021-ying-graphormer|2021-ying-graphormer]] — SPD·degree·edge를 attention bias로 주입해 GNN을 Graphormer special case로 포괄
 
 ## 연결 아이디어
 

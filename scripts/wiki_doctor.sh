@@ -11,6 +11,13 @@ set -u
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT" || exit 2
 
+MANIFEST_FILE="vault-manifest.yaml"
+ALLOWED_CONCEPTS="transformer ppo lipm centroidal"
+STATE_CODE_RE='in_proj|nn\.[A-Za-z]|torch\.|[A-Za-z]_weight\b|MultiheadAttention|softmax|adjacency_matrix'
+BRIEF_MAX_LINES=80
+HANDOFF_MAX_LINES=120
+LOG_MAX_LINES=30
+
 STALE_DAYS=30
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -25,11 +32,93 @@ err()  { printf 'ERROR  %s\n' "$1"; ERRORS=$((ERRORS+1)); }
 warn() { printf 'WARN   %s\n' "$1"; WARNINGS=$((WARNINGS+1)); }
 ok()   { printf 'OK     %s\n' "$1"; }
 
+# report_hits <level> <hits> <ok_msg> <hit_prefix>
+# grep 결과(hits)가 있으면 줄마다 level(err|warn)로 보고하고, 없으면 ok_msg.
+# C2/C10/C12/C13이 공유하는 "grep → 보고 or ok" 관용구를 한 곳에 둔다.
+report_hits() {
+  local level="$1" hits="$2" ok_msg="$3" prefix="$4"
+  if [ -n "$hits" ]; then
+    while IFS= read -r l; do [ -n "$l" ] && "$level" "${prefix}: $l"; done <<< "$hits"
+  else
+    ok "$ok_msg"
+  fi
+}
+
 # 코드 펜스(``` ... ```)와 inline code(`...`)를 제거한 본문을 출력한다.
 # 문서가 wikilink 문법을 예시로 보여줄 때 false positive를 막는다.
 strip_code() {
   awk '/^[[:space:]]*```/ { infence = !infence; next } infence { next } { print }' "$1" \
     | sed 's/`[^`]*`//g'
+}
+
+normalize_lines() {
+  sed '/^[[:space:]]*$/d' \
+    | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' \
+    | sort -u \
+    | tr '\n' ' ' \
+    | sed 's/[[:space:]]*$//'
+}
+
+normalize_word_string() {
+  printf '%s\n' "$1" | tr ' ' '\n' | normalize_lines
+}
+
+manifest_list() {
+  local key="$1"
+  awk -v key="$key" '
+    $0 ~ "^" key ":" { inside=1; next }
+    inside && /^[^[:space:]]/ { exit }
+    inside && /^[[:space:]]*-[[:space:]]*/ {
+      sub(/^[[:space:]]*-[[:space:]]*/, "")
+      print
+    }
+  ' "$MANIFEST_FILE" | normalize_lines
+}
+
+manifest_scalar() {
+  local key="$1"
+  grep -m1 -E "^[[:space:]]*${key}:" "$MANIFEST_FILE" 2>/dev/null \
+    | sed -E "s/^[[:space:]]*${key}:[[:space:]]*//; s/^'//; s/'$//; s/^\"//; s/\"$//"
+}
+
+manifest_command_paths() {
+  awk '
+    /^commands:/ { inside=1; next }
+    inside && /^[^[:space:]]/ { exit }
+    inside && /^[[:space:]]+[A-Za-z0-9_-]+:[[:space:]]*/ {
+      line=$0
+      sub(/^[[:space:]]+/, "", line)
+      split(line, a, ":")
+      cmd=a[1]
+      sub(/^[^:]+:[[:space:]]*/, "", line)
+      print cmd "|" line
+    }
+  ' "$MANIFEST_FILE"
+}
+
+entry_command_set() {
+  local f="$1"
+  sed -n '/^## Command Routing/,/^## /p' "$f" 2>/dev/null \
+    | grep -oE '^- `[^`]+`' 2>/dev/null \
+    | sed -E 's/^- `([^`]+)`.*/\1/' \
+    | normalize_lines
+}
+
+agent_policy_command_set() {
+  local f="$1"
+  sed -n '/^## Command Roles/,/^## /p' "$f" 2>/dev/null \
+    | awk -F'|' '/^\|[[:space:]]*[a-z]+[[:space:]]*\|/ { gsub(/[[:space:]]/, "", $2); print $2 }' \
+    | normalize_lines
+}
+
+prompts_command_set() {
+  local f="$1"
+  sed -n '/^## Command Routing Table/,/^## /p' "$f" 2>/dev/null \
+    | awk -F'|' '/^\|[[:space:]]*`?[a-z]+`?[[:space:]]*\|/ {
+      gsub(/[`[:space:]]/, "", $2)
+      print $2
+    }' \
+    | normalize_lines
 }
 
 WIKI_MD=$(find AI-Sessions/wiki -name '*.md' 2>/dev/null | sort)
@@ -74,12 +163,8 @@ done <<< "$WIKI_MD"
 # C2. wiki -> raw wikilink 금지 (raw는 graph에 노출하지 않음)
 # ---------------------------------------------------------------------------
 echo "-- C2 wiki->raw wikilinks --"
-c2hits=$(grep -rnE '\[\[AI-Sessions/raw/' AI-Sessions/wiki 2>/dev/null)
-if [ -n "$c2hits" ]; then
-  echo "$c2hits" | while IFS= read -r l; do err "wiki에서 raw로 향하는 wikilink: $l"; done
-else
-  ok "wiki->raw wikilink 없음"
-fi
+report_hits err "$(grep -rnE '\[\[AI-Sessions/raw/' AI-Sessions/wiki 2>/dev/null)" \
+  "wiki->raw wikilink 없음" "wiki에서 raw로 향하는 wikilink"
 
 # ---------------------------------------------------------------------------
 # C3. wiki 노트 frontmatter 필수 필드: type / date / status
@@ -100,12 +185,11 @@ done <<< "$WIKI_MD"
 # C4. concept whitelist: research/concepts/ 는 4개만
 # ---------------------------------------------------------------------------
 echo "-- C4 concept whitelist --"
-allowed="transformer ppo lipm centroidal"
 c4=0
 for cf in AI-Sessions/wiki/research/concepts/*.md; do
   [ -e "$cf" ] || continue
   base=$(basename "$cf" .md)
-  echo "$allowed" | grep -qw "$base" || { err "비승인 concept 노트: $cf (허용: $allowed)"; c4=$((c4+1)); }
+  echo "$ALLOWED_CONCEPTS" | grep -qw "$base" || { err "비승인 concept 노트: $cf (허용: $ALLOWED_CONCEPTS)"; c4=$((c4+1)); }
 done
 [ "$c4" -eq 0 ] && ok "concept 노트 4개 화이트리스트 준수"
 
@@ -136,7 +220,11 @@ c6=0
 for pdf in AI-Sessions/raw/papers/*.pdf; do
   [ -e "$pdf" ] || continue
   slug=$(basename "$pdf" .pdf)
-  [ -f "AI-Sessions/wiki/research/papers/$slug.md" ] || { warn "raw paper 미컴파일: $pdf -> research/papers/$slug.md 없음"; c6=$((c6+1)); }
+  # 파일명 기반 매핑 우선, 없으면 source: frontmatter 기반 매핑 확인
+  if [ ! -f "AI-Sessions/wiki/research/papers/$slug.md" ]; then
+    matched=$(grep -rlF "$pdf" AI-Sessions/wiki/research/papers/ 2>/dev/null | head -1)
+    [ -z "$matched" ] && { warn "raw paper 미컴파일: $pdf -> research/papers/$slug.md 없음"; c6=$((c6+1)); }
+  fi
 done
 SRC_SOURCES=$(grep -hE '^source:[[:space:]]*AI-Sessions/raw/repos/' AI-Sessions/wiki/research/sources/*.md 2>/dev/null | sed -E 's/^source:[[:space:]]*//')
 for repo in AI-Sessions/raw/repos/*.md; do
@@ -201,14 +289,10 @@ c10hits=$(grep -rnE "$DEAD_RE" --include='*.md' . 2>/dev/null \
   | grep -v 'log.md:' \
   | grep -v 'harness-decisions.md:' \
   | grep -v 'archive/')
-if [ -n "$c10hits" ]; then
-  echo "$c10hits" | while IFS= read -r l; do err "폐기된 경로 참조: $l"; done
-else
-  ok "폐기된 옛 구조 경로 없음"
-fi
+report_hits err "$c10hits" "폐기된 옛 구조 경로 없음" "폐기된 경로 참조"
 
 # ---------------------------------------------------------------------------
-# C11. map/index 누락: research 노트가 architecture.md에 등재되어 있는가
+# C11. map/index 누락: research 노트가 research.md에 등재되어 있는가
 # ---------------------------------------------------------------------------
 echo "-- C11 index coverage --"
 c11=0
@@ -216,10 +300,10 @@ for d in papers sources concepts ideas; do
   for f in AI-Sessions/wiki/research/$d/*.md; do
     [ -e "$f" ] || continue
     slug=$(basename "$f" .md)
-    grep -qF "$slug" architecture.md || { warn "architecture.md 누락: research/$d/$slug"; c11=$((c11+1)); }
+    grep -qF "$slug" research.md || { warn "research.md 누락: research/$d/$slug"; c11=$((c11+1)); }
   done
 done
-[ "$c11" -eq 0 ] && ok "research 노트 모두 architecture.md에 등재됨"
+[ "$c11" -eq 0 ] && ok "research 노트 모두 research.md에 등재됨"
 
 # ---------------------------------------------------------------------------
 # C12. secret-looking token grep
@@ -227,36 +311,44 @@ done
 echo "-- C12 secret scan --"
 SECRET_RE='sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{36}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----|(password|passwd|secret|api[_-]?key|token)[[:space:]]*[:=][[:space:]]*['"'"'"][^'"'"'"]{8,}'
 c12hits=$(grep -rnE "$SECRET_RE" --include='*.md' . 2>/dev/null | grep -v '/.obsidian/')
-if [ -n "$c12hits" ]; then
-  echo "$c12hits" | while IFS= read -r l; do warn "secret 의심 토큰: $l"; done
-else
-  ok "secret 의심 토큰 없음"
-fi
+report_hits warn "$c12hits" "secret 의심 토큰 없음" "secret 의심 토큰"
 
 # ---------------------------------------------------------------------------
-# C20. state/log size limits (vault-manifest.yaml: state_limits)
+# C13. state layer purity (vault-manifest.yaml: state_purity)
+#   state(brief/handoff)는 포인터+현재상태만. 코드 메커니즘 토큰이 새어들면
+#   정본(source/paper)으로 옮기고 링크만 남기라고 WARN. 파일경로·명령어·task id 제외.
 # ---------------------------------------------------------------------------
-echo "-- C20 state/log size limits --"
+echo "-- C13 state layer purity --"
+c13hits=$(grep -rnE "$STATE_CODE_RE" \
+  AI-Sessions/wiki/harness/state/brief.md \
+  AI-Sessions/wiki/harness/state/handoff.md 2>/dev/null)
+report_hits warn "$c13hits" "state 파일에 코드 메커니즘 누출 없음" \
+  "state에 코드 메커니즘 누출(정본 source/paper로 옮기고 링크)"
+
+# ---------------------------------------------------------------------------
+# C14. state/log size limits (vault-manifest.yaml: state_limits)
+# ---------------------------------------------------------------------------
+echo "-- C14 state/log size limits --"
 check_size() {
   local f="$1" max="$2" label="$3"
   [ -f "$f" ] || return
   lines=$(wc -l < "$f")
   [ "$lines" -gt "$max" ] && warn "${label} 크기 초과 (${lines} > ${max} lines): $f — archive 또는 압축 권장"
 }
-check_size "AI-Sessions/wiki/harness/state/brief.md"   80  "brief.md"
-check_size "AI-Sessions/wiki/harness/state/handoff.md" 120 "handoff.md"
-check_size "log.md"                                     30  "log.md"
+check_size "AI-Sessions/wiki/harness/state/brief.md"   "$BRIEF_MAX_LINES"   "brief.md"
+check_size "AI-Sessions/wiki/harness/state/handoff.md" "$HANDOFF_MAX_LINES" "handoff.md"
+check_size "log.md"                                    "$LOG_MAX_LINES"     "log.md"
 ok "state/log size 검사 완료"
 
 # ---------------------------------------------------------------------------
-# C21. graph registration check (harness 하위 문서)
+# C15. graph registration check (harness 하위 문서)
 # research 노트는 C8(concept orphan)/C11(index coverage)이 이미 담당한다.
-# C21은 harness 하위 문서(policies/decisions/errors/anti-patterns/templates/evals)가
+# C15는 harness 하위 문서(policies/decisions/errors/anti-patterns/templates/evals)가
 # 해당 folder hub(.md)에서 wikilink로 참조되는지만 검사한다.
 # archive/obsolete/GC 문서는 active hub 등록 요건에서 제외한다.
 # ---------------------------------------------------------------------------
-echo "-- C21 harness graph registration --"
-c21=0
+echo "-- C15 harness graph registration --"
+c15=0
 # GC 폴더는 archive 성격이므로 제외. 각 dir의 hub는 {dir}/{dir}.md 이다.
 # evals는 2단계 hub 구조(evals.md -> sub-hub -> probe)이므로 dir 내 임의 .md 참조를 허용한다.
 for dir in policies decisions errors patterns templates evals; do
@@ -276,10 +368,68 @@ for dir in policies decisions errors patterns templates evals; do
     else
       refs=$(grep -E "\[\[[^]]*${slug}[]|#]" "$hub_file" 2>/dev/null)
     fi
-    [ -z "$refs" ] && { warn "harness 문서가 hub에 미등록: $f (hub: $hub_file)"; c21=$((c21+1)); }
+    [ -z "$refs" ] && { warn "harness 문서가 hub에 미등록: $f (hub: $hub_file)"; c15=$((c15+1)); }
   done
 done
-[ "$c21" -eq 0 ] && ok "harness 문서 graph hub 등록 정상"
+[ "$c15" -eq 0 ] && ok "harness 문서 graph hub 등록 정상"
+
+# ---------------------------------------------------------------------------
+# C16. manifest/script drift: script 상수와 vault-manifest.yaml mirror가 어긋나는가
+# ---------------------------------------------------------------------------
+echo "-- C16 manifest drift --"
+c16=0
+manifest_concepts=$(manifest_list "allowed_concepts")
+script_concepts=$(normalize_word_string "$ALLOWED_CONCEPTS")
+if [ "$manifest_concepts" != "$script_concepts" ]; then
+  warn "manifest/script 드리프트: allowed_concepts (manifest: $manifest_concepts / script: $script_concepts)"
+  c16=$((c16+1))
+fi
+
+manifest_state_re=$(manifest_scalar "forbidden_token_regex")
+if [ "$manifest_state_re" != "$STATE_CODE_RE" ]; then
+  warn "manifest/script 드리프트: state_purity.forbidden_token_regex"
+  c16=$((c16+1))
+fi
+
+manifest_brief_max=$(manifest_scalar "brief_max_lines")
+manifest_handoff_max=$(manifest_scalar "handoff_max_lines")
+manifest_log_max=$(manifest_scalar "log_max_lines")
+[ "$manifest_brief_max" = "$BRIEF_MAX_LINES" ] || { warn "manifest/script 드리프트: state_limits.brief_max_lines"; c16=$((c16+1)); }
+[ "$manifest_handoff_max" = "$HANDOFF_MAX_LINES" ] || { warn "manifest/script 드리프트: state_limits.handoff_max_lines"; c16=$((c16+1)); }
+[ "$manifest_log_max" = "$LOG_MAX_LINES" ] || { warn "manifest/script 드리프트: state_limits.log_max_lines"; c16=$((c16+1)); }
+[ "$c16" -eq 0 ] && ok "manifest/script 드리프트 없음"
+
+# ---------------------------------------------------------------------------
+# C17. command routing consistency: manifest commands와 entry/prompt 표가 같은 집합인가
+# ---------------------------------------------------------------------------
+echo "-- C17 command routing consistency --"
+c17=0
+manifest_cmds=$(manifest_command_paths | cut -d'|' -f1 | normalize_lines)
+while IFS='|' read -r cmd path; do
+  [ -z "$cmd" ] && continue
+  [ -f "$path" ] || { warn "manifest command path 없음: $cmd -> $path"; c17=$((c17+1)); }
+done < <(manifest_command_paths)
+
+for f in AGENTS.md CLAUDE.md; do
+  actual=$(entry_command_set "$f")
+  if [ "$actual" != "$manifest_cmds" ]; then
+    warn "command routing 집합 불일치: $f (manifest: $manifest_cmds / doc: $actual)"
+    c17=$((c17+1))
+  fi
+done
+
+actual=$(agent_policy_command_set "AI-Sessions/wiki/harness/policies/agent-policy.md")
+if [ "$actual" != "$manifest_cmds" ]; then
+  warn "command routing 집합 불일치: agent-policy.md (manifest: $manifest_cmds / doc: $actual)"
+  c17=$((c17+1))
+fi
+
+actual=$(prompts_command_set "prompts/prompts.md")
+if [ "$actual" != "$manifest_cmds" ]; then
+  warn "command routing 집합 불일치: prompts/prompts.md (manifest: $manifest_cmds / doc: $actual)"
+  c17=$((c17+1))
+fi
+[ "$c17" -eq 0 ] && ok "command routing 집합 일관성 정상"
 
 # ---------------------------------------------------------------------------
 echo "== 요약: ERROR=$ERRORS WARN=$WARNINGS =="

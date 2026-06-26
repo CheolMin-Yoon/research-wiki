@@ -22,6 +22,7 @@ $$h_G = \begin{bmatrix} k_G \\ l_G \end{bmatrix} = A_G(q)\,\dot{q}$$
 
 - [[AI-Sessions/wiki/research/papers/2013-orin-centroidal-dynamics|2013-orin-centroidal-dynamics]] — 원전. centroidal momentum, CMM($A_G$) 정의와 계산
 - [[AI-Sessions/wiki/research/papers/2025-lee-humanoid-arm-cam-marl|2025-lee-humanoid-arm-cam-marl]] — CAM을 reward/observation에 넣어 팔-다리 coordination 유도
+- [[AI-Sessions/wiki/research/papers/2026-shin-abd-net|2026-shin-abd-net]] — ABA forward dynamics 구조를 GNN policy에 내재화. child→parent 전파를 learnable parameter로 대체
 
 ## 구현 포인트
 

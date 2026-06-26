@@ -10,7 +10,7 @@ source: AI-Sessions/raw/repos/mj-control.md
 
 ## Summary
 
-사용자의 MuJoCo/Pinocchio classical control reference repo다. raw repo stub의 pinned commit `d0165a4e05ade5770dfc79d6eb752c6ffb234733`을 checkout해 확인했으며, manipulator impedance/DLS/IK, cartpole LQR/MPC, quadruped SRBD-MPC, humanoid WBC/centroidal MPC를 class 구조로 정리한 코드베이스다. mj_rl에서는 vectorized RL runtime이 아니라 controller oracle, debugging reference, teacher 후보로 본다.
+사용자의 MuJoCo/Pinocchio classical control reference repo다. raw repo stub의 checked commit `d0165a4e05ade5770dfc79d6eb752c6ffb234733`을 checkout해 확인했으며, manipulator impedance/DLS/IK, cartpole LQR/MPC, quadruped SRBD-MPC, humanoid WBC/centroidal MPC를 class 구조로 정리한 코드베이스다. mj_rl에서는 vectorized RL runtime이 아니라 controller oracle, debugging reference, teacher 후보로 본다.
 
 ## 핵심 파일
 

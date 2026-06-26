@@ -23,7 +23,7 @@ Save Filter를 통과한 내용만 저장해줘.
 
 concept는 transformer, ppo, lipm, centroidal 네 개만 사용하고 새 concept 노트는 만들지 마. 주관적 연구 해석은 AI-Sessions/wiki/research/ideas/에만 둬. raw 원본은 수정·삭제하지 마.
 
-새 graph 노트를 만들면 frontmatter에 깊이에 맞는 `tier/*` 태그(top/upper/mid/low)를 부여하고 해당 섬 hub에 wikilink로 등록해줘(obsidian-policy 참조). 파일명은 `{도메인}-{타입}`으로. 저장했다면 관련 map/index를 필요한 만큼 갱신해줘. AI-Sessions/wiki/harness/state/brief.md는 항상 현재 상태의 dense index가 되도록 갱신해줘(Current Focus, Important Decisions, Active Implementation Source, Read Next). 다음 세션이 brief.md 한 장으로 맥락을 복원할 수 있어야 해. log.md는 Log Policy를 통과하는 큰 구조 변화, 큰 ingest, 중요한 결정, 재발 방지 실패일 때만 한 줄로 남겨줘.
+새 graph 노트를 만들면 frontmatter에 깊이에 맞는 `tier/*` 태그(top/upper/mid/low)를 부여하고 해당 섬 hub에 wikilink로 등록해줘(obsidian-policy 참조). 파일명은 `{도메인}-{타입}`으로. 저장했다면 관련 map/index를 필요한 만큼 갱신해줘. AI-Sessions/wiki/harness/state/brief.md는 compact current pointer로 유지하고 정본 링크만 남겨줘(Current Focus, Important Decisions, Active Implementation Source, Read Next). log.md는 Log Policy를 통과하는 큰 구조 변화, 큰 ingest, 중요한 결정, 재발 방지 실패일 때만 한 줄로 남겨줘.
 
 하나도 만족하지 않으면 Wiki에 저장하지 말고 저장하지 않은 이유를 짧게 설명해줘.
 
