@@ -2,7 +2,7 @@
 type: raw-repo
 date: 2026-06-23
 ---
-- url: https://github.com/CheolMin-Yoon/DL_GNN_Transformer
+- url: https://github.com/CheolMin-Yoon/Graph_Transformer (이전 이름: DL_GNN_Transformer)
 - branch: main
 - commit: c63defe64c4a68af164dfc027ed31718745b1236
 - 대응 논문: 없음. 관련 선행연구 = raw/papers/2024-sferrazza-body-transformer.pdf, raw/papers/2017-vaswani-attention.pdf

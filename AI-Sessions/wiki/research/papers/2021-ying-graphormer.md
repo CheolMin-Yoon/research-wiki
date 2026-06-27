@@ -41,7 +41,7 @@ Centrality Encoding + Spatial Encoding + Edge Encoding 조합으로 GCN, GraphSA
 
 - **BoT와의 차이**: BoT는 robot body graph를 hard mask(adjacency)로 attention을 제한하지만, Graphormer는 SPD를 soft bias로 추가해 전체 pair attention을 유지한다.
 - **Physical Feature Graph 아이디어**: SPD-based spatial encoding은 stability language graph에서 CoM·DCM·CAM 간 coupling 거리를 attention bias로 주입하는 방식으로 확장 가능하다.
-- DL_GNN_Transformer repo의 `GraphTransformer/` 폴더가 Graphormer 계열 참고 코드다.
+- Graphormer 계열 참고 코드(PyG `gps`/`gat`/`super_gat` 등)는 PyG 공식 예제에 있다. Graph_Transformer repo에 두었던 사본 `GraphTransformer/`는 2026-06-27 중복으로 삭제했다.
 
 ## Links
 

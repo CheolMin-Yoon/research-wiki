@@ -22,8 +22,9 @@ Humanoid locomotion RL, centroidal/CAM, LIPM/eICP, graph/transformer policy를 �
 ## Active Study
 
 - Body Transformer 코드/논문 정본: [[AI-Sessions/wiki/research/sources/body-transformer-code|body-transformer-code]], [[AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer|2024-sferrazza-body-transformer]]
-- 사용자 노트북 source 정본: [[AI-Sessions/wiki/research/sources/dl-gnn-transformer-code|dl-gnn-transformer-code]]
+- 사용자 노트북 source 정본: [[AI-Sessions/wiki/research/sources/graph-transformer-code|graph-transformer-code]]
 - 다음 실험 포인터: `AI-Sessions/wiki/research/experiments/2026-06-25-g1-tracking-baseline.md`
+- GPU 동역학 도구 비교 완료: [[AI-Sessions/wiki/research/experiments/2026-06-27-cusadi-vs-casadi-on-gpu-g1|2026-06-27-cusadi-vs-casadi-on-gpu-g1]] (casadi-on-gpu 채택 유지). 탐색용 cusadi/casadi 설치·clone은 모두 정리됨, env 원상복구.
 
 ## Scope & Constraints
 

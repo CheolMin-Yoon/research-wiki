@@ -28,7 +28,7 @@ source: AI-Sessions/raw/repos/mj-rl.md
 
 - eICP task는 reduced-order footstep planner와 rsl_rl policy를 묶는 현재 구현 기준이다.
 - graph_centroidal은 Body Transformer/physical graph policy 실험의 landing zone으로 둔다.
-- `assets/graph/builder.py`는 DL_GNN_Transformer의 notebook sketch를 실제 task graph로 연결할 때 기준 파일이다.
+- `assets/graph/builder.py`는 Graph_Transformer의 notebook sketch를 실제 task graph로 연결할 때 기준 파일이다.
 - CasADi-on-GPU kernel은 centroidal quantity를 vectorized env에서 계산하려는 방향성을 보여준다.
 
 ## 주의점

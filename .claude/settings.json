@@ -17,7 +17,7 @@
     ],
     "additionalDirectories": [
       "/home/frlab",
-      "/home/frlab/DL_GNN_Transformer"
+      "/home/frlab/Graph_Transformer"
     ]
   }
 }

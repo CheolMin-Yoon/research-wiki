@@ -10,6 +10,7 @@ status: active
 ## Graph
 
 - [[AI-Sessions/wiki/research/experiments/2026-06-25-g1-tracking-baseline|2026-06-25-g1-tracking-baseline]]
+- [[AI-Sessions/wiki/research/experiments/2026-06-27-cusadi-vs-casadi-on-gpu-g1|2026-06-27-cusadi-vs-casadi-on-gpu-g1]]
 
 ## Summary
 
@@ -20,3 +21,4 @@ reward, observation, action space, terrain, termination, curriculum, policy arch
 ## Active
 
 - `2026-06-25-g1-tracking-baseline`: mjlab built-in `Mjlab-Tracking-Flat-Unitree-G1` PPO motion imitation baseline을 먼저 재현한 뒤 BoT actor와 비교하는 첫 실험.
+- `2026-06-27-cusadi-vs-casadi-on-gpu-g1`: G1 동역학 GPU 배치 평가에서 casadi-on-gpu가 cusadi보다 ~10–20× 빠름(done). 일반화 교훈은 `harness/patterns/research-patterns`.
