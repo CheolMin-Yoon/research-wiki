@@ -56,4 +56,4 @@ $$\pi_\theta = \Psi \circ \mathcal{M} \circ \Phi$$
 
 ## Links
 
-- concepts: [[centroidal]]
+- category: graph-transformer-rl

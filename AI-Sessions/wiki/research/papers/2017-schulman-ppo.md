@@ -22,13 +22,36 @@ PPO의 핵심은 old policy 대비 probability ratio를 사용하되, ratio를 c
 
 학습 루프는 policy로 rollout을 수집하고, 수집된 batch에 대해 여러 epoch/minibatch SGD를 수행한다. continuous control과 Atari 실험에서 clipped objective variant가 안정성과 성능 면에서 좋은 선택임을 보인다.
 
+## 메커니즘
+
+probability ratio
+
+$$r_t(\theta) = \frac{\pi_\theta(a_t\mid s_t)}{\pi_{\theta_{old}}(a_t\mid s_t)}$$
+
+를 정의하고, clipped surrogate objective
+
+$$L^{CLIP}(\theta) = \hat{\mathbb{E}}_t\!\left[\min\!\big(r_t(\theta)\hat{A}_t,\ \text{clip}(r_t(\theta),1-\epsilon,1+\epsilon)\hat{A}_t\big)\right]$$
+
+를 최대화한다($\epsilon$은 보통 0.2). clip은 ratio가 $[1-\epsilon,1+\epsilon]$ 밖으로 나가도록 만드는 업데이트의 incentive를 제거해, TRPO의 trust region을 1차 근사로 대체한다. min을 취하므로 unclipped objective의 pessimistic lower bound가 된다.
+
+parameter를 공유하는 actor-critic에서는 value error와 entropy bonus를 더해
+
+$$L^{CLIP+VF+S} = \hat{\mathbb{E}}_t\!\left[L^{CLIP} - c_1 L^{VF} + c_2 S[\pi_\theta]\right]$$
+
+를 쓴다. advantage는 보통 GAE로 추정한다. 알고리즘은 $N$개 actor가 $T$ step을 모아 $NT$ 샘플로 $K$ epoch 최적화하는 구조다.
+
+### 구현 포인트
+
+- on-policy라 rollout 후 같은 데이터로 $K$ epoch만 재사용한다. ratio가 1에서 멀어지면 clip이 작동.
+- value loss, entropy coefficient, GAE $\lambda$, clip $\epsilon$, max grad norm이 주요 하이퍼파라미터.
+
 ## 내 연구 연결
 
-이 논문은 `ppo` concept의 원전이다. Lee 계열 humanoid locomotion 논문, rsl_rl, mj_rl의 on-policy 학습 구조를 이해하는 기본 축이다.
+이 논문은 `rl-algorithms-frameworks` category의 PPO 원전이다. Lee 계열 humanoid locomotion 논문, rsl_rl, mj_rl의 on-policy 학습 구조를 이해하는 기본 축이다.
 
 구현 측면에서는 clipping, value loss, entropy, GAE, KL monitoring, timeout handling 같은 실무 디테일이 rsl_rl/mj_rl의 안정성에 직접 연결된다.
 
 ## Links
 
-- concepts: [[ppo]]
+- category: rl-algorithms-frameworks
 - related papers: [[AI-Sessions/wiki/research/papers/2025-rsl-rl-library|2025-rsl-rl-library]], [[AI-Sessions/wiki/research/papers/2024-lee-footstep-planning-rl|2024-lee-footstep-planning-rl]], [[AI-Sessions/wiki/research/papers/2025-lee-humanoid-arm-cam-marl|2025-lee-humanoid-arm-cam-marl]]

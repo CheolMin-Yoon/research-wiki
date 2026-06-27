@@ -34,12 +34,11 @@ BoT는 알고리즘이 아니라 **policy network architecture**다. "BoT를 쓴
 
 ## 내 연구 연결
 
-이 논문은 `transformer` concept의 robot policy 적용 근거다. Physical Feature Graph 아이디어는 BoT의 morphology graph 관점을 stability language graph로 확장하려는 방향으로 해석할 수 있다.
+이 논문은 `graph-transformer-rl` category에서 robot policy에 Transformer를 적용하는 핵심 근거다. Physical Feature Graph 아이디어는 BoT의 morphology graph 관점을 stability language graph로 확장하려는 방향으로 해석할 수 있다.
 
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/2024-sferrazza-body-transformer.md
-- source note: [[AI-Sessions/wiki/research/sources/body-transformer-code|body-transformer-code]]
-- concepts: [[transformer]] · [[ppo]]
-- ideas: [[idea-physical-feature-graph]]
-
+- source note: body-transformer-code
+- category: graph-transformer-rl
+- ideas: idea-physical-feature-graph

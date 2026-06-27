@@ -36,7 +36,7 @@ status: active
 ## Write Boundaries
 
 - raw: `AI-Sessions/raw/`는 source of truth이며 기본 읽기 전용이다.
-- research: paper/source/concept/idea/experiment 지식은 `AI-Sessions/wiki/research/`에 둔다. granular한 구현 작업 단위는 wiki가 아니라 프로젝트 레포에서 관리한다.
+- research: paper/source/category/idea/experiment 지식은 `AI-Sessions/wiki/research/`에 둔다. granular한 구현 작업 단위는 wiki가 아니라 프로젝트 레포에서 관리한다.
 - harness: agent 운영, 정책, 실패 방지, archive, eval, state는 `AI-Sessions/wiki/harness/`에 둔다.
 - prompts: 명령별 실행 규칙은 `prompts/`에 둔다.
 

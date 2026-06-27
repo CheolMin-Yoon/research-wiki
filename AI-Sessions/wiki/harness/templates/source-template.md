@@ -34,5 +34,5 @@ source:
 <의존성, 프레임워크, 이식 리스크, 실행상 핵심 주의사항>
 
 ## Links
-<관련 paper/source/concept/idea/experiment를 [[wikilink]]로 연결. `related_*` frontmatter를 쓰면 여기에 mirror. raw는 wikilink 금지>
+<관련 paper/source/category/idea/experiment를 [[wikilink]]로 연결. `related_*` frontmatter를 쓰면 여기에 mirror. raw는 wikilink 금지>
 ```

@@ -13,14 +13,14 @@ raw 원본은 읽기 전용으로 취급하고 수정·삭제하지 마. 새 wik
 
 - 논문이면: AI-Sessions/wiki/research/papers/에 근거 노트를 작성해줘.
 - 레퍼런스 구현 GitHub 레포나 코드 자료면: AI-Sessions/wiki/research/sources/에 구현 분석 노트를 작성해줘.
-- 사용자 아이디어·인사이트면: AI-Sessions/wiki/research/ideas/에 작성해줘.
+- 사용자 아이디어·인사이트면: 새 idea 파일을 만들지 말고 `AI-Sessions/wiki/research/idea-physical-feature-graph.md`에 통합할지 판단해줘.
 - 실험 사실이면: AI-Sessions/wiki/research/experiments/에 작성해줘.
 - 결정, 실패, anti-pattern이면: AI-Sessions/wiki/harness/ 아래 decisions, errors, patterns 중 맞는 곳에 연결해줘.
 - granular한 구현 작업 단위는 wiki에 만들지 말고 프로젝트 레포에서 관리해줘.
 
-concept는 transformer, ppo, lipm, centroidal 네 개만 사용해줘. 새 concept 노트를 만들지 말고, 세부 메커니즘이나 일회성 용어는 paper/source 본문에 둬.
+category는 7개(centroidal-wbc/rl-algorithms-frameworks/morphology-aware-policy/graph-transformer-rl/loco-manipulation/dynamics-guided-rl/novelty)만 사용해줘. 새 category 노트를 만들지 말고, category는 research-map에 직접 붙이지 말고 idea의 근거 축으로 연결해. paper는 primary category 1개에서 full-path wikilink로 graph 등록해줘. idea/harness/state/pattern 문서에서는 paper wikilink 대신 plaintext path/name을 쓰고, 세부 메커니즘이나 일회성 용어는 paper/source 본문에 둬.
 
-새 graph 노트(paper/source/idea 등)는 frontmatter에 `tier/*` 태그(보통 paper/source는 low, idea는 upper)를 부여하고 해당 섬 hub에 등록해줘(obsidian-policy 참조). 작업이 끝나면 research.md와 필요한 map/state를 갱신해줘. log.md는 큰 ingest나 운영 규칙 변화일 때만 한 줄로 남겨줘.
+새 graph 노트(source/idea 등)는 frontmatter에 `tier/*` 태그를 부여하고 해당 섬 hub에 등록해줘(obsidian-policy 참조). paper는 idea-linked category를 통해 research-map 아래에 등록하되 harness-map과 wikilink로 연결하지 않는다. 작업이 끝나면 research.md와 필요한 map/state를 갱신해줘. log.md는 큰 ingest나 운영 규칙 변화일 때만 한 줄로 남겨줘.
 
 map/index/link/structure를 건드렸으면 마지막에 scripts/wiki_doctor.sh를 실행해줘. ERROR가 있으면 완료 보고 전에 고치거나 못 고친 이유를 보고하고, 그대로 두는 WARN은 이유를 남겨줘.
 ```

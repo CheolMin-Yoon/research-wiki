@@ -12,7 +12,7 @@ tags: [tier/low]
 논문·구현·아이디어에 관한 질문이면 세 레이어를 함께 읽어라:
 - `research/papers/<slug>.md` (논문 내용·abstract)
 - `research/sources/<slug>-code.md` (구현 분석·URL·패턴)
-- `research/ideas/idea-*.md` (연결된 아이디어·가설)
+- `research/idea-physical-feature-graph.md` (연결된 아이디어·가설)
 
 wiki note는 스냅샷이라 불완전할 수 있다. 논문의 메커니즘·수식·실험 설계를 단정하기 전에 항상 source of truth를 직접 확인해라:
 - `AI-Sessions/raw/papers/<...>.pdf` (논문 원문) — actor/critic 통합, 변형 선택, 수치 같은 디테일은 PDF로 검증한다.

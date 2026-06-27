@@ -39,11 +39,11 @@ Obsidian은 실행 중 graph view 설정을 만지거나 종료할 때 메모리
 
 ## Fix
 
-concept→paper 링크를 전체 경로로 바꾸고, active와 같은 basename의 archive 사본을 graph-visible 위치에 두지 않는다. graph 설정은 Obsidian을 종료한 상태에서만 수정한다.
+category→paper 링크를 전체 경로로 바꾸고, active와 같은 basename의 archive 사본을 graph-visible 위치에 두지 않는다. graph 설정은 Obsidian을 종료한 상태에서만 수정한다.
 
 ## Prevention Rule
 
-- **concept→paper 링크는 전체 경로로 명시**한다: `[[AI-Sessions/wiki/research/papers/<slug>|<slug>]]`. 짧은 `[[<slug>]]`는 raw/repos stub과 충돌해 graph에서 끊긴다.
+- **category→paper는 primary category 1개에서 full-path wikilink로 등록한다.** 짧은 `[[<slug>]]`는 raw/repos stub과 충돌해 graph에서 끊길 수 있으므로 쓰지 않는다. harness에서 paper/research 노트를 언급할 때는 plaintext path/name을 쓴다.
 - vault 안에 active와 같은 basename 사본(archive, 백업)을 두지 않는다. 보존이 필요하면 다른 slug의 archive 문서에 내용을 옮기거나 git history를 사용한다.
 - `.obsidian/graph.json`, `app.json` 등 설정 파일은 **Obsidian을 완전히 종료한 상태에서** 수정한다. 켜진 채 고치면 종료 시 덮어써진다.
 - 색상 그룹 같은 건 차라리 UI에서 직접 설정하는 게 안전하다.

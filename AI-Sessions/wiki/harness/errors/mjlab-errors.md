@@ -55,7 +55,7 @@ whole-body CoM 위치와 속도는 root subtree 기준 `subtree_com` / `subtree_
 
 - source: mj_rl repo NOTES.md, commit 017c485
 - 관련 source note: research/sources/mj-rl.md
-- 관련 concept: research/concepts/lipm.md (eICP = x_CoM + v_CoM/ω₀)
+- 관련 paper: AI-Sessions/wiki/research/papers/2024-lee-footstep-planning-rl.md (eICP = x_CoM + v_CoM/ω₀)
 
 ## Error: built-in task와 runtime asset requirement를 구분하지 않음
 

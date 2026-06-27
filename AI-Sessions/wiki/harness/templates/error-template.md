@@ -41,5 +41,5 @@ related_experiments:
 관련 실험 링크.
 
 ## Links
-관련 paper/source/concept/decision/anti-pattern 링크.
+관련 paper/source/category/decision/anti-pattern 링크.
 ```

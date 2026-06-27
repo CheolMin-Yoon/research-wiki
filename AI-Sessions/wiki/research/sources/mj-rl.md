@@ -10,7 +10,7 @@ source: AI-Sessions/raw/repos/mj-rl.md
 
 ## Summary
 
-사용자의 active Unitree G1 humanoid locomotion RL repo다. raw repo stub의 checked commit `017c485efe6024cb26825084e422cc778b4b5920`를 checkout해 확인했으며, mjlab + rsl_rl 기반으로 eICP footstep, centroidal, graph_centroidal task가 공존한다. source note에서는 구현 상태와 가져올 패턴만 남기고, 프로젝트 허브나 graph backbone으로 쓰지 않는다.
+사용자의 active Unitree G1 humanoid locomotion RL repo다. 현재 checked commit은 `5d87ee3ea85eed570f5931e181326e937c4f811f`이며, mjlab + rsl_rl 기반으로 eICP footstep, centroidal, graph_centroidal task가 공존한다. source note에서는 구현 상태와 가져올 패턴만 남기고, 프로젝트 허브나 graph backbone으로 쓰지 않는다.
 
 ## 핵심 파일
 
@@ -29,7 +29,7 @@ source: AI-Sessions/raw/repos/mj-rl.md
 - eICP task는 reduced-order footstep planner와 rsl_rl policy를 묶는 현재 구현 기준이다.
 - graph_centroidal은 Body Transformer/physical graph policy 실험의 landing zone으로 둔다.
 - `assets/graph/builder.py`는 Graph_Transformer의 notebook sketch를 실제 task graph로 연결할 때 기준 파일이다.
-- CasADi-on-GPU kernel은 centroidal quantity를 vectorized env에서 계산하려는 방향성을 보여준다.
+- CasADi-on-GPU kernel은 centroidal quantity를 vectorized env에서 계산하려는 방향성을 보여준다. production kernel 정본은 [[AI-Sessions/wiki/research/sources/casadi-on-gpu-code|casadi-on-gpu-code]]를 따른다.
 
 ## 주의점
 
@@ -41,5 +41,6 @@ source: AI-Sessions/raw/repos/mj-rl.md
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/mj-rl.md
-- checked commit: 017c485efe6024cb26825084e422cc778b4b5920
+- checked commit: 5d87ee3ea85eed570f5931e181326e937c4f811f
+- initial raw-stub checked commit: 017c485efe6024cb26825084e422cc778b4b5920
 - related raw papers: 2024-lee-footstep-planning-rl.pdf, 2025-lee-humanoid-arm-cam-marl.pdf

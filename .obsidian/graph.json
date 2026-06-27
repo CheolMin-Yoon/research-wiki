@@ -1,6 +1,6 @@
 {
-  "collapse-filter": true,
-  "search": "path:architecture.md OR path:harness.md OR path:research.md OR path:README.md OR path:AGENTS.md OR path:CLAUDE.md OR path:log.md OR path:prompts/ OR path:AI-Sessions/wiki/maps/ OR path:AI-Sessions/wiki/research/ideas/ OR path:AI-Sessions/wiki/research/concepts/ OR path:AI-Sessions/wiki/research/papers/ OR path:AI-Sessions/wiki/research/experiments/ OR path:AI-Sessions/wiki/research/sources/ OR path:AI-Sessions/wiki/harness/",
+  "collapse-filter": false,
+  "search": "path:architecture.md OR path:harness.md OR path:research.md OR path:README.md OR path:AGENTS.md OR path:CLAUDE.md OR path:log.md OR path:prompts/ OR path:AI-Sessions/wiki/maps/ OR path:AI-Sessions/wiki/research/idea-physical-feature-graph.md OR path:AI-Sessions/wiki/research/categories/ OR path:AI-Sessions/wiki/research/papers/ OR path:AI-Sessions/wiki/research/experiments/ OR path:AI-Sessions/wiki/research/sources/ OR path:AI-Sessions/wiki/harness/",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -18,7 +18,7 @@
       "query": "tag:#tier/upper OR path:architecture.md OR path:harness.md OR path:research.md OR path:README.md OR path:CLAUDE.md OR path:AGENTS.md OR path:log.md",
       "color": {
         "a": 1,
-        "rgb": 16749824
+        "rgb": 16763904
       }
     },
     {
@@ -38,14 +38,14 @@
   ],
   "collapse-display": false,
   "showArrow": false,
-  "textFadeMultiplier": -3,
-  "nodeSizeMultiplier": 2.396875,
-  "lineSizeMultiplier": 4.1578125,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1,
+  "lineSizeMultiplier": 1,
   "collapse-forces": false,
-  "centerStrength": 0.302083333333333,
-  "repelStrength": 13.2291666666667,
+  "centerStrength": 0.109375,
+  "repelStrength": 10,
   "linkStrength": 1,
-  "linkDistance": 307,
-  "scale": 0.45050811767578125,
+  "linkDistance": 250,
+  "scale": 0.3003387451171875,
   "close": false
 }

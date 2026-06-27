@@ -80,14 +80,15 @@ Better approach:
 로봇 동역학을 vectorized env에서 GPU 배치 평가하려고 cusadi나 casadi-on-gpu를 쓸 때의 반복 함정과 순서.
 
 1. **둘 다 MJCF/URDF를 직접 못 먹는다.** 입력은 오직 CasADi `Function`. 모델 포맷 → 심볼릭은 별도 전처리다: `pin.buildModelFromMJCF` + `pinocchio.casadi`(cpin)로 동역학/centroidal 함수를 만들어 `.save()`. 즉 항상 2-stage(`MJCF → CasADi Function → GPU`).
-2. **`.casadi` 직렬화는 casadi 버전 잠금이다.** 3.7.2가 저장한 파일은 3.6.5에서 load 실패(`serializing_stream.cpp` `load_version` assertion). 그래서 생성(pinocchio.casadi)과 codegen(cusadi/cog)을 **같은 casadi 버전/같은 env**에 모아야 한다. 두 env로 쪼개면 직렬화 경계에서 막힌다.
+2. **`.casadi` 직렬화는 casadi 버전 호환성을 요구한다.** 3.7.2가 저장한 파일은 3.6.5에서 load 실패(`serializing_stream.cpp` `load_version` assertion). 생성(pinocchio.casadi)과 codegen(cusadi/cog)을 다른 env로 나눌 수는 있지만, `Function.load()`/codegen smoke test로 직렬화 호환성을 확인해야 한다.
 3. **도구 추가 설치는 기존 env 버전을 깨지 않게.** `pip install -e <repo> --no-deps`로 torch/numpy/casadi 보존, 설치 전후 버전 스냅샷으로 검증. cusadi는 PyPI 아님(GitHub 소스), `import cusadi`가 아니라 repo 루트에서 `from src import *`로 쓰고 `CusadiFunction`은 fp64 하드코딩이다. cusadi의 `OP_CUDA_DICT`는 casadi 3.6.5↔3.7.2에서 OP enum이 동일해 호환된다.
 4. **속도 비교는 정밀도·동기화를 맞춰야 공정하다.** casadi-on-gpu는 fp32 전용이므로 cusadi도 float codegen(+fp32 런처)으로 맞추고, warmup 후 CUDA event median, per-call sync를 통일한다. 같은 의미 함수를 양쪽에서 평가하고 출력 교차검증으로 동일성을 확인한다.
+5. **커널 rename/codegen 전에는 stale artifact를 지운다.** `.casadi`, generated `.cu/.cuh`, manifest/registry를 남겨둔 채 이름만 바꾸면 old/new 커널이 같이 등록될 수 있다. production build는 생성 디렉터리를 비우고 기대 kernel set/count 같은 registry invariant를 수동 또는 assertion으로 확인한다.
 
-근거·수치 정본: [[AI-Sessions/wiki/research/experiments/2026-06-27-cusadi-vs-casadi-on-gpu-g1|2026-06-27-cusadi-vs-casadi-on-gpu-g1]] (해당 환경에서 casadi-on-gpu가 ~10–20× 우세).
+근거·수치 정본: AI-Sessions/wiki/research/experiments/2026-06-27-cusadi-vs-casadi-on-gpu-g1.md (해당 환경에서 casadi-on-gpu가 ~10–20× 우세).
 
 ## Links
 
 - [[AI-Sessions/wiki/harness/patterns/agent-patterns|agent-patterns]]
 - [[AI-Sessions/wiki/harness/decisions/harness-decisions|harness-decisions]]
-- [[AI-Sessions/wiki/research/experiments/2026-06-27-cusadi-vs-casadi-on-gpu-g1|2026-06-27-cusadi-vs-casadi-on-gpu-g1]]
+- AI-Sessions/wiki/research/experiments/2026-06-27-cusadi-vs-casadi-on-gpu-g1.md

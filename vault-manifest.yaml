@@ -17,8 +17,7 @@ top_level_groups:
 allowed_research_dirs:
   - papers
   - sources
-  - concepts
-  - ideas
+  - categories
   - experiments
 
 allowed_harness_dirs:
@@ -32,11 +31,14 @@ allowed_harness_dirs:
   - evals
 
 # C4 whitelist mirror — wiki_doctor.sh C16이 script 상수와 이 목록의 drift를 WARN한다.
-allowed_concepts:
-  - transformer
-  - ppo
-  - lipm
-  - centroidal
+allowed_categories:
+  - centroidal-wbc
+  - rl-algorithms-frameworks
+  - morphology-aware-policy
+  - graph-transformer-rl
+  - loco-manipulation
+  - dynamics-guided-rl
+  - novelty
 
 commands:
   save: prompts/save.md

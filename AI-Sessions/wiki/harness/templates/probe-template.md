@@ -14,7 +14,7 @@ type: eval
 date: YYYY-MM-DD
 status: draft | active | passed | failed
 target:
-target_type: paper | source | concept | idea | experiment
+target_type: paper | source | category | idea | experiment
 ---
 
 # Probe: <target>
@@ -30,7 +30,7 @@ target_type: paper | source | concept | idea | experiment
 ## Expected Evidence
 - paper note:
 - source note:
-- concept note:
+- category note:
 - experiment note:
 
 ## Result

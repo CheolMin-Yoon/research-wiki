@@ -45,4 +45,4 @@ Centrality Encoding + Spatial Encoding + Edge Encoding 조합으로 GCN, GraphSA
 
 ## Links
 
-- concepts: [[transformer]]
+- category: graph-transformer-rl

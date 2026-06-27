@@ -18,12 +18,12 @@ Save Filter를 통과한 내용만 저장해줘.
 5. 나와 모든 에이전트가 맞춰야 하는 공통 규칙·설계·구현 가이드인가?
 
 저장 위치:
-- 연구 지식: AI-Sessions/wiki/research/{papers,sources,concepts,ideas,experiments}
+- 연구 지식: AI-Sessions/wiki/research/{papers,sources,categories,experiments} 또는 단일 idea note `AI-Sessions/wiki/research/idea-physical-feature-graph.md`
 - 운영 지식: AI-Sessions/wiki/harness/{decisions,errors,patterns,policies,templates,evals,state,archive}
 
-concept는 transformer, ppo, lipm, centroidal 네 개만 사용하고 새 concept 노트는 만들지 마. 주관적 연구 해석은 AI-Sessions/wiki/research/ideas/에만 둬. raw 원본은 수정·삭제하지 마.
+category는 7개(centroidal-wbc/rl-algorithms-frameworks/morphology-aware-policy/graph-transformer-rl/loco-manipulation/dynamics-guided-rl/novelty)만 사용하고 새 category 노트는 만들지 마. category는 research-map에 직접 붙이지 말고 idea의 근거 축으로 연결해. paper는 primary category 1개에서 full-path wikilink로 graph 등록하고, idea/harness/state/pattern 문서에서는 paper wikilink 대신 plaintext path/name을 써. 미수록 논문은 category note의 to-ingest backlog에 plaintext로 남겨. 주관적 연구 해석은 새 idea 파일을 만들지 말고 단일 idea note에 통합할지 판단해. raw 원본은 수정·삭제하지 마.
 
-새 graph 노트를 만들면 frontmatter에 깊이에 맞는 `tier/*` 태그(top/upper/mid/low)를 부여하고 해당 섬 hub에 wikilink로 등록해줘(obsidian-policy 참조). 파일명은 `{도메인}-{타입}`으로. 저장했다면 관련 map/index를 필요한 만큼 갱신해줘. AI-Sessions/wiki/harness/state/brief.md는 compact current pointer로 유지하고 정본 링크만 남겨줘(Current Focus, Important Decisions, Active Implementation Source, Read Next). log.md는 Log Policy를 통과하는 큰 구조 변화, 큰 ingest, 중요한 결정, 재발 방지 실패일 때만 한 줄로 남겨줘.
+새 graph 노트를 만들면 frontmatter에 깊이에 맞는 `tier/*` 태그(top/upper/mid/low)를 부여하고 해당 섬 hub에 wikilink로 등록해줘(obsidian-policy 참조). paper는 idea-linked category를 통해 research-map 아래에 등록하되 harness-map과 연결하지 않는다. 파일명은 `{도메인}-{타입}`으로. 저장했다면 관련 map/index를 필요한 만큼 갱신해줘. AI-Sessions/wiki/harness/state/brief.md는 compact current pointer로 유지하고 research 노트는 wikilink가 아니라 plaintext path로 남겨줘(Current Focus, Important Decisions, Active Implementation Source, Read Next). log.md는 Log Policy를 통과하는 큰 구조 변화, 큰 ingest, 중요한 결정, 재발 방지 실패일 때만 한 줄로 남겨줘.
 
 하나도 만족하지 않으면 Wiki에 저장하지 말고 저장하지 않은 이유를 짧게 설명해줘.
 

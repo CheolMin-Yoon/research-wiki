@@ -23,7 +23,7 @@ source:
 ## 핵심 인사이트
 
 ## 근거
-<연결되는 paper/source/concept. 근거와 해석을 구분>
+<연결되는 paper/source/category. 근거와 해석을 구분>
 
 ## 연구적 함의
 

@@ -39,7 +39,7 @@ export MOTION=/tmp/mjlab_cache/lafan1_dance1_subject1_demo_motion.npz
 - `Mjlab-Tracking-Flat-Unitree-G1` task는 built-in이지만 train에는 `--env.commands.motion.motion-file` 또는 `--registry-name`이 필요하다.
 - demo assets는 `/tmp/mjlab_cache/demo_ckpt.pt`, `/tmp/mjlab_cache/lafan1_dance1_subject1_demo_motion.npz`에 캐시돼 있다.
 - best checkpoint export는 `/home/frlab/mj_rl/scripts/train.py`를 사용할 때만 동작한다.
-- 구현 사실 정본은 [[AI-Sessions/wiki/research/sources/body-transformer-code|body-transformer-code]], 논문 통합 방식은 [[AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer|2024-sferrazza-body-transformer]]에 둔다.
+- 구현 사실 정본은 AI-Sessions/wiki/research/sources/body-transformer-code.md, 논문 통합 방식은 AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer.md에 둔다.
 
 ## Dirty / Sensitive Files
 

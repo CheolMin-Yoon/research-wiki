@@ -24,9 +24,10 @@ architecture는 scene/entity/sensor/actuator/manager/RL wrapper로 구성되며,
 
 ## 내 연구 연결
 
-mjlab은 mj_rl의 simulation/environment 기반이다. `ppo`와 직접 concept로 묶기보다는, source layer에서 manager-based env 구성, MuJoCo Warp 병렬화, native sensor/actuator/task 구조를 가져오는 대상으로 본다.
+mjlab은 mj_rl의 simulation/environment 기반이다. PPO 알고리즘 자체의 근거라기보다, source layer에서 manager-based env 구성, MuJoCo Warp 병렬화, native sensor/actuator/task 구조를 가져오는 대상으로 본다.
 
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/2025-mjlab.md
-- source note: [[AI-Sessions/wiki/research/sources/mjlab-code|mjlab-code]]
+- source note: mjlab-code
+- category: rl-algorithms-frameworks

@@ -24,10 +24,10 @@ Robotics 환경에 맞춰 VecEnv interface, TensorDict observation, timeout hand
 
 ## 내 연구 연결
 
-이 논문은 `ppo` concept의 구현 계층 근거다. mj_rl에서 PPO runner/model을 바꾸거나 graph actor-critic을 넣을 때, rsl_rl의 Runner/Algorithm/Network 분리를 기준 인터페이스로 삼을 수 있다.
+이 논문은 `rl-algorithms-frameworks` category에서 PPO 구현 계층의 근거다. mj_rl에서 PPO runner/model을 바꾸거나 graph actor-critic을 넣을 때, rsl_rl의 Runner/Algorithm/Network 분리를 기준 인터페이스로 삼을 수 있다.
 
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/2025-rsl-rl-library.md
-- source note: [[AI-Sessions/wiki/research/sources/rsl-rl-code|rsl-rl-code]]
-- concepts: [[ppo]]
+- source note: rsl-rl-code
+- category: rl-algorithms-frameworks

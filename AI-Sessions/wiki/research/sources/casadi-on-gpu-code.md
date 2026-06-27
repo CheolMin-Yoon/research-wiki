@@ -20,20 +20,29 @@ CasADi 심볼릭 `Function`을 CUDA 커널로 codegen해 GPU에서 수천 인스
 
 ## mj_rl에서의 사용
 
-- `source/assets/cuda/gen_casadi_fns.py`: pinocchio.casadi로 G1(29DOF+floating, nq=36/nv=35) `compute_dynamics_terms`(M,Cv,G,h), `compute_centroidal_terms`, `compute_base_pose` 생성.
+- `source/assets/cuda/gen_casadi_fns.py`: pinocchio.casadi로 G1(29DOF+floating, nq=36/nv=35) `compute_dynamics_terms`(M,Cv,G,h), `compute_centroidal_terms`, `compute_base_state` 생성.
 - `source/assets/cuda/pinocchio.py`: cog 커널을 MuJoCo 입력 규약(`mj_to_pin`)으로 감싼 배치 동역학 wrapper.
 - `scripts/casadi_on_gpu/build_kernels.sh` / `install_kernels.sh`: 생성→빌드→설치 자동화(mj/codegen_env/mjlab_env 분담).
 
+## Reflected production state (mj_rl `5d87ee3`)
+
+- production registry는 `compute_base_state`, `compute_centroidal_terms`, `compute_dynamics_terms` 3개만 유지한다. `compute_base_pose`는 `compute_base_state`로 hard rename했고 compatibility alias는 두지 않는다.
+- `compute_dynamics_terms`는 full Coriolis matrix를 만들지 않고 `h = nonLinearEffects(q,dq)`, `G = computeGeneralizedGravity(q)`, `Cv = h - G`로 생성한다.
+- `compute_centroidal_terms`는 `CMM/dCMM`은 Pinocchio 생성식을 유지하고, `CM = CMM @ dq`, `dCM = CMM @ ddq + dCMM @ dq`로 중복 momentum 호출을 제거한다.
+- `scripts/casadi_on_gpu/validate_mjlab_centroidal.py`는 mjlab 직접 기준이 있는 `CoM`, whole-body linear momentum, angular momentum만 검증한다. `CMM/dCMM`은 mjlab 직접 API가 없어 skip으로 기록한다.
+- compare/report 산출물은 checked-in production artifact로 남기지 않는다. 필요하면 비교 스크립트를 다시 만들어 재측정하고, wiki에는 요약만 남긴다.
+
 ## 가져올 패턴 / 주의점
 
-- MJCF→GPU는 항상 2-stage(`MJCF → pinocchio.casadi → CasADi Function → cog`). `.casadi` 직렬화는 casadi 버전 잠금이라 생성·codegen을 같은 casadi 버전에 모은다.
+- MJCF→GPU는 항상 2-stage(`MJCF → pinocchio.casadi → CasADi Function → cog`). 일반 절차와 version caveat는 [[AI-Sessions/wiki/harness/patterns/research-patterns|research-patterns]]를 따른다.
 - CasADi dense 출력은 column-major라 행렬 출력은 `(N,cols,rows)` 후 transpose로 읽는다(`pinocchio.py _alloc_mat`).
 - 29-DOF CasADi 모델과 waist 제거된 26-DOF mjlab RL 모델 간 DOF mapping을 조심(= [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]] 주의점과 동일).
 
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/casadi-on-gpu.md
-- checked commit: 6c4481a
+- upstream checked commit: 6c4481a
+- mj_rl integration checked commit: 5d87ee3ea85eed570f5931e181326e937c4f811f
 - related sources: [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]]
 - benchmark: [[AI-Sessions/wiki/research/experiments/2026-06-27-cusadi-vs-casadi-on-gpu-g1|2026-06-27-cusadi-vs-casadi-on-gpu-g1]]
 - pattern: [[AI-Sessions/wiki/harness/patterns/research-patterns|research-patterns]]

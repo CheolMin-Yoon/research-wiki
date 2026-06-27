@@ -16,7 +16,7 @@
 - `AI-Sessions/raw/`: source of truth. papers, repos, ideas 원본. 에이전트가 임의 수정하지 않음
 - `AI-Sessions/conversations/`: 세션 인수인계 보조 자료
 - `AI-Sessions/wiki/maps/`: graph backbone 진입점
-- `AI-Sessions/wiki/research/`: papers, sources, concepts, ideas, experiments
+- `AI-Sessions/wiki/research/`: papers, sources, categories, single idea note, experiments
 - `AI-Sessions/wiki/harness/`: state, decisions, errors, patterns, archive, policies, templates, evals (라우터: harness.md)
 - `prompts/`: save/reference/query/ingest/lint/reflect/archive 명령별 실행 규칙
 
@@ -29,17 +29,17 @@
 
 ## Graph Hubs
 
-Obsidian graph는 서로 edge로 연결되지 않는 **3개의 독립 섬**으로 구성합니다. 각 섬은 root에서 tier별로 뻗어 내려가며, 색은 tier(최상위 빨강 → 하위 파랑)로 구분합니다. architecture는 docs 섬 소속이므로 아래 root들을 wikilink가 아닌 일반 텍스트로만 가리켜 섬을 연결하지 않습니다.
+Obsidian graph는 서로 edge로 연결되지 않는 **3개의 독립 섬**으로 구성합니다. 각 섬은 root에서 tier별로 뻗어 내려가며, 색은 tier(빨강 → 노랑 → 초록 → 파랑)로 구분합니다. architecture는 docs 섬 소속이므로 아래 root들을 wikilink가 아닌 일반 텍스트로만 가리켜 섬을 연결하지 않습니다.
 
-- `research-map` (research 섬 root) — idea(상위) → concept(중위) → paper(하위). resources/experiments도 상위 가지.
+- `research-map` (research 섬 root) — idea/resources/experiments. category는 idea를 통해 연결되고, category → paper로 내려감.
 - `harness-map` (harness 섬 root) — state/rules/lessons/machinery(상위) → 폴더 hub(중위) → 파일(하위).
 - `docs-map` (docs 섬 root) — prompts 허브와 root entry 문서(상위) → 개별 prompt(하위).
 
-raw 파일은 graph-visible wikilink로 연결하지 않습니다. paper/source는 hub처럼 확장하지 않는 leaf로 유지하되, 관계 정본인 `## Links` wikilink는 허용합니다. tier 분류와 색은 `.obsidian/graph.json`의 tag 기반 colorGroups가 담당하며, 새 노트는 `tier/*` 태그를 부여해야 합니다.
+raw 파일은 graph-visible wikilink로 연결하지 않습니다. paper는 idea→category 경로를 통해 research-map 아래에 등록하고, harness 쪽 문서는 research 노트로 wikilink하지 않고 plaintext path/name만 둡니다. tier 분류와 색은 `.obsidian/graph.json`의 tag 기반 colorGroups가 담당하며, 새 노트는 `tier/*` 태그를 부여해야 합니다.
 
 ## Research
 
-연구 지식의 detail 라우팅과 전체 paper/source/concept/idea 인벤토리는 **research**(research.md)가 담당합니다(작업할 때만 읽음). `architecture.md`는 init context 절약을 위해 연구 목록을 직접 들지 않습니다.
+연구 지식의 detail 라우팅과 전체 paper/source/category/idea 인벤토리는 **research**(research.md)가 담당합니다(작업할 때만 읽음). `architecture.md`는 init context 절약을 위해 연구 목록을 직접 들지 않습니다.
 
 ## Harness
 

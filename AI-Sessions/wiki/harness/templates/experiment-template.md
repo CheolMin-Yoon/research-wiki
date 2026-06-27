@@ -52,5 +52,5 @@ source:
 ## Next Experiment
 
 ## Links
-<관련 paper/source/concept/idea/policy를 [[wikilink]]로 연결. `related_*` frontmatter를 쓰면 여기에 mirror>
+<관련 paper/source/category/idea/policy를 [[wikilink]]로 연결. `related_*` frontmatter를 쓰면 여기에 mirror>
 ```

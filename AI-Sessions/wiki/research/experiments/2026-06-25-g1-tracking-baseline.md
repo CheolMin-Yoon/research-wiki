@@ -234,7 +234,7 @@ Copy this block for each meaningful run.
 3. Run sanity training and verify `motion_tracking.best.pt` export.
 4. Record the run using the template above.
 5. Only after baseline runs, replace the policy actor (and optionally critic) with BoT while keeping task, motion file, observations, actions, rewards, and PPO settings fixed.
-   - 논문 §5.2 기준 **BoT-Mix(`is_mixed=True`)부터** 시도한다. BoT-Hard는 hard-exploration task에서 정보 전파 병목으로 열세였다(Humanoid-Board/Hill). 근거: [[AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer|2024-sferrazza-body-transformer]].
+   - 논문 §5.2 기준 **BoT-Mix(`is_mixed=True`)부터** 시도한다. BoT-Hard는 hard-exploration task에서 정보 전파 병목으로 열세였다(Humanoid-Board/Hill). 근거: 2024-sferrazza-body-transformer.
    - critic도 BoT로 갈 경우 detokenizer는 node별 value → body part 평균(scalar). actor만 교체하고 critic은 MLP 유지하는 변형도 비교 대상이 될 수 있다.
 
 ## Local Model Export
@@ -249,5 +249,5 @@ Copy this block for each meaningful run.
 
 ## Links
 
-- papers: [[AI-Sessions/wiki/research/papers/2025-mjlab|2025-mjlab]], [[AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer|2024-sferrazza-body-transformer]]
-- sources: [[AI-Sessions/wiki/research/sources/mjlab-code|mjlab-code]], [[AI-Sessions/wiki/research/sources/body-transformer-code|body-transformer-code]], [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]]
+- papers: 2025-mjlab, 2024-sferrazza-body-transformer
+- sources: mjlab-code, body-transformer-code, mj-rl

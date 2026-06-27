@@ -38,7 +38,7 @@
 | `architecture.md` | vault 구조 지도 + 콘텐츠 인벤토리 (구 index + memory) |
 | `log.md` | 고신호 타임라인 |
 | `AI-Sessions/raw/` | source of truth. 에이전트가 임의 수정하지 않음 |
-| `AI-Sessions/wiki/research/` | papers, sources, concepts, ideas, experiments |
+| `AI-Sessions/wiki/research/` | papers, sources, categories, single idea note, experiments |
 | `AI-Sessions/wiki/harness/` | state, policies, templates, decisions, errors, anti-patterns, GC, evals |
 | `AI-Sessions/wiki/maps/` | research/resources/harness graph 진입점 |
 | `prompts/` | command-specific 실행 규칙 |
