@@ -46,7 +46,7 @@ research 작업 때만 읽는 on-demand 인벤토리다. 새 paper/source/catego
 
 - frameworks: mj-rl (active implementation: Unitree G1 humanoid locomotion RL), mjlab-code, rsl-rl-code, mj-control-code
 - dynamics/gpu: modern-robotics-code, casadi-on-gpu-code (mj_rl `source/assets/cuda` GPU 백엔드)
-- policy/refs: body-transformer-code, graph-transformer-code, 2024-lee-footstep-planning-rl-code, 2025-lee-humanoid-arm-cam-marl-code
+- policy/refs: body-transformer-code, graph-transformer-code, 2024-lee-footstep-planning-rl-code, 2025-lee-humanoid-arm-cam-marl-code, mpc-rl-code (mjlab push-box loco-manipulation reference)
 
 ### Categories
 
