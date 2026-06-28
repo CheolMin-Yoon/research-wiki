@@ -12,6 +12,7 @@ status: active
 - [[AI-Sessions/wiki/research/experiments/2026-06-25-g1-tracking-baseline|2026-06-25-g1-tracking-baseline]]
 - [[AI-Sessions/wiki/research/experiments/2026-06-27-cusadi-vs-casadi-on-gpu-g1|2026-06-27-cusadi-vs-casadi-on-gpu-g1]]
 - [[AI-Sessions/wiki/research/experiments/2026-06-28-g1-centroidal-cmm-vs-baselines|2026-06-28-g1-centroidal-cmm-vs-baselines]]
+- [[AI-Sessions/wiki/research/experiments/2026-06-29-g1-29dof-vanilla-bot|2026-06-29-g1-29dof-vanilla-bot]]
 
 ## Summary
 
@@ -24,3 +25,4 @@ reward, observation, action space, terrain, termination, curriculum, policy arch
 - `2026-06-25-g1-tracking-baseline`: mjlab built-in `Mjlab-Tracking-Flat-Unitree-G1` PPO motion imitation baseline을 먼저 재현한 뒤 BoT actor와 비교하는 첫 실험.
 - `2026-06-27-cusadi-vs-casadi-on-gpu-g1`: G1 동역학 GPU 배치 평가에서 casadi-on-gpu가 cusadi보다 ~10–20× 빠름(done). 일반화 교훈은 `harness/patterns/research-patterns`.
 - `2026-06-28-g1-centroidal-cmm-vs-baselines`: graph_centroidal task에서 CMM 주입 Transformer(v0) vs Topology/BoT/GCNT 4-way(planned). H1 limb attention 활성화 / H2 CAM reward ablation(representation vs reward) / H3 sample efficiency.
+- `2026-06-29-g1-29dof-vanilla-bot`: CMM/centroidal-root 확장 전 gate. mjlab 29-DOF G1 velocity/locomotion surface에서 Vanilla BoT가 MLP 대비 유의미한지 확인(planned).
