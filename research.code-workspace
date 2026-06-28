@@ -9,6 +9,10 @@
       "path": "/home/frlab/Graph_Transformer"
     },
     {
+      "name": "BodyTransformer",
+      "path": "/home/frlab/BodyTransformer"
+    },
+    {
       "name": "mj_rl",
       "path": "/home/frlab/mj_rl"
     }

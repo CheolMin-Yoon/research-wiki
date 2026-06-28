@@ -12,7 +12,7 @@ mode: implementation
 
 ## Current Goal
 
-CMM-conditioned Transformer v0의 notebook scaffold와 state-token schema 결정은 완료됐다. `/home/frlab/mj_rl` 구현은 `graph_transformer` task와 `source/modules/common` graph-policy contract, top-level policy wrappers 기준으로 이동했고 CUDA smoke까지 통과했다. `mj_rl` checked commit은 `1e05a05e26c4d4dea46642f804b27d73ed934369`이다. 다음 작업은 학습 실패 원인을 reward/optimization과 architecture-tokenization 관점에서 분리하는 것이다.
+CMM-conditioned Transformer v0의 notebook scaffold와 state-token schema 결정은 완료됐다. `/home/frlab/mj_rl` 구현은 `graph_transformer` task와 `source/modules/common` graph-policy contract, top-level policy wrappers 기준으로 이동했고 CUDA smoke까지 통과했다. BoT 정보전파/readout ablation aliases도 구현됐다. `mj_rl` checked commit은 `4735c7d1ecb5e1843816fdd5a1c2336fb943f682`이다. 다음 작업은 96GB 머신에서 BoT ablation 학습 결과를 비교해 reward/optimization과 architecture-tokenization 원인을 분리하는 것이다.
 
 ## Next Implementation
 
@@ -25,11 +25,10 @@ CMM-conditioned Transformer v0의 notebook scaffold와 state-token schema 결정
 
 바로 할 일:
 
-1. BodyTransformer baseline을 먼저 안정화해 graph tokenization 자체가 locomotion reward를 풀 수 있는지 확인한다.
+1. BodyTransformer baseline hard, mix, mix+broadcast, mix+broadcast+per-token, post-norm을 96GB 머신에서 같은 seed/iteration budget으로 비교한다.
 2. 초기 rollout에서 deterministic action, sampled action norm, termination reason histogram, episode length 분포를 함께 기록한다.
-3. node/token별 feature ablation을 한다: base/global context broadcast, phase/command broadcast, foot/contact token, CMM hub bias on/off.
-4. reward 변경은 최소화하되, termination penalty 강화와 metric logging으로 early termination loophole인지 optimization instability인지 분리한다.
-5. CMM 모델 평가는 BodyTransformer baseline이 최소한 살아나는지 확인한 뒤 진행한다.
+3. reward 변경은 최소화하되, termination penalty 강화와 metric logging으로 early termination loophole인지 optimization instability인지 분리한다.
+4. CMM 모델 평가는 BodyTransformer ablation 중 최소한 하나가 살아나는지 확인한 뒤 진행한다.
 
 ## Current Facts
 
@@ -38,6 +37,7 @@ CMM-conditioned Transformer v0의 notebook scaffold와 state-token schema 결정
 - active schema: joint feature 15D `[q,dq,prev_action,A_G,A_G*dq]`, centroidal/state token 9D `[projected_gravity,l_G,k_G]`.
 - 2026-06-28 reflect: smoke 기준 import/shape wiring은 통과했고, 현재 실패 가설은 wiring bug보다 reward/optimization + architecture-tokenization pathology 쪽이 유력하다. 자세한 근거와 해석은 `AI-Sessions/wiki/research/sources/mj-rl.md`의 "2026-06-28 Reflect: 학습 실패 가설"을 본다.
 - 2026-06-28 reflect: graph modules modularization은 `modules.common` + `modules.{body_transformer,gcnt_limb,cmm_transformer}` 공개 wrapper 구조로 정리됐고, 26/29-DOF Mapping/Graph contract와 CUDA smoke 근거는 `AI-Sessions/wiki/research/sources/mj-rl.md`의 "2026-06-28 Reflect: graph module modularization + GPU smoke"를 본다.
+- 2026-06-29 reflect: BoT baseline은 공식 RL 포팅으로 유지하고, 정보 전파/readout ablation을 `Mix`, `MixBroadcast`, `MixBroadcastPerToken`, `PostNorm` alias로 분리했다. 자세한 근거와 검증은 `AI-Sessions/wiki/research/sources/mj-rl.md`의 "2026-06-29 Reflect: BoT ablation design"을 본다.
 - `command`는 state token이 아니라 task condition이라 필요 시 별도 command conditioning/token으로 분리한다. `base_ang_vel`, foot/contact geometry는 ablation 후보로 남겼다.
 
 ## Dirty / Sensitive Files

@@ -10,7 +10,7 @@ source: AI-Sessions/raw/repos/2024-sferrazza-body-transformer.md
 
 ## Summary
 
-2024 Body Transformer 논문의 공식 구현이다. raw repo stub의 checked commit `008d8cd514322252b53f4d5e3dd5c2fc47c7b9cd`를 checkout해 확인했으며, robot body graph를 attention mask로 넣는 imitation learning 및 RL 코드가 핵심이다. mj_rl graph policy에는 network pattern만 참고하고, 환경별 mapping과 A1 sim-to-real 코드는 그대로 이식하지 않는다.
+2024 Body Transformer 논문의 공식 구현이다. 공식 repo `https://github.com/carlosferrazza/BodyTransformer`를 `/home/frlab/BodyTransformer`에 clone했고, checked commit `008d8cd514322252b53f4d5e3dd5c2fc47c7b9cd`를 확인했다. robot body graph를 attention mask로 넣는 imitation learning 및 RL 코드가 핵심이다. mj_rl graph policy에는 network pattern만 참고하고, 환경별 mapping과 A1 sim-to-real 코드는 그대로 이식하지 않는다.
 
 ## 핵심 파일
 
@@ -55,5 +55,7 @@ PyTorch `src_mask`에서 `True`=**blocked**. 코드에서 `mask=~self.adjacency_
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/2024-sferrazza-body-transformer.md
+- local clone: /home/frlab/BodyTransformer
+- upstream URL: https://github.com/carlosferrazza/BodyTransformer
 - raw paper: AI-Sessions/raw/papers/2024-sferrazza-body-transformer.pdf
 - checked commit: 008d8cd514322252b53f4d5e3dd5c2fc47c7b9cd

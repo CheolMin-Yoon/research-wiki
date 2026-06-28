@@ -10,7 +10,7 @@ source: AI-Sessions/raw/repos/mj-rl.md
 
 ## Summary
 
-사용자의 active Unitree G1 humanoid locomotion RL repo다. 현재 checked commit은 `1e05a05e26c4d4dea46642f804b27d73ed934369`이며, mjlab + rsl_rl 기반으로 eICP footstep, centroidal, graph Transformer 계열 task가 공존한다. source note에서는 구현 상태와 가져올 패턴만 남기고, 프로젝트 허브나 graph backbone으로 쓰지 않는다.
+사용자의 active Unitree G1 humanoid locomotion RL repo다. 현재 checked commit은 `4735c7d1ecb5e1843816fdd5a1c2336fb943f682`이며, mjlab + rsl_rl 기반으로 eICP footstep, centroidal, graph Transformer 계열 task가 공존한다. source note에서는 구현 상태와 가져올 패턴만 남기고, 프로젝트 허브나 graph backbone으로 쓰지 않는다.
 
 ## 핵심 파일
 
@@ -90,6 +90,35 @@ source: AI-Sessions/raw/repos/mj-rl.md
 2. modular graph policy가 eICP/centroidal/graph_transformer/mjlab 기본 G1 task에서 같은 Mapping/Graph contract로 유지되는지, 새 robot/task 추가 시 cfg만으로 붙는지 확인한다.
 3. checkpoint migration은 이번 범위 밖이다. class path와 output shape compatibility만 보장된 상태로 본다.
 
+## 2026-06-29 Reflect: BoT ablation design
+
+### 관찰된 사실
+
+- `mj_rl` BoT baseline은 공식 BodyTransformer A1/RL 스타일을 유지하되, `source/modules/common`에 ablation 가능한 cfg 축을 추가했다.
+- 새 cfg 축은 `is_mixed`, `first_hard_layer`, `norm_first`, `broadcast_global_to_joints`, `action_head_type`이다.
+- 새 task aliases:
+  - `G1-BodyTransformer-Mix-Locomotion`
+  - `G1-BodyTransformer-MixBroadcast-Locomotion`
+  - `G1-BodyTransformer-MixBroadcastPerToken-Locomotion`
+  - `G1-BodyTransformer-PostNorm-Locomotion`
+- 모든 BoT runner cfg는 RL size를 유지한다: `d_model=64`, `heads=2`, `ff=128`, `layers=10`, `num_mini_batches=6`.
+- 검증: unit shape smoke, compile check, `git diff --check`, 128 env 1-iteration smoke for all new aliases, 512 env 1-iteration smoke for `MixBroadcastPerToken`.
+
+### 해석 / 설계 결정
+
+- 이번 변경은 논문의 sparse FLOPs 주장을 재현하는 최적화가 아니다. PyTorch `nn.TransformerEncoderLayer`/`MultiheadAttention`을 쓰므로 hard mask가 있어도 실제 실행은 dense attention 경로로 본다.
+- 목표는 96GB 학습 전제에서 메모리보다 **정보 전파와 readout 표현력**을 분리해 보는 것이다.
+- `is_mixed=True`는 hard mask inductive bias가 너무 강해 global/base context가 action token까지 늦게 도달하는지 확인하는 ablation이다. 공식 구현의 masked/unmasked layer 교대 규칙을 따른다.
+- `broadcast_global_to_joints=True`는 mapping contract를 깨지 않기 위해 actor/critic flat obs의 기존 base slice만 joint token에 더한다. command/phase/CAM을 새로 re-slice하지 않는다.
+- `action_head_type="per_token"`은 shared scalar head보다 action token별 독립 readout을 늘리되, joint-type별 head까지는 가지 않는다. type별 head는 별도 mapping 정책이 필요해 실험축을 흐린다.
+- `PostNorm` alias는 architecture size를 바꾸지 않고 `norm_first=False`만 확인하는 안정성 ablation이다.
+
+### 다음 확인 우선순위
+
+1. 96GB 머신에서 baseline hard, mix, mix+broadcast, mix+broadcast+per-token, post-norm을 같은 seed/iteration budget으로 비교한다.
+2. primary metric은 `Train/mean_reward`, `Train/mean_episode_length`, termination histogram, action std, reward terms로 둔다.
+3. 학습이 살아나면 CMM hub 계열과 비교하고, 실패하면 deterministic action norm과 sampled action norm부터 분리한다.
+
 ## 주의점
 
 - `graph_transformer`는 physical-feature-graph v0 landing zone이다. v0는 `modules.cmm_transformer:CMMTransformer` wrapper + `modules.common` contract + obs에 per-joint CMM 열 추가 + hub soft-bias로 본다. 설계 정본: AI-Sessions/wiki/research/idea-physical-feature-graph.md "확정 v0 스펙".
@@ -100,6 +129,6 @@ source: AI-Sessions/raw/repos/mj-rl.md
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/mj-rl.md
-- checked commit: 1e05a05e26c4d4dea46642f804b27d73ed934369
+- checked commit: 4735c7d1ecb5e1843816fdd5a1c2336fb943f682
 - initial raw-stub checked commit: 017c485efe6024cb26825084e422cc778b4b5920
 - related raw papers: 2024-lee-footstep-planning-rl.pdf, 2025-lee-humanoid-arm-cam-marl.pdf
