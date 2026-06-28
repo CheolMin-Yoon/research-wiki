@@ -1,7 +1,7 @@
 ---
 tags: [tier/low]
 type: state
-date: 2026-06-25
+date: 2026-06-28
 status: active
 ---
 
@@ -24,6 +24,7 @@ Humanoid locomotion RL, centroidal/CAM, LIPM/eICP, graph/transformer policy를 �
 - Body Transformer 코드/논문 정본: AI-Sessions/wiki/research/sources/body-transformer-code.md, AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer.md
 - 사용자 노트북 source 정본: AI-Sessions/wiki/research/sources/graph-transformer-code.md
 - GCN+Transformer 설계 참조: AI-Sessions/wiki/research/papers/2025-luo-gcnt.md (GCN+WL→q/k, full attention; "GCN+BoT" 질문의 multi-morphology 실현형, 단일 G1엔 GCN을 local bias로만 차용)
+- v0 스펙 확정(2026-06-28): CMM-conditioned graph Transformer 정본 = AI-Sessions/wiki/research/idea-physical-feature-graph.md ("확정 v0 스펙"). 노트북/shape 검증 정본 = AI-Sessions/wiki/research/sources/graph-transformer-code.md (`cmm_transformer_v0/`). mj_rl 구현 현상태, 26/29-DOF graph policy contract, GPU smoke, 학습 실패 가설 정본 = AI-Sessions/wiki/research/sources/mj-rl.md. 실험 설계(planned, 4-way + H2=CAM reward ablation) = AI-Sessions/wiki/research/experiments/2026-06-28-g1-centroidal-cmm-vs-baselines.md.
 - 다음 실험 포인터: `AI-Sessions/wiki/research/experiments/2026-06-25-g1-tracking-baseline.md`
 - GPU 동역학 도구 비교 완료: AI-Sessions/wiki/research/experiments/2026-06-27-cusadi-vs-casadi-on-gpu-g1.md (casadi-on-gpu 채택 유지). 탐색용 cusadi/casadi 설치·clone은 모두 정리됨, env 원상복구.
 - mj_rl `5d87ee3`에서 casadi-on-gpu production kernel 정리 완료. 정본은 AI-Sessions/wiki/research/sources/casadi-on-gpu-code.md.

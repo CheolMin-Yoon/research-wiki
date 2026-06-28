@@ -9,11 +9,11 @@ status: active
 
 ## High
 
-- eICP baseline과 centroidal validation 순서로 mj_rl 구현 맥락을 이어간다. granular한 작업 단위는 mj_rl 프로젝트 레포에서 관리하고, 증류된 결과만 `research/sources/mj-rl.md`로 승격한다.
+- mj_rl graph policy는 smoke를 넘어 장기 학습 안정화로 넘어간다. 먼저 BodyTransformer baseline에서 reward/optimization과 tokenization failure mode를 분리한다.
 
 ## Medium
 
-- 첫 humanoid RL experiment가 생기면 `research/experiments/`에 experiment note를 작성한다.
+- `AI-Sessions/wiki/research/experiments/2026-06-28-g1-centroidal-cmm-vs-baselines.md` 설계를 실제 run 기록으로 갱신한다.
 
 ## Low
 
@@ -35,3 +35,4 @@ status: active
 - anti-pattern(폴더 이름 기반 분류)을 CLAUDE.md/AGENTS.md Core Rules와 wiki_doctor 검사로 승격했다.
 - records를 harness로 리팩토링했다.
 - entry 문서를 경량화하고 세부 규칙을 prompts/policies/templates로 분리했다.
+- mj_rl graph modules를 `modules.common` contract + public wrappers로 정리했고, 자세한 구현 사실은 `research/sources/mj-rl.md`로 승격했다.

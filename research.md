@@ -65,3 +65,4 @@ research 작업 때만 읽는 on-demand 인벤토리다. 새 paper/source/catego
 ### Experiments
 
 - 2026-06-25-g1-tracking-baseline - mjlab built-in Unitree G1 motion imitation/tracking PPO baseline before BoT actor comparison
+- 2026-06-28-g1-centroidal-cmm-vs-baselines - graph_centroidal task에서 CMM 주입 Transformer(v0) vs Topology/BoT/GCNT 4-way (planned)

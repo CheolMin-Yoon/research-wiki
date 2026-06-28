@@ -45,10 +45,41 @@ centroidal momentum은 정의상 $h_G = A_G(q)\,\dot q$, $\dot h_G = \sum_i \tex
 
 - **Body Transformer**: morphology token + adjacency hard/mixed mask. 구조 bias는 static kinematic adjacency이고 token화는 node-type별 Linear.
 - **GCNT**: GCN+WL morphology extraction + full attention + learnable distance/SPD soft-bias. GCN+hard-mask 중복을 피하고 morphology feature를 q/k로 주입한다.
+- **ABD-Net**: ABA forward-dynamics 구조(child→parent)를 GNN message passing에 임베드. 단 inertia/motion-subspace를 learnable($B_i, W_i$)로 두어 dynamics를 *학습*한다. node=link(ABA가 rigid-body 재귀라서), action=joint.
 - **Graphormer**: attention logit에 spatial/edge/degree bias를 더하는 soft-bias 원형.
-- **이 아이디어의 차별점**: 구조 bias의 출처를 static distance/adjacency가 아니라 **state-dependent physical quantity(CMM, wrench)**로 두고, morphology token에 **centroidal token**을 추가한다. 단일 G1 scope에서는 morphology-agnostic universality보다 물리 coupling 표현이 우선이다.
+- **이 아이디어의 차별점**: 구조 bias의 출처를 static distance/adjacency가 아니라 **state-dependent physical quantity(CMM, wrench)**로 두고, morphology token에 **centroidal token**을 추가한다. 단일 G1 scope에서는 morphology-agnostic universality보다 물리 coupling 표현이 우선이다. 정밀 비교는 아래 "관계 정답지로서의 CMM" 참조.
+
+## 관계 정답지로서의 CMM (핵심 novelty)
+
+node 간 *관계를 무엇으로 정의하는가*로 선행연구를 가르면 이 아이디어의 자리가 분명해진다.
+
+| 방법 | node 관계를 어떻게 두나 | coupling 값은 |
+|---|---|---|
+| BoT | static adjacency mask (connectivity만) | attention이 **학습** |
+| GCNT | morphology+SPD (q/k 주입, soft-bias) | attention이 **학습** |
+| ABD-Net | ABA forward-dynamics 구조 (child→parent) | inertia를 여전히 **학습**($B_i, W_i$) |
+| **이 연구** | **CMM $A_G(q)$** (joint→centroid 정답지) | **exact·computed·state-dependent — 안 배움** |
+
+- BoT/GCNT는 *위상*만 주고 *양적·동적 coupling*은 안 준다. ABD-Net은 ABA *모양*의 prior를 주지만 값은 학습한다. 이 연구는 남들이 학습하는 그 coupling을 **계산해서 주입**한다(ABD-Net보다 한 단계 더 exact).
+- CMM이 정의하는 관계의 *종류*는 **joint↔centroid hub의 star/gather**다(joint↔joint pairwise가 아님). joint→centroidal token으로 모이는 star 아키텍처와 정확히 일치한다. pairwise joint coupling이 필요하면 같은 GPU 파이프라인의 **M(joint-space inertia, 35×35)**가 별도 정답지다.
+- $h_G = \sum_j A_G[:,j]\,\dot q_j$ 는 attention의 weighted aggregation과 동형이므로 $A_G[:,j]$는 "joint→hub aggregation 계수의 정답지"다. 단 softmax 자리에 그대로 박지 않고 **q/k에 주입해 attention을 조건화**하며, attention은 **CMM이 못 담는 residual(축소모델↔full-body 간극)만 학습**한다.
+
+## 확정 v0 스펙 (2026-06-28 세션)
+
+- **backbone**: full-attention Transformer(mask 없음; ~27 token이라 BoT mask 효율 명분 무효, global gather엔 full reach 필요). 정체성 = "GCNT topology의 q/k 자리에 GCN 대신 state-dependent CMM을 꽂은 single-G1 Transformer".
+- **tokenizer**: node-type별 Linear(BoT식). WL drop(단일 morphology), GCN은 CMM과 중복이라 ablation으로만.
+- **node 집합**: **26 actuated joint(no-waist)** + 1 **CoM-anchored centroidal/state token**(=root, global/unmasked gather). 초기 v0 state token은 pelvis/root rate와 task command를 섞지 않고 `projected_gravity(3) + l_G(3) + k_G(3) = 9D`로 둔다.
+- **node feature (raw-concat, Fork 1a)**: $[q_j,\ \dot q_j,\ a^{prev}_j,\ A_G[:,j],\ A_G[:,j]\dot q_j]$ = 15D — projection이 map($A_G[:,j]$)은 q/k(routing), contribution($A_G[:,j]\dot q_j$)은 V(content)로 쓰도록 학습. rate($\ddot q_j/\tau_j,\ \dot A_G$ = wrench 경로)는 loco-manipulation 단계 확장.
+- **CMM 주입**: raw-concat이 q/k·V를 자동 분담 + **hub soft-bias 공유 $g_\psi(A_G[:,j])\to$ scalar**를 centroidal↔joint logit에 가산(명시적 라우팅). 정확 $h_G$는 attention 합이 아니라 **sum-readout**(이미 가진 CM_lin/ang)으로 centroidal token에 직접; attention은 saliency/residual만.
+- **state/query 분리 메모**: 단일 centroidal/state token을 active v0로 유지하되, `command(3)`는 state가 아니라 task condition이므로 필요 시 별도 command conditioning/token으로 분리한다. `base_ang_vel(3)`는 pelvis/root rate라 ablation 후보로만 둔다. `foot_to_com_w`, contact phase, base/CoM position, quaternion, contact-relative foot geometry는 초기 schema 밖의 후보 feature다.
+- **scatter (확정)**: centroidal token은 **action head 없음** — joint가 attention으로 읽는 context + critic/value node. actor=joint detokenizer, critic=centroidal token. 단방향 인과(현재상태 t→action t; t+1 안 넣음, 예측 안 씀).
+- **학습/scope**: single policy, **PPO**, **예측 head 없음(E1 obs-only)**, mjlab centroidal task의 reward/obs/hypers 물려받음. scope = limb attention 활성화 검증, GRF·contact wrench 제외.
+- **구현 대상**: mj_rl `graph_centroidal` task. `rl/gcnt_limb_model.py:GCNTLimbModel`을 fork(full attn + `last_attention_maps` 재사용), obs에 per-joint CMM 열 추가. 정본: [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]] · [[AI-Sessions/wiki/research/sources/casadi-on-gpu-code|casadi-on-gpu-code]].
+- **DOF 주의**: CMM 35열 중 joint = LEG_COLS(6:18)∪ARM_COLS(21:35), waist(18:21) 제외, base 6열은 centroidal token.
 
 ## 설계 공간 (미확정 옵션)
+
+> **v0 확정 (2026-06-28)**: A=A1(CoM-anchored 병합) · C=raw-concat(Fork 1a)+hub soft-bias 공유 · D=node-type Linear · E=E1(obs-only). B(EE wrench node)·rate 채널·pairwise(Gram)·M-bias는 manipulation/ablation으로 보류. 상세는 위 "확정 v0 스펙".
 
 ### A. centroidal token 구성
 
@@ -98,5 +129,6 @@ C1은 baseline, C2/C3는 structure guide 변이다.
 ## Links
 
 - 관련 category: [[centroidal-wbc]] · [[rl-algorithms-frameworks]] · [[morphology-aware-policy]] · [[graph-transformer-rl]] · [[loco-manipulation]] · [[dynamics-guided-rl]] · [[novelty]]
-- 근거 논문: 2024-sferrazza-body-transformer · 2025-luo-gcnt · 2021-ying-graphormer · 2013-orin-centroidal-dynamics · 2024-lee-footstep-planning-rl · 2025-lee-humanoid-arm-cam-marl
+- 근거 논문: 2024-sferrazza-body-transformer · 2025-luo-gcnt · 2026-shin-abd-net · 2021-ying-graphormer · 2013-orin-centroidal-dynamics · 2024-lee-footstep-planning-rl · 2025-lee-humanoid-arm-cam-marl
+- 실험 계획: [[AI-Sessions/wiki/research/experiments/2026-06-28-g1-centroidal-cmm-vs-baselines|2026-06-28-g1-centroidal-cmm-vs-baselines]] (4-way 비교, H2=CAM reward ablation으로 representation vs reward 검증)
 - raw 원본: AI-Sessions/raw/ideas/physical-feature-graph.md

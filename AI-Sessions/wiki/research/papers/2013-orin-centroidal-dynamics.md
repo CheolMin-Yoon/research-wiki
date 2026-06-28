@@ -30,7 +30,7 @@ centroidal quantity만으로 모든 kinetic energy를 설명할 수는 없지만
 
 $$h_G = \begin{bmatrix} k_G \\ l_G \end{bmatrix} = A_G(q)\,\dot{q}$$
 
-를 얻는다. $l_G$는 linear momentum, $k_G$는 centroidal angular momentum(CAM), $A_G(q)$는 joint velocity를 aggregate momentum으로 보내는 $6\times n$ Centroidal Momentum Matrix(CMM)다. 외력(중력, 지면반력, 손/팔 접촉 wrench)의 합력은 momentum rate $\dot{l}_G,\ \dot{k}_G$와 같다(Newton-Euler).
+를 얻는다. $l_G$는 linear momentum, $k_G$는 centroidal angular momentum(CAM), $A_G(q)$는 generalized velocity(floating-base 6-DOF + 관절 속도 $n$)를 aggregate momentum으로 보내는 $6\times(n+6)$ Centroidal Momentum Matrix(CMM)다. 외력(중력, 지면반력, 손/팔 접촉 wrench)의 합력은 momentum rate $\dot{l}_G,\ \dot{k}_G$와 같다(Newton-Euler).
 
 핵심 성질: linear momentum은 적분하면 CoM 위치를 주지만, **angular momentum은 적분해도 configuration의 의미 있는 orientation을 주지 못한다**(non-integrable). 그럼에도 CAM은 whole-body balance에서 trunk sway를 줄이는 등 강력한 제어 변수다. Orin et al.은 CMM·centroidal inertia·average spatial velocity를 $O(N)$으로 계산하는 알고리즘을 제시한다.
 

@@ -36,7 +36,7 @@ CasADi 심볼릭 `Function`을 CUDA 커널로 codegen해 GPU에서 수천 인스
 
 - MJCF→GPU는 항상 2-stage(`MJCF → pinocchio.casadi → CasADi Function → cog`). 일반 절차와 version caveat는 [[AI-Sessions/wiki/harness/patterns/research-patterns|research-patterns]]를 따른다.
 - CasADi dense 출력은 column-major라 행렬 출력은 `(N,cols,rows)` 후 transpose로 읽는다(`pinocchio.py _alloc_mat`).
-- 29-DOF CasADi 모델과 waist 제거된 26-DOF mjlab RL 모델 간 DOF mapping을 조심(= [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]] 주의점과 동일).
+- 29-DOF CasADi 모델을 기준으로 하되, mj_rl에는 mjlab 기본 Unitree-G1 29-DOF task와 waist 제거 26-DOF graph task가 공존한다. DOF mapping은 항상 [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]]의 task contract를 기준으로 확인한다.
 
 ## Links
 
