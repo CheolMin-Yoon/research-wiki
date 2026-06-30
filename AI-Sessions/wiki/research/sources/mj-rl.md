@@ -148,11 +148,29 @@ source: AI-Sessions/raw/repos/mj-rl.md
 - **Mirage 게이트**: per-joint advantage가 *학습을 실제로 개선*하는지 S0/S1에서 확인. 분산 감소가 아니라 dense credit이 이득의 출처여야 함(아니면 scalar shaping과 차이 없음).
 - **k_des 정의**: credit의 $e=k_G-k_{des}$에서 `CM_des_bf` ang이 xy≈0(regulate)·z=command(track)로 의도대로 나오는지 play 로그로 확인(부호/프레임은 기존 `tracking_CAM`/`dCAM_xy_penalty`와 대조).
 
+## 2026-07-01 Reflect: CMM 커널 = 23-DOF locked spec, lock은 질량 drop이 아니라 관성 lumping
+
+CMM/dynamics 커널이 어떤 DOF 모델로 빌드되는지, lock된 관절의 질량이 어떻게 처리되는지 pinocchio로 직접 검증했다 (mj_rl `bbdcfede6767f77de3bcc3e388984bc2faa2fb97` "Refactor graph/casadi-cuda stack" 기준).
+
+### 관찰된 사실
+
+- CasADi-on-GPU centroidal/dynamics 커널은 **23-DOF locked G1 spec**에서 빌드된다. `scripts/casadi_on_gpu/build_kernels.sh`가 `assets.unitree.g1:build_g1_spec()`(= `_lock_23dof_joints`: waist roll/pitch + 양 wrist pitch/yaw 삭제)를 export해 `G1_MJCF_PATH`로 넘기고, `source/assets/cuda/gen_casadi_fns.py`는 그 env var가 없으면 "stale 29DoF kernels" 방지를 위해 빌드를 거부한다. pinocchio 모델: `nq=30, nv=29`(= floating base 6 + actuated 23: legs 12 + waist_yaw 1 + arms 10), 팔 joint 5/측(`wrist_roll`이 막내).
+- **lock = 질량 drop이 아니라 관성 lumping**(`pin.buildModelFromMJCF`로 검증). joint만 삭제된 distal body는 fixed frame(`*_fixed`)이 되고 그 관성이 부모 가동 바디로 병합된다.
+  - 팔: `wrist_roll`이 짊어진 supported-body 질량 = full 29-DOF **0.0854 kg** → 23-DOF locked **0.8241 kg** (= wrist_roll 0.0854 + wrist_pitch 0.4840 + wrist_yaw(+hand) 0.2546). 손(`rubber_hand`)은 별도 body가 아니라 `wrist_yaw_link`의 geom이라 그 inertial(0.2546 kg)에 포함된다.
+  - 총질량은 **23-DOF와 29-DOF가 33.3411 kg로 동일** → 어떤 질량/관성도 누락되지 않는다.
+  - lumping은 lock된 관절을 중립(q=0)으로 얼린 상태로 계산된다(복합체 COM이 forearm 안쪽 `[0.017,…]`→손 쪽 `[0.085,…]`로 이동).
+
+### 해석
+
+- "23-DOF로 CMM을 계산하면 팔 끝(손목·손) 질량이 빠지지 않나?"의 답은 **아니오**다. 다리(잠금 없음)는 물론 팔도 총 질량/관성이 그대로 보존되어, CMM이 만드는 centroidal momentum은 물리적으로 충실하다. 5번째 팔 관절(`wrist_roll`)이 wrist pitch/yaw 링크+손을 강체 복합체로 짊어지는 구조가 맞다.
+- 잃는 것은 lock된 wrist pitch/yaw(와 waist roll/pitch)가 그 질량을 **독립적으로 재배치하는 자유도**(= CMM의 해당 열)뿐이며, distal·소질량·저속이라 전신 centroidal momentum 기여는 미미하다. 복합 관성이 중립 wrist 자세로 고정되므로 손목을 크게 꺾었을 때의 관성 분포 변화는 모델에 없다(centroidal/locomotion 용도에선 무시 가능).
+- 재사용 패턴: pinocchio 모델의 `*_fixed` frame 존재 + `sum(inertias.mass)` 총질량 대조로 "lock이 lump인지 drop인지"를 즉시 확인할 수 있다.
+
 ## 주의점
 
 - `graph_transformer`는 physical-feature-graph v0 landing zone이다. v0는 `modules.cmm_transformer:CMMTransformer` wrapper + `modules.common` contract + obs에 per-joint CMM 열 추가 + hub soft-bias로 본다. 설계 정본: AI-Sessions/wiki/research/idea-physical-feature-graph.md "확정 v0 스펙".
 - whole-body CoM velocity는 pelvis velocity가 아니라 `subtree_linvel` sensor를 통해 확인해야 한다.
-- CasADi kernel은 full 29-DOF G1 기준이다. mjlab 기본 Unitree-G1 velocity/tracking task는 29-DOF action surface를 쓰고, 이 repo의 graph_transformer v0/eICP/centroidal graph aliases에는 waist 삭제 26-DOF 또는 부위별 12/14-DOF 경로도 공존하므로 DOF mapping을 항상 task contract 기준으로 확인한다.
+- **CasADi/CMM 커널은 23-DOF locked spec 기준**이다(waist roll/pitch + 양 wrist pitch/yaw 잠금 → legs 12 + waist_yaw 1 + arms 10; 근거: 아래 "2026-07-01 Reflect"). 이는 policy의 action surface DOF와 **별개**다 — task별 action surface(부위별 12/14-DOF, waist 삭제 26-DOF, mjlab 기본 G1 등)는 항상 task contract 기준으로 확인한다.
 - 실행은 repo script의 train/play 흐름만 최소 참고한다.
 
 ## Links
