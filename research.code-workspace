@@ -15,7 +15,11 @@
     {
       "name": "mj_rl",
       "path": "/home/frlab/mj_rl"
-    }
+    },
+    {
+      "name": "PhysGraph",
+      "path": "/home/frlab/PhysGraph"
+    },
   ],
   "settings": {}
 }

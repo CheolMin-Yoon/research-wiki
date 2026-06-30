@@ -119,6 +119,35 @@ source: AI-Sessions/raw/repos/mj-rl.md
 2. primary metric은 `Train/mean_reward`, `Train/mean_episode_length`, termination histogram, action std, reward terms로 둔다.
 3. 학습이 살아나면 CMM hub 계열과 비교하고, 실패하면 deterministic action norm과 sampled action norm부터 분리한다.
 
+## 2026-06-29 Reflect: per-joint CAM credit (S0)
+
+설계/근거 정본은 [[AI-Sessions/wiki/research/idea-centroidal-momentum-allocation-credit|idea-centroidal-momentum-allocation-credit]]. 여기는 mj_rl 구현 상태만 둔다.
+
+### 관찰된 사실 (코드 landing)
+
+- `mdp/centroidal.py`: `CentroidalCache.CM_joint` (N,6,26) 추가 — per-joint `A_G[:,j]·dq_j`(합산 전). actuated 26열 = `LEG_COLS`(6:18)∪`ARM_COLS`(21:35), slice→`_act_cols` long index. 기존 `CM_leg/CM_arm` 2그룹 분해의 per-joint 일반화.
+- **frame 일치 (꼼꼼 reflect)**: 처음엔 world frame으로 뒀으나, obs 경로 `cmm_no_waist`(observations.py)가 per-joint CMM을 **base frame**으로 회전해 token V에 넣는다(`centroidal_state_token`이 `CM_bf`라서). reward 경로가 world면 "표현=credit basis 일치"가 깨지고 기존 CAM 보상(`CM_bf`/`dCAM_xy_penalty`)과도 축이 다르다. → `CM_joint`를 `R_BW`로 **base frame 회전**(lin/ang 따로 `bmm`). 두 경로의 frame·column순서(leg+arm 26)를 같게 유지하는 게 계약.
+- `mdp/credit.py`(신규): `cam_joint_difference_reward`(N,26 = $D_j=-2\langle e,c_j\rangle+\|c_j\|^2$, $e=$`CM_bf−CM_des_bf`의 ang error → xy regulate/z track 통합; 선두항 = 방향 투영) + `cam_credit_dispersion`(N, telescoping-safe S0 진단). `mdp/__init__.py` star export. **reward cfg 미연결 → 학습 거동 무변경**.
+- 검증: `py_compile` 통과, actuated 26열 확인, `rotate_vec=R@v`(einsum)라 `bmm(R,·)` 회전 일치 확인.
+
+### 설계 결정 (wiring)
+
+- per-joint advantage용 PPO는 **rsl_rl 통째 fork 금지**(mjlab 1.4.0이 `rsl-rl-lib==5.2.0` 하드 핀). rsl_rl `OnPolicyRunner`가 `cfg["algorithm"]["class_name"]`로 PPO를 동적 로드(`construct_algorithm`)하므로, 모델 wrapper처럼 **`algorithm.class_name="algorithms.graph_ppo:GraphPPO"` cfg 주입**으로 교체한다. 구현은 `source/algorithms/`에 rsl_rl `PPO`·`RolloutStorage` subclass(`GraphPPO`/`GraphRolloutStorage`)로 둔다(미작성).
+- 핵심 함정: per-joint credit을 스칼라 reward로 합치면 $\sum_j A_G[:,j]\dot q_j=h_G$로 telescope되어 global CAM penalty로 환원 → spatial credit이 advantage 수준까지 가야 함.
+
+### 다음 확인 우선순위
+
+1. S0: `cam_credit_dispersion` 로깅으로 joint별 credit 분산·attention saliency 상관 확인(헛수고 게이트).
+2. S1: detokenizer `per_token` action + per-joint value head.
+3. S2: `source/algorithms/graph_ppo.py` GraphPPO/GraphRolloutStorage (per-joint GAE + surrogate). 이론 앵커 = difference rewards(Wolpert-Tumer, $G-G_{-j}$ 일반개념; **단일 policy·factored action이라 MARL 아님**, COMA는 사촌). 단일-agent 정조준 = action-dependent factorized baselines(Wu 2018) + Mirage(Tucker 2018, per-joint를 분산 아닌 exact-credit으로 정당화). GAE 복습은 per-joint return용.
+
+### 열린 설계 항목 (S0/S2 들어가기 전 결정)
+
+- **S0 로깅 표면**: reward-manager에 `cam_credit_dispersion`를 weight 0으로 넣어 자동 로깅 vs rollout 분석 스크립트로 $D_j$ 히스토그램. 후자가 per-joint 분포 확인엔 낫다(스칼라 로깅은 분산 1개만).
+- **S2 baseline 선택**: per-joint value head 학습 vs exact difference reward라 baseline 학습 생략. exact라 후자가 가능하지만 GAE bootstrap과의 결합 방식 결정 필요.
+- **Mirage 게이트**: per-joint advantage가 *학습을 실제로 개선*하는지 S0/S1에서 확인. 분산 감소가 아니라 dense credit이 이득의 출처여야 함(아니면 scalar shaping과 차이 없음).
+- **k_des 정의**: credit의 $e=k_G-k_{des}$에서 `CM_des_bf` ang이 xy≈0(regulate)·z=command(track)로 의도대로 나오는지 play 로그로 확인(부호/프레임은 기존 `tracking_CAM`/`dCAM_xy_penalty`와 대조).
+
 ## 주의점
 
 - `graph_transformer`는 physical-feature-graph v0 landing zone이다. v0는 `modules.cmm_transformer:CMMTransformer` wrapper + `modules.common` contract + obs에 per-joint CMM 열 추가 + hub soft-bias로 본다. 설계 정본: AI-Sessions/wiki/research/idea-physical-feature-graph.md "확정 v0 스펙".

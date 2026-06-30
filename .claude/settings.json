@@ -13,7 +13,10 @@
       "Bash(grep -v '`')",
       "Bash(rg -l '\\\\[\\\\[save\\\\]\\\\]' prompts/*.md)",
       "Bash(chmod +x scripts/wiki_doctor.sh)",
-      "Bash(./scripts/wiki_doctor.sh)"
+      "Bash(./scripts/wiki_doctor.sh)",
+      "Bash(git rev-list *)",
+      "Bash(echo \"main↔origin/develop ahead/behind: $\\(git rev-list --left-right --count main...origin/develop \\)\")",
+      "Bash(git branch *)"
     ],
     "additionalDirectories": [
       "/home/frlab",

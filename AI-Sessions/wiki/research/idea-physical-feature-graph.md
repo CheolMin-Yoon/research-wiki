@@ -142,7 +142,7 @@ C1은 baseline, C2/C3는 structure guide 변이다.
 ### E. centroidal 값 사용처
 
 - **E1. observation only**: representation guide로만 사용한다.
-- **E2. auxiliary prediction/reward**: CAM prediction 또는 CAM reward/penalty까지 학습 신호로 쓴다.
+- **E2. auxiliary prediction/reward**: CAM prediction 또는 CAM reward/penalty까지 학습 신호로 쓴다. 정식화 갈래 = [[AI-Sessions/wiki/research/idea-centroidal-momentum-allocation-credit|centroidal momentum allocation credit]] (per-joint $A_G[:,j]\dot q_j$를 OPID식 step-level dense credit으로).
 
 ## 예시
 

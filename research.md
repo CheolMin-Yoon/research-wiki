@@ -39,6 +39,7 @@ research 작업 때만 읽는 on-demand 인벤토리다. 새 paper/source/catego
 - 2021-ying-graphormer - Graphormer: SPD·degree·edge encoding으로 GNN을 Transformer special case로 포괄
 - 2025-luo-gcnt - GCNT: GCN(local)+WL(global) morphology 추출 → q/k 주입 + full attention, morphology-agnostic RL
 - 2026-shin-abd-net - ABD-NET: ABA forward dynamics 구조를 GNN policy actor에 임베드, G1/Go2 sim-to-real
+- 2025-zhou-hyper-gcn - Hyper-GCN: adaptive non-uniform hyper-graph(multi-joint synergy) + virtual hyper-joint(global hub) + Divergence Loss, skeleton HAR
 
 ### Sources
 
@@ -61,6 +62,7 @@ research 작업 때만 읽는 on-demand 인벤토리다. 새 paper/source/catego
 ### Idea
 
 - idea-physical-feature-graph - coupled whole-body graph transformer (morphology+centroidal token); arm dual-role 통합본
+- idea-centroidal-momentum-allocation-credit - per-joint $A_G[:,j]\dot q_j$를 OPID식 step-level dense credit으로 (physical-feature-graph E2 정식화)
 
 ### Experiments
 

@@ -16,6 +16,7 @@ graph 구조를 다루는 Transformer 아키텍처와 이를 embodied/robot poli
 - [[AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer|2024-sferrazza-body-transformer]] — 신체 구조를 attention에 반영한 Body Transformer.
 - [[AI-Sessions/wiki/research/papers/2025-luo-gcnt|2025-luo-gcnt]] — graph convolution과 Transformer 결합 정책.
 - [[AI-Sessions/wiki/research/papers/2026-shin-abd-net|2026-shin-abd-net]] — embodied 제어용 graph-transformer 아키텍처.
+- [[AI-Sessions/wiki/research/papers/2025-zhou-hyper-gcn|2025-zhou-hyper-gcn]] — adaptive non-uniform hyper-graph + virtual hyper-joint(global hub) topology (HAR 도메인).
 
 ## To-ingest backlog (미수록 — raw/wiki에 아직 없음)
 - Pure Transformers are Powerful Graph Learners / TokenGT (Kim et al., NeurIPS) 2022
