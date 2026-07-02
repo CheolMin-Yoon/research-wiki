@@ -98,3 +98,65 @@ PY
 ### Related Experiments
 
 - AI-Sessions/wiki/research/experiments/2026-06-25-g1-tracking-baseline.md
+
+## Error: optional/branch-preserved 자산을 dead code로 오판해 삭제
+
+### Symptom
+
+`/home/frlab/mj_rl` code review에서 `source/assets/cuda/`와 `scripts/casadi_on_gpu/`가 active BoT velocity task에서 import되지 않는다는 이유로 stale centroidal remnant로 판단하고 삭제했다. 사용자가 "centroidal 부분 제거하지마"라고 지적해 즉시 `git restore -- source/assets/cuda scripts/casadi_on_gpu`로 복구했다.
+
+### Root Cause
+
+"현재 active task에서 import되지 않음"을 "삭제 가능"으로 과잉 일반화했다. 이 repo에서는 branch continuity와 optional workflow 자산이 working tree에 보존될 수 있다.
+
+- active runtime path: BoT velocity task.
+- preserved optional asset path: centroidal/CasADi CUDA kernels and helper scripts.
+- 삭제 권한 기준: import graph가 아니라 사용자의 보존 의도, branch/workflow 역할, 문서화된 optional path를 함께 확인해야 함.
+
+### Trigger
+
+- dead-code review 중 `rg` import 결과만 보고 보존 자산을 stale로 분류할 때.
+- "현재 branch active task"와 "보존해야 하는 optional/develop workflow"를 구분하지 않을 때.
+- generated kernel이나 helper script가 크고 noisy해서 정리 욕구가 강할 때.
+
+### Fix
+
+삭제한 파일을 즉시 복구하고, README를 "active BoT task에서는 import되지 않지만 centroidal/CasADi CUDA 자산은 보존"으로 수정했다. 구현 상태와 교훈은 research/sources/mj-rl.md의 "2026-07-01 Reflect: BoT master cleanup + graph/token visualization review"에 둔다.
+
+### Prevention Rule
+
+- dead-code review에서 삭제 후보는 `active unused`, `optional preserved`, `obsolete`, `unknown` 네 상태로 먼저 분류한다.
+- optional/branch-preserved 가능성이 있는 자산은 삭제하지 말고 README/source note에 역할을 명시한다.
+- 특히 `assets/`, generated kernels, external install scripts, branch-specific experiment bundles는 사용자의 명시 승인 없이는 제거하지 않는다.
+
+### Related Experiments
+
+- 없음. 구현/운용 reflect 사례.
+
+### Links
+
+- 관련 source note: AI-Sessions/wiki/research/sources/mj-rl.md
+
+## Error: native play Ctrl-C가 viewer sync에서 즉시 빠지지 않음
+
+### Symptom
+
+`/home/frlab/mj_rl`의 `scripts/play.py` 또는 `scripts/play_keyboard.py`를 native viewer로 실행한 뒤 Ctrl-C를 눌러도 프로세스가 바로 종료되지 않는 현상이 있었다.
+
+### Root Cause
+
+mjlab 기본 `BaseViewer._sigint_handler`는 `_interrupted=True`만 세운다. 정상적으로는 main loop가 다음 조건 평가에서 빠지고 `finally: close()`를 호출하지만, native MuJoCo viewer가 `sync()`/render backend 경로에 걸려 있으면 loop condition까지 돌아오지 못할 수 있다.
+
+### Fix
+
+repo-local `scripts/helper/shared.py`에 `patch_viewer_sigint_close()`를 두고, `play.py`와 `play_keyboard.py` 시작 시 적용한다. Ctrl-C handler에서 native viewer handle이 있으면 먼저 `close()`한 뒤 mjlab 기본 handler를 호출한다. `BaseViewer.run`의 기존 `finally: close()` cleanup은 그대로 유지한다.
+
+### Prevention Rule
+
+- viewer 종료 문제를 고칠 때 `BaseViewer.run` 전체를 monkey patch하지 않는다.
+- native backend handle close처럼 막힌 경로를 깨우는 최소 hook만 둔다.
+- Viser는 브라우저 탭 close로 종료되지 않는 것이 upstream 동작이다. native shutdown 문제와 섞어 해결하려 하지 않는다.
+
+### Links
+
+- 구현 source note: AI-Sessions/wiki/research/sources/mj-rl.md
