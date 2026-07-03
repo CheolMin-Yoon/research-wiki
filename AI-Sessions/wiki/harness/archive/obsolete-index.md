@@ -16,3 +16,4 @@ status: active
 ## Archived Documents
 
 - [[AI-Sessions/wiki/harness/archive/archived-setup-log-2026-06-24|archived-setup-log-2026-06-24]]
+- [[AI-Sessions/wiki/harness/archive/archived-mj-rl-reflect-history-2026-07-03|archived-mj-rl-reflect-history-2026-07-03]] — `mj-rl.md` source note current-focus 압축 전 reflect 상세 이력.
