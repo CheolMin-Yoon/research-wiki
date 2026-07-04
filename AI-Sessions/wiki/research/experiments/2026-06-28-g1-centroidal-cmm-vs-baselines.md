@@ -2,7 +2,7 @@
 tags: [tier/low]
 type: experiment
 date: 2026-06-28
-status: planned
+status: active
 source: mj_rl source/tasks/graph_centroidal
 related_papers: AI-Sessions/wiki/research/papers/2013-orin-centroidal-dynamics.md, AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer.md, AI-Sessions/wiki/research/papers/2025-luo-gcnt.md, AI-Sessions/wiki/research/papers/2025-lee-humanoid-arm-cam-marl.md
 related_sources: AI-Sessions/wiki/research/sources/mj-rl.md, AI-Sessions/wiki/research/sources/casadi-on-gpu-code.md, AI-Sessions/wiki/research/sources/body-transformer-code.md, AI-Sessions/wiki/research/sources/2025-lee-humanoid-arm-cam-marl-code.md
@@ -41,6 +41,32 @@ related_sources: AI-Sessions/wiki/research/sources/mj-rl.md, AI-Sessions/wiki/re
 - CAM 추종오차(CM vs CM_des), base tracking 오차
 - PPO health(`Loss/value`,`Loss/surrogate`,`Policy/mean_std`)
 - attention map snapshot(H1)
+
+## 2026-07-05 Modular Centroidal Arm PPO Ablation
+
+checked commit: `/home/frlab/mj_rl` `exp/centroidal-arm-params` @ `a0fdf20` with local working-tree edits.
+
+Context: G1 22-DOF centroidal task (`leg=12`, `arm=10`, waist locked), modular leg/arm policies. RAL2025 reference uses 5 s episodes (`dt=0.005`, `decimation=4`, 250 policy steps). mjlab built-in G1 velocity/tracking cfg uses `init_std=1.0` and no explicit `std_range`; this repo's BoT/eICP G1 configs commonly clamp to `std_range=(0.05,2.0)`.
+
+Two active conditions; **condition B is the selected baseline** for current development.
+
+| condition | arm init/std | PPO arm | reward/control | note |
+|---|---|---|---|---|
+| A: exploratory / paper-like arm | `init_std=1.0`, `std_range=(0.2,1.0)` | `clip=0.2`, `entropy=0.01`, `lr=1e-5`, `gamma=0.99` | `arm/joint_torque=-5e-4`, no symmetry | high floor keeps arm noise alive; can improve CAM slowly but risks arm-torso collisions and visual jitter |
+| B: develop-style conservative arm | `init_std=0.5`, `std_range=(0.05,1.0)` | `clip=0.05`, `entropy=0.0`, `lr=1e-5`, `gamma=0.99` | `arm/joint_torque=-5e-4`, no symmetry | lower floor + smaller clip lets arm settle; early qualitative result is much more stable/natural |
+
+Observed for condition A at iter 2132/3000:
+
+- `Mean reward=61.60`, `Mean episode length=249.95` (near 5 s timeout).
+- `tracking_CAM_reward=2.4351`, `dCAM_xy=-0.5670`, `arm/joint_torque=-1.3974`, `arm/action_smoothness1=-0.3845`, `arm/action_smoothness2=-0.0821`, `arm/joint_position=-0.2789`.
+- `error_vel_xy=0.1874`, `error_vel_yaw=0.1723`; both improved from 400-iter screening.
+- Interpretation: 400 iter was too early for arm (`lr=1e-5`). A does learn CAM over ~2000 iter, but the high std floor likely leaves enough residual action noise to produce arm-body collisions.
+
+Next comparison:
+
+- Condition B at ~1900 iter: `Mean reward=62.87`, `Mean episode length=248.41`, `tracking_CAM_reward=2.3404`, `dCAM_xy=-0.6405`, `arm/joint_torque=-1.3105`, `arm/action_smoothness1=-0.1659`, `arm/action_smoothness2=-0.0381`, `arm/joint_position=-0.2106`, `error_vel_xy=0.1769`, `error_vel_yaw=0.1543`.
+- Interpretation: B gives slightly lower CAM tracking than A, but much better arm smoothness/posture and better base velocity tracking; it is the best current default for natural G1 centroidal walking.
+- Keep B as the code default. Treat `entropy_coef 0.0 -> 0.01` as a single-knob follow-up only if CAM tracking must be recovered while monitoring arm-torso collision and smoothness.
 
 ## Reproducibility (skeleton — 구현 후 확정)
 
