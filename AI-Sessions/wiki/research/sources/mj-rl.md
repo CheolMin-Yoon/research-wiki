@@ -19,6 +19,9 @@ source: AI-Sessions/raw/repos/mj-rl.md
 - `source/modules/{body_transformer,gcnt_limb,cmm_transformer}.py`: task cfg가 참조하는 공개 policy wrapper. top-level `modules`는 wrapper 표면만 노출하고 shared machinery는 `modules.common`에 둔다.
 - `source/tasks/eicp/`: reduced-order LIPM/eICP step planner와 leg policy task. 외부 command key는 RAL/IROS naming에 맞춰 `"base_velocity"` + `"step_command"`다.
 - `source/tasks/centroidal/`: modular leg/arm policy + centroidal/CAM reward task. 외부 command key는 `"base_velocity"` + periodic `"step_command"`다.
+- `source/tasks/centroidal_transformer_modular/`: centroidal task 를 덮지 않는 single BodyTransformer actor + grouped Transformer critic 실험 task. Task ID는 `G1-Centroidal-TransformerModular-Locomotion`; critic readout은 `base+leg` token group과 `base+arm` token group의 2-head value다.
+- `source/modules/token_group_{critic,runner}.py`: `G1-Centroidal-TokenGroupCritic-Locomotion`용 separated MLP actor + shared Transformer critic PPO. checkpoint는 `actor_state_dicts`에 leg/arm actor를 저장한다.
+- `source/modules/transformer_modular_runner.py`, `source/modules/grouped_body_transformer_critic.py`: single Transformer actor action `(leg[0:12], arm[12:22])`에 group-wise advantage를 적용하는 PPO와 grouped critic head 구현.
 - `source/tasks/waist_momentum/`: eICP/LIPM step planner 기반 leg+waist 13DOF task. arms are locked by the G1 leg+waist spec, and debug visualization can show CoM sphere/trace plus 13DOF centroidal momentum arrows through the leg+waist CasADi wrapper.
 - `source/assets/cuda/`: CasADi-on-GPU centroidal/dynamics kernel generation과 wrapper. 23DOF full-body와 13DOF leg+waist kernels are stored flat under `casadi_fns/` and `cuda_fns/`, distinguished by `g1_23dof_*` and `g1_leg_waist_13dof_*` function/file prefixes. active BoT velocity runtime import가 아니어도 보존 대상이다.
 - `source/assets/unitree/`: Unitree G1 asset, keyframe/init state, actuator/robot constants.
@@ -37,6 +40,9 @@ source: AI-Sessions/raw/repos/mj-rl.md
 - MDP ownership: eICP와 Centroidal MDP는 의도적으로 공유하지 않는다. planner ownership과 reward/obs 계약이 달라서 naming/stale comment cleanup만 각 task 안에서 진행한다.
 - Debug viz ownership: command term(`_debug_vis_impl`)은 상태만 읽고, 실제 drawing 함수는 `source/visualization/`에 둔다. eICP는 `StepCommandCfg.viz_footsteps/viz_lipm/viz_swing_ref/viz_swing_actual/viz_com_actual`, Centroidal은 `viz_com_sphere/viz_com_trace/viz_momentum`으로 개별 on/off한다. 두 task 모두 `step_command.debug_vis=True`가 기본이라 `play.py`/`play_keyboard.py`를 native/viser 뷰어로 켜면 추가 플래그 없이 바로 그려진다(뷰어 자체의 `_show_debug_vis`/`debug_visualization_enabled` 토글은 기본 on, native는 `R` 키로 끔).
 - mjlab native viewer 플래그: `viewer.opt`/`vopt`(mjVIS_TRANSPARENT, mjVIS_CONTACTFORCE 등)는 mjlab cfg가 노출하지 않고, `launch_passive` 실행 이후(=`setup()` 호출 후)에만 존재한다. 켜려면 `viewer.setup`을 감싸 실행 직후 플래그를 세팅해야 한다(`native_viewer_opts.apply_native_viz`).
+- Centroidal episode length: train cfg의 `episode_length_s=5.0`, MuJoCo `timestep=0.005`(200Hz), `decimation=4`이므로 control/env dt는 0.02s(50Hz)다. TensorBoard `Train/mean_episode_length`의 250 step은 raw sim step이 아니라 5초짜리 control step horizon(=1000 sim steps)이다. 예: 160 step은 약 3.2초 생존을 뜻한다.
+- Token-group playback checkpoint loading: mjlab `play.py`와 repo-local `play_keyboard.py`는 runner를 `load_cfg={"actor": True}`로 로드한다. custom token-group runner는 `"actor"`를 `"actors"` alias로 받아 `actor_state_dicts`의 leg/arm actor를 모두 로드해야 한다. alias가 없으면 checkpoint 경로가 맞아도 랜덤 초기화 actor로 play되어 바로 넘어진다.
+- Playback checkpoint path convention: `scripts/play.py`는 `shared.normalize_checkpoint_file_argv()`를 이미 적용하고, `scripts/play_keyboard.py`도 같은 repo-relative `--checkpoint-file outputs/...` 경로 정규화를 적용해야 한다.
 
 ## Research-Relevant Patterns
 
@@ -48,6 +54,7 @@ source: AI-Sessions/raw/repos/mj-rl.md
 
 ## Verification Snapshot
 
+- 2026-07-07 centroidal token-group/Transformer modular 검증: `unittest discover -s tests` → 49 tests OK, skipped 1. `G1-Centroidal-TransformerModular-Locomotion` 1024 env 1-iteration train smoke 통과. `G1-Centroidal-TokenGroupCritic-Locomotion` play checkpoint load regression은 `load_cfg={"actor": True}` alias test로 고정했다.
 - 최근 source cleanup 검증: `compileall` 통과, `unittest discover -s tests` → 31 tests OK, skipped 1.
 - 2026-07-04 BoT/waist/CasADi 검증: `tests.test_graph_modules` 12 tests OK, `G1-BoT-Velocity-Flat-Locomotion` zero-agent smoke 통과, `G1-BodyTransformer-Velocity-Flat-Mix-Locomotion` zero-agent smoke 통과, `G1-WaistMomentum-Locomotion` zero-agent smoke 통과. CasADi-on-GPU all-kernel build produced six prefixed kernels and both 23DOF/13DOF wrappers initialized in one process.
 - cfg 직접 import 확인: eICP/Centroidal commands는 모두 `['base_velocity', 'step_command']`; `GaitClockCommandCfg`/`FootstepCommandCfg` alias 없음; Centroidal CAM reward key는 `arm/dCAM_xy`, `arm/tracking_CAM_reward`.
