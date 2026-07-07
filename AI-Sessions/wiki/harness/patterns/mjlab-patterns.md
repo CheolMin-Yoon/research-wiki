@@ -45,12 +45,34 @@ applies_to: mj_rl, mjlab, humanoid RL implementation
 
 ### Good Example
 
-`source/tasks/body_transformer_velocity/mapping.py` 리팩터:
+`source/tasks/bot_velocity/mapping.py` 리팩터:
 
 - `OBS_LAYOUT`으로 flat observation 순서를 먼저 선언.
 - `BASE_TOKEN_ROLES`, `FOOT_TOKEN_ROLES`, `JOINT_ORDER`, `JOINT_DIMS`로 token layout을 별도 선언.
 - `Mapping.create_observation()`은 `base / joint / foot` 생성 흐름만 보이게 두고, slice/cat 세부 로직은 `_base_observation`, `_all_joint_observations`, `_foot_observation`, `_role_values`로 분리.
 - `build_g1_velocity_mapping()` factory는 파일 하단에 둔다.
+
+## Positive Pattern — generic runner, specific model
+
+Multi-actor/multi-critic 실험은 runner class를 새로 늘리지 않고, actor/critic unit config로 표현한다. 네트워크 family는 `modules.models`, orchestration은 `modules.rl`, tensor building block은 `modules.primitives`가 소유한다.
+
+### Rule
+
+1. 새 GCN/Transformer/MLP variant는 먼저 `modules.primitives` 또는 `modules.models`에 둔다.
+2. actor 수, critic sharing, reward/action routing은 `MultiAgentRlCfg`로 표현한다.
+3. task package는 env/mapping/reward/action 계약만 소유한다.
+4. 옛 import path를 되살리는 shim보다 새 경로로 호출부를 고친다.
+
+## Caution Pattern — viewer shutdown and debug viz
+
+Viewer에서 task별 debug visualization이 무거우면 종료가 늦거나 Viser threadpool close가 물릴 수 있다. Native MuJoCo handle을 SIGINT handler 안에서 직접 닫으면 double-close segfault 위험이 있으므로 피한다.
+
+### Rule
+
+1. command debug visualization은 성능/종료 안정성이 확인된 task만 기본 on으로 둔다.
+2. Centroidal 계열처럼 overlay가 무거운 task는 기본 off로 두고 CLI opt-in을 둔다.
+3. Viser shutdown은 queued scene/debug update를 끝까지 기다리지 않게 non-blocking close patch를 사용한다.
+4. Native viewer는 `BaseViewer.run()`의 `finally: close()` 경로에 맡긴다.
 
 ## Links
 

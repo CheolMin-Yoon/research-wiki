@@ -10,40 +10,33 @@ source: AI-Sessions/raw/repos/mj-rl.md
 
 ## Summary
 
-사용자의 active Unitree G1 humanoid locomotion RL repo다. 2026-07-04 reflect 기준 checked commit은 `b362398`(브랜치 `master`)이고, 이번 작업은 BoT mapping/readability 정리, leg+waist `waist_momentum` task, G1 CasADi-on-GPU kernel layout 공존화를 진행했다. source note는 현재 구현 계약과 다음 작업 포인터만 유지하고, 오래된 reflect 상세는 [[AI-Sessions/wiki/harness/archive/archived-mj-rl-reflect-history-2026-07-03|archived-mj-rl-reflect-history-2026-07-03]]에 보존한다.
+사용자의 active Unitree G1 humanoid locomotion RL repo다. 2026-07-08 reflect 기준 checked commit은 `ffbb2c3`(브랜치 `master`)이고, 이번 작업은 BoT/GCN/Transformer building block과 rsl_rl orchestration을 `primitives/models/rl`로 분리하고 legacy modular runner 증식을 `MultiAgentRunner` 중심으로 접었다. source note는 현재 구현 계약과 다음 작업 포인터만 유지하고, 오래된 reflect 상세는 [[AI-Sessions/wiki/harness/archive/archived-mj-rl-reflect-history-2026-07-03|archived-mj-rl-reflect-history-2026-07-03]]에 보존한다.
 
 ## Current Implementation Surface
 
-- `source/tasks/body_transformer_velocity/`: active BoT/BodyTransformer G1 23DoF velocity task 등록과 env/agent config.
-- `source/modules/common/`: Mapping, graph spec, tokenizer, transformer, detokenizer, `GraphTransformerModel` 공통 계약. obs slice, action order, node order는 model 내부 hard-code가 아니라 mapping/schema/graph spec으로 둔다.
-- `source/modules/{body_transformer,gcnt_limb,cmm_transformer}.py`: task cfg가 참조하는 공개 policy wrapper. top-level `modules`는 wrapper 표면만 노출하고 shared machinery는 `modules.common`에 둔다.
-- `source/tasks/eicp/`: reduced-order LIPM/eICP step planner와 leg policy task. 외부 command key는 RAL/IROS naming에 맞춰 `"base_velocity"` + `"step_command"`다.
-- `source/tasks/centroidal/`: modular leg/arm policy + centroidal/CAM reward task. 외부 command key는 `"base_velocity"` + periodic `"step_command"`다.
-- `source/tasks/centroidal_token_group_critic/`: 기존 centroidal env/reward/action을 재사용하되 `token_critic` obs group과 token-group critic agent cfg만 별도 소유하는 task package. Task ID는 `G1-Centroidal-TokenGroupCritic-Locomotion` 그대로 유지한다.
-- `source/tasks/centroidal_transformer_modular/`: centroidal task 를 덮지 않는 single BodyTransformer actor + grouped Transformer critic 실험 task. Task ID는 `G1-Centroidal-TransformerModular-Locomotion`; critic readout은 `base+leg` token group과 `base+arm` token group의 2-head value다.
-- `source/modules/token_group_{critic,runner}.py`: token-group critic task용 separated MLP actor + shared Transformer critic PPO. checkpoint는 `actor_state_dicts`에 leg/arm actor를 저장한다.
-- `source/modules/transformer_modular_runner.py`, `source/modules/grouped_body_transformer_critic.py`: single Transformer actor action `(leg[0:12], arm[12:22])`에 group-wise advantage를 적용하는 PPO와 grouped critic head 구현.
-- `source/tasks/waist_momentum/`: eICP/LIPM step planner 기반 leg+waist 13DOF task. arms are locked by the G1 leg+waist spec, and debug visualization can show CoM sphere/trace plus 13DOF centroidal momentum arrows through the leg+waist CasADi wrapper.
-- `source/assets/cuda/`: CasADi-on-GPU centroidal/dynamics kernel generation과 wrapper. 23DOF full-body와 13DOF leg+waist kernels are stored flat under `casadi_fns/` and `cuda_fns/`, distinguished by `g1_23dof_*` and `g1_leg_waist_13dof_*` function/file prefixes. active BoT velocity runtime import가 아니어도 보존 대상이다.
-- `source/assets/unitree/`: Unitree G1 asset, keyframe/init state, actuator/robot constants.
-- `scripts/train.py`, `scripts/play.py`, `scripts/play_keyboard.py`, `scripts/spawn_g1.py`: 학습, 재생, 키보드/diagnostic 재생, spawn smoke 진입점. `play.py`는 mjlab의 tyro CLI(`mjlab.scripts.play`)로 그대로 위임하는 얇은 wrapper라 `--checkpoint-file`은 mjlab 자체 필드다. `play_keyboard.py`는 키보드 텔레옵을 위해 mj_rl이 직접 짠 argparse 스크립트이며, 같은 플래그 이름을 관례상 재선언한 것뿐이다.
-- `source/visualization/`: command term은 state만 갖고 drawing은 여기로 분리하는 계약. `footstep_viz.py`(eICP 발자국 박스/LIPM ghost/스윙 궤적), `centroidal_viz.py`(whole-body CoM 구+trace, `get_centroidal()` 캐시 기반 실제/명령 선·각운동량 화살표), `com_viz.py`(공유 `TraceBuffer` 슬라이딩 궤적 버퍼), `native_viewer_opts.py`(mjlab이 cfg로 노출하지 않는 MuJoCo native 뷰어 플래그 — transparent/contact_force/com 등 — 를 `viewer.setup()` wrap으로 켬, `play_keyboard.py --native-viz`에 연결).
+- `source/modules/primitives/`: 순수 PyTorch building block. GCN stack, graph tensor builder, token layout, BoT transformer encoder 등이며 rsl_rl runner/task/PPO를 모른다.
+- `source/modules/models/`: rsl_rl-compatible model surface. `BoTActor`, token model/critic, GCN actor, shared value heads가 여기 있다.
+- `source/modules/rl/`: network-agnostic multi-agent orchestration. `ActorUnitCfg`, `CriticUnitCfg`, `MultiAgentRlCfg`, action/reward routing, storage, PPO, runner를 소유한다.
+- `source/tasks/bot_velocity/`: active BoT G1 23DoF velocity task 등록과 env/agent config. 옛 `body_transformer_velocity` package와 `G1-BodyTransformer-*` task alias는 제거했다.
+- `source/tasks/centroidal/`: modular leg/arm actor + centroidal/CAM reward task. agent cfg는 `MultiAgentRlCfg`로 leg/arm actor와 critic units를 직접 표현한다.
+- `source/tasks/centroidal_token_group_critic/`: 기존 centroidal env/reward/action을 재사용하되 `token_critic` obs group과 shared token-group critic cfg만 별도 소유한다. Task ID는 `G1-Centroidal-TokenGroupCritic-Locomotion` 그대로 유지한다.
+- `source/tasks/eicp/`, `source/tasks/waist_momentum/`: eICP/LIPM step planner와 leg 또는 leg+waist task. CUDA/CasADi optional path와 debug visualization 계약은 유지한다.
+- `source/assets/cuda/`: CasADi-on-GPU centroidal/dynamics kernel generation과 wrapper. 23DOF full-body와 13DOF leg+waist kernels are stored flat under `casadi_fns/` and `cuda_fns/`, distinguished by `g1_23dof_*` and `g1_leg_waist_13dof_*` prefixes.
+- `scripts/helper/shared.py`: repo-local path bootstrap, task-id suggestion, checkpoint policy loading, viewer shutdown patch, train/play shared helpers를 소유한다.
+- `scripts/train.py`, `scripts/play.py`, `scripts/play_keyboard.py`, `scripts/spawn_g1.py`: 학습, 재생, 키보드/diagnostic 재생, spawn smoke 진입점. plotting/sweep utilities는 `scripts/plotting/` 아래에 둔다.
+- `source/visualization/`: command term은 state만 갖고 drawing은 여기로 분리하는 계약. `graph_viz.py`는 current graph/token diagnostic overlay이며 saliency가 아니다.
 - `네이밍.md`: 변수명, 함수명, 파일명, config key를 맞추기 위한 repo-local naming convention.
 
 ## Current Contracts
 
-- G1 pose naming: `HOME_KEYFRAME`과 `KNEES_BENT_KEYFRAME`은 별개다. BoT/Centroidal 기본 robot cfg와 `scripts/spawn_g1.py`는 upstream mjlab velocity default에 맞춰 `KNEES_BENT_KEYFRAME`을 쓴다. eICP는 knees-bent leg posture에 arm qpos=0인 init을 유지한다.
+- Package boundary: primitive는 PyTorch building block, model은 rsl_rl-compatible neural surface, rl은 actor/critic orchestration이다. 새 runner 파일로 실험 변형을 늘리지 않는다.
+- Public naming: public actor class is `BoTActor`; GCN modules keep GCN/adjacency terminology. Transformer-side structural masks/biases keep attention-mask/bias terminology.
+- Task naming: active BoT task package is `tasks.bot_velocity`; old `tasks.body_transformer_velocity` and top-level `modules.body_transformer` paths are not compatibility shims.
+- G1 pose naming: `HOME_KEYFRAME`과 `KNEES_BENT_KEYFRAME`은 별개다. BoT/Centroidal 기본 robot cfg와 `scripts/spawn_g1.py`는 upstream mjlab velocity default에 맞춰 `KNEES_BENT_KEYFRAME`을 쓴다.
 - CasADi wrapper: compatibility import `assets.cuda.casadi_pinocchio.CasadiPinocchio`는 23DOF full-body wrapper를 가리킨다. Layout-specific wrappers are `assets.cuda.casadi_pinocchio_g1_23dof.CasadiPinocchio` and `assets.cuda.casadi_pinocchio_g1_leg_waist_13dof.CasadiPinocchio`. 옛 `assets.cuda.pinocchio.Pinocchio` alias는 남기지 않는다.
-- Reference naming sources: `/home/frlab/LearningHumanoidArmMotion-RAL2025-Code`(`d176a14`)와 `/home/frlab/ModelBasedFootstepPlanning-IROS2024`(`9474713`)를 clone해 RAL/IROS variable/function naming을 확인했다.
-- Command/obs naming: eICP와 Centroidal 모두 velocity command key는 `"base_velocity"`, step/phase command key는 `"step_command"`다. 관측 term은 `velocity_commands`, `phase_sin`, `phase_cos`, `last_leg_action`, `last_arm_action`, `CAM`, `CAM_des`를 쓴다.
-- CAM/reward style: RAL2025 표면 이름에 맞춰 `dCAM_xy_penalty`, `tracking_CAM_reward`, `action_smoothness1/2`, `base_lin_vel_z_penalty`, `base_ang_vel_xy_penalty`를 쓴다. 옛 alias는 남기지 않는다.
-- Symmetry cfg: G1 leg/arm action mirror를 모두 처리하므로 `g1_symmetry_cfg`를 쓴다. `leg_symmetry_cfg` alias는 남기지 않는다.
-- MDP ownership: eICP와 Centroidal MDP는 의도적으로 공유하지 않는다. planner ownership과 reward/obs 계약이 달라서 naming/stale comment cleanup만 각 task 안에서 진행한다.
-- Debug viz ownership: command term(`_debug_vis_impl`)은 상태만 읽고, 실제 drawing 함수는 `source/visualization/`에 둔다. eICP는 `StepCommandCfg.viz_footsteps/viz_lipm/viz_swing_ref/viz_swing_actual/viz_com_actual`, Centroidal은 `viz_com_sphere/viz_com_trace/viz_momentum`으로 개별 on/off한다. 두 task 모두 `step_command.debug_vis=True`가 기본이라 `play.py`/`play_keyboard.py`를 native/viser 뷰어로 켜면 추가 플래그 없이 바로 그려진다(뷰어 자체의 `_show_debug_vis`/`debug_visualization_enabled` 토글은 기본 on, native는 `R` 키로 끔).
-- mjlab native viewer 플래그: `viewer.opt`/`vopt`(mjVIS_TRANSPARENT, mjVIS_CONTACTFORCE 등)는 mjlab cfg가 노출하지 않고, `launch_passive` 실행 이후(=`setup()` 호출 후)에만 존재한다. 켜려면 `viewer.setup`을 감싸 실행 직후 플래그를 세팅해야 한다(`native_viewer_opts.apply_native_viz`).
-- Centroidal episode length: train cfg의 `episode_length_s=5.0`, MuJoCo `timestep=0.005`(200Hz), `decimation=4`이므로 control/env dt는 0.02s(50Hz)다. TensorBoard `Train/mean_episode_length`의 250 step은 raw sim step이 아니라 5초짜리 control step horizon(=1000 sim steps)이다. 예: 160 step은 약 3.2초 생존을 뜻한다.
-- Token-group playback checkpoint loading: mjlab `play.py`와 repo-local `play_keyboard.py`는 runner를 `load_cfg={"actor": True}`로 로드한다. custom token-group runner는 `"actor"`를 `"actors"` alias로 받아 `actor_state_dicts`의 leg/arm actor를 모두 로드해야 한다. alias가 없으면 checkpoint 경로가 맞아도 랜덤 초기화 actor로 play되어 바로 넘어진다.
-- Playback checkpoint path convention: `scripts/play.py`는 `shared.normalize_checkpoint_file_argv()`를 이미 적용하고, `scripts/play_keyboard.py`도 같은 repo-relative `--checkpoint-file outputs/...` 경로 정규화를 적용해야 한다.
+- Command/obs naming: 현재 eICP/Centroidal 계열 velocity command key는 `"twist"`, step/phase command key는 `"step_command"`다. 관측 term은 `velocity_commands`, `phase_sin`, `phase_cos`, `last_leg_action`, `last_arm_action`, `CAM`, `CAM_des`를 쓴다.
+- Debug viz ownership: command term(`_debug_vis_impl`)은 상태만 읽고, 실제 drawing 함수는 `source/visualization/`에 둔다. Centroidal 계열은 viewer 종료와 draw overhead를 줄이기 위해 `step_command.debug_vis=False`가 기본이며, `play_keyboard.py --command-viz`로 opt-in한다. BoT velocity는 twist arrow 기본 on을 유지한다.
+- Playback checkpoint loading: mjlab `play.py`와 repo-local `play_keyboard.py`는 runner를 `load_cfg={"actor": True}`로 로드한다. `MultiAgentPPO.load()`는 new `actor_state_dicts`/`critic_state_dicts`, old modular `policies[...]`, old shared `critic_state_dict`, single `actor_state_dict` compatibility를 처리한다.
 - Task separation: baseline `source/tasks/centroidal/`은 `token_critic` obs/config/import를 갖지 않는다. token-group critic 실험은 `source/tasks/centroidal_token_group_critic/`에서 기존 centroidal env factory를 호출한 뒤 `token_critic` obs만 추가한다.
 
 ## Research-Relevant Patterns
@@ -52,32 +45,27 @@ source: AI-Sessions/raw/repos/mj-rl.md
 - v0 physical-feature graph 설계는 BoT보다 GCNT 계열 attention implementation이 더 알맞다. BoT의 `nn.MultiheadAttention`은 score를 숨겨 CMM hub soft-bias 삽입이 어렵고, GCNT의 biased attention은 score 경로가 열려 있다. 설계 정본은 [[AI-Sessions/wiki/research/idea-physical-feature-graph|idea-physical-feature-graph]]를 본다.
 - per-joint CAM credit은 scalar reward로 합치면 global CAM penalty로 telescope될 위험이 있다. 정식 설계와 열린 항목은 [[AI-Sessions/wiki/research/idea-centroidal-momentum-allocation-credit|idea-centroidal-momentum-allocation-credit]]를 본다.
 - CasADi/CMM kernel은 23DOF full-body와 13DOF leg+waist layout을 prefix 이름으로 공존시킨다. lock은 질량 drop이 아니라 부모 바디로 관성 lumping된다. GPU backend 정본은 [[AI-Sessions/wiki/research/sources/casadi-on-gpu-code|casadi-on-gpu-code]]를 본다.
-- graph/token visualization에서 token 색은 policy attention/importance가 아니라 diagnostic heuristic이다. saliency처럼 해석하지 않는다.
 
 ## Verification Snapshot
 
-- 2026-07-07 centroidal token-group/Transformer modular 검증: `unittest discover -s tests` → 49 tests OK, skipped 1. `G1-Centroidal-TransformerModular-Locomotion` 1024 env 1-iteration train smoke 통과. `G1-Centroidal-TokenGroupCritic-Locomotion` play checkpoint load regression은 `load_cfg={"actor": True}` alias test로 고정했다. 이후 token-group critic task package 분리에서 baseline env에는 `token_critic`이 없고 token-group env에만 있음을 registry test로 고정했다.
-- 최근 source cleanup 검증: `compileall` 통과, `unittest discover -s tests` → 31 tests OK, skipped 1.
-- 2026-07-04 BoT/waist/CasADi 검증: `tests.test_graph_modules` 12 tests OK, `G1-BoT-Velocity-Flat-Locomotion` zero-agent smoke 통과, `G1-BodyTransformer-Velocity-Flat-Mix-Locomotion` zero-agent smoke 통과, `G1-WaistMomentum-Locomotion` zero-agent smoke 통과. CasADi-on-GPU all-kernel build produced six prefixed kernels and both 23DOF/13DOF wrappers initialized in one process.
-- cfg 직접 import 확인: eICP/Centroidal commands는 모두 `['base_velocity', 'step_command']`; `GaitClockCommandCfg`/`FootstepCommandCfg` alias 없음; Centroidal CAM reward key는 `arm/dCAM_xy`, `arm/tracking_CAM_reward`.
-- Debug viz 검증: `py_compile` + 모듈 import 통과, `TraceBuffer` 슬라이딩/마스크-fill 동작 단위 테스트(CoM prefix, 양발 prefix) 통과, eICP/Centroidal env cfg factory 빌드 확인. **native/viser 뷰어로 실제 창을 띄워 그림을 눈으로 확인하지는 않았다** — 다음 세션이 `play_keyboard.py`로 라이브 검증해야 한다.
+- 2026-07-08 modular cleanup 검증: `conda run --no-capture-output -n mjlab_env python -m unittest discover -s tests -p 'test_*.py'` → 70 tests OK, skipped 1.
+- script `py_compile` OK. `G1-Centroidal-Locomotion`/`G1-Centroidal-TokenGroupCritic-Locomotion` play cfg는 `twist=False`, `step_command=False`; `G1-BoT-Velocity-Flat-Locomotion`은 `twist=True`.
+- 2026-07-07 centroidal token-group/Transformer modular 검증은 archive history에 남아 있다. 이후 transformer-modular task package는 generic multi-agent runner cleanup 과정에서 제거됐다.
 - 이전 GPU smoke와 BoT ablation 설계 상세는 archive history와 관련 experiment/source notes를 본다.
 
 ## Next
 
-1. `play_keyboard.py`로 `G1-WaistMomentum-Locomotion`을 native 뷰어로 띄워 footstep/LIPM ghost/CoM 구/운동량 화살표가 실제로 잘 보이는지 눈으로 확인한다. zero-agent smoke는 통과했지만, 사람이 scale/readability를 확인해야 한다.
-2. notebook이나 외부 스크립트가 옛 `assets.cuda.pinocchio.Pinocchio` 경로를 쓰면 alias를 되살리지 말고 import를 `assets.cuda.casadi_pinocchio.CasadiPinocchio`로 고친다.
-3. BodyTransformer baseline hard, mix, mix+broadcast, mix+broadcast+per-token, post-norm을 같은 seed/iteration budget으로 비교한다.
-4. CMM 모델 평가는 BodyTransformer ablation 중 최소한 하나가 살아나는지 확인한 뒤 진행한다.
-5. `feature/port-eicp-centroidal-23dof`는 origin에 push만 됐고 master로 merge/PR은 아직이다 — 필요하면 사용자가 PR을 연다.
+1. 새 실험은 legacy runner 파일을 만들지 말고 `MultiAgentRlCfg` + `MultiAgentRunner` preset/config로 표현한다.
+2. GCN limb actor 실험은 `source/modules/primitives/gcn.py`와 `source/modules/models/gcn_actor.py`를 재사용해 limb input/action 계약만 task cfg에서 바꾼다.
+3. notebook이나 외부 스크립트가 옛 `modules.common`, `modules.body_transformer`, `tasks.body_transformer_velocity` 경로를 쓰면 alias를 되살리지 말고 새 `modules.primitives`, `modules.models`, `tasks.bot_velocity` 경로로 고친다.
+4. CMM 모델 평가는 BoT/GCN baseline 중 최소 하나가 안정적으로 살아나는지 확인한 뒤 진행한다.
 
 ## Cautions
 
 - `source/assets/cuda`와 `scripts/casadi_on_gpu`는 active BoT path에서 import되지 않아도 삭제 대상이 아니다. centroidal optional 자산과 branch continuity를 위해 보존한다.
 - whole-body CoM velocity는 pelvis velocity가 아니라 `subtree_linvel` sensor를 통해 확인한다.
 - task별 action surface는 항상 task contract 기준으로 확인한다. CMM kernel DOF와 policy action DOF는 별개다.
-- repo-local `cnn_cfg` 필드명은 mjlab/rsl_rl adapter 경계 때문에 남을 수 있다. local helper 변수명은 실제 의미에 맞춰 `model_overrides`처럼 쓴다.
-- repo-local naming 정본은 `/home/frlab/mj_rl/네이밍.md`다. `desired_` prefix 대신 내부 상태는 `_des`, command 값은 `_cmd`, reference trajectory는 `_ref` suffix를 우선한다.
+- repo-local naming 정본은 `/home/frlab/mj_rl/네이밍.md`다.
 - `centroidal_viz.py`는 task별 `centroidal_getter`가 가리키는 pinocchio cache를 읽는다. `G1-Centroidal-Locomotion`은 23DOF wrapper, `G1-WaistMomentum-Locomotion`은 13DOF leg+waist wrapper를 쓴다. BoT-only 환경(`environment-win.yml`)에서는 못 켠다.
 - granular 구현 작업은 프로젝트 레포에서 관리하고, wiki에는 current contract와 증류된 해석만 남긴다.
 
@@ -89,7 +77,7 @@ source: AI-Sessions/raw/repos/mj-rl.md
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/mj-rl.md
-- checked commit: b362398 (`master`, before current push)
-- previous checked commit: 7173d3ec6afe50e38f80105c4f679648c0799796
+- checked commit: ffbb2c3 (`master`)
+- previous checked commit: b362398
 - initial raw-stub checked commit: 017c485efe6024cb26825084e422cc778b4b5920
 - related raw papers: 2024-lee-footstep-planning-rl.pdf, 2025-lee-humanoid-arm-cam-marl.pdf
