@@ -63,6 +63,18 @@ Multi-actor/multi-critic 실험은 runner class를 새로 늘리지 않고, acto
 3. task package는 env/mapping/reward/action 계약만 소유한다.
 4. 옛 import path를 되살리는 shim보다 새 경로로 호출부를 고친다.
 
+## Positive Pattern — repo-local naming contract first
+
+`/home/frlab/mj_rl`에서 새 관측 key, tensor 이름, 함수 이름을 만들 때는 먼저 `/home/frlab/mj_rl/네이밍.md`를 따른다. 로컬 약어를 즉석에서 붙이지 말고, 물리량 의미와 기존 public key 계약을 먼저 맞춘다.
+
+### Rule
+
+1. `CAM_des`의 `_des`는 desired target 의미로만 쓴다. derivative 또는 delta 의미로 재사용하지 않는다.
+2. per-joint WBC momentum token처럼 `k_j^T e_hat`, `dot{k}_j^T e_hat`를 scalar로 넣을 때는 현재 물리량을 `cam`, 시간미분 계열을 `dcam`으로 둔다.
+3. `_c`, `_d` 같은 formula/local shorthand는 네이밍 문서에 없는 한 public observation key나 mapping term에 쓰지 않는다.
+4. 이름을 바꾸면 alias를 남기지 않고 observation cfg, mapping, cache, test call site를 함께 고친다.
+5. 헷갈리면 suffix를 먼저 붙이지 말고 “이 값이 desired/ref/cmd/current/derivative 중 무엇인가”를 말로 풀어본 뒤 이름을 정한다.
+
 ## Caution Pattern — viewer shutdown and debug viz
 
 Viewer에서 task별 debug visualization이 무거우면 종료가 늦거나 Viser threadpool close가 물릴 수 있다. Native MuJoCo handle을 SIGINT handler 안에서 직접 닫으면 double-close segfault 위험이 있으므로 피한다.

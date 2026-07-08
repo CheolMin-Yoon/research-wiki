@@ -11,7 +11,7 @@ status: active
 morphology-aware/modular policy 학습과 순수 GNN(message-passing) 방식의 한계를 묶는다.
 
 ## 소속 논문 (ingested)
-아직 없음 (아래 backlog 참조)
+- [[AI-Sessions/wiki/research/papers/2025-liu-mash|2025-liu-mash]] — limb(팔/다리)=agent 분해 + shared-parameter actor + global critic MARL(MAPPO)로 humanoid locomotion coordination 확보. graph/attention 없이 모듈 분해로 협응.
 
 ## To-ingest backlog (미수록 — raw/wiki에 아직 없음)
 - NerveNet

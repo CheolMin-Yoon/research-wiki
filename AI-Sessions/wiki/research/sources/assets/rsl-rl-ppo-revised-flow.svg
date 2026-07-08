@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1120" viewBox="0 0 1800 1120">
+  <defs>
+    <style>
+      .bg { fill: #f7f6f2; }
+      .panel { fill: #ffffff; stroke: #242424; stroke-width: 3; rx: 18; }
+      .box { fill: #f3f4f6; stroke: #242424; stroke-width: 2.5; rx: 12; }
+      .blue { fill: #b9dcf4; }
+      .green { fill: #bcebc8; }
+      .yellow { fill: #ffe89a; }
+      .purple { fill: #d7c4fb; }
+      .pink { fill: #ffd0d0; }
+      .orange { fill: #ffd4a3; }
+      .gray { fill: #e8e8e8; }
+      .title { font: 700 38px Arial, sans-serif; fill: #111; }
+      .h2 { font: 700 25px Arial, sans-serif; fill: #111; }
+      .text { font: 20px Arial, sans-serif; fill: #111; }
+      .small { font: 16px Arial, sans-serif; fill: #111; }
+      .tiny { font: 14px Arial, sans-serif; fill: #111; }
+      .mono { font: 16px "Liberation Mono", Consolas, monospace; fill: #111; }
+      .arrow { stroke: #242424; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .dash { stroke-dasharray: 9 8; }
+      .note { fill: #fff8da; stroke: #aa7b00; stroke-width: 2; rx: 10; }
+      .bad { fill: #fff1f1; stroke: #cc3d3d; stroke-width: 2; rx: 10; }
+      .good { fill: #eefbef; stroke: #2f8f46; stroke-width: 2; rx: 10; }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <path d="M0,0 L12,4 L0,8 Z" fill="#242424"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1800" height="1120"/>
+  <text x="900" y="58" text-anchor="middle" class="title">RSL-RL PPO: corrected rollout -> update flow</text>
+
+  <rect x="48" y="94" width="792" height="920" class="panel"/>
+  <text x="444" y="142" text-anchor="middle" class="h2">1. Forward rollout collection</text>
+
+  <rect x="86" y="196" width="180" height="480" class="box green"/>
+  <text x="176" y="232" text-anchor="middle" class="h2">Env step t</text>
+  <text x="176" y="276" text-anchor="middle" class="text">obs_t</text>
+  <text x="176" y="320" text-anchor="middle" class="small">actor obs group</text>
+  <text x="176" y="354" text-anchor="middle" class="small">critic obs group</text>
+  <line x1="108" y1="388" x2="244" y2="388" stroke="#242424" stroke-width="2"/>
+  <text x="176" y="430" text-anchor="middle" class="text">action_t</text>
+  <text x="176" y="474" text-anchor="middle" class="text">reward_t</text>
+  <text x="176" y="516" text-anchor="middle" class="text">done_t</text>
+  <text x="176" y="558" text-anchor="middle" class="text">timeout_t</text>
+  <text x="176" y="612" text-anchor="middle" class="small">next obs appears</text>
+  <text x="176" y="638" text-anchor="middle" class="small">after env.step()</text>
+
+  <rect x="334" y="188" width="220" height="145" class="box blue"/>
+  <text x="444" y="227" text-anchor="middle" class="h2">Actor</text>
+  <text x="444" y="268" text-anchor="middle" class="text">obs_actor -> dist</text>
+  <text x="444" y="304" text-anchor="middle" class="small">sample action</text>
+
+  <rect x="334" y="438" width="220" height="128" class="box yellow"/>
+  <text x="444" y="480" text-anchor="middle" class="h2">Critic</text>
+  <text x="444" y="522" text-anchor="middle" class="text">obs_critic -> V_old</text>
+
+  <rect x="594" y="196" width="200" height="222" class="box purple"/>
+  <text x="694" y="233" text-anchor="middle" class="h2">Policy dist</text>
+  <text x="694" y="274" text-anchor="middle" class="text">Gaussian / Beta</text>
+  <text x="694" y="312" text-anchor="middle" class="small">params = mu, std</text>
+  <text x="694" y="338" text-anchor="middle" class="small">or alpha, beta, ...</text>
+  <line x1="624" y1="362" x2="764" y2="362" stroke="#242424" stroke-width="2"/>
+  <text x="694" y="392" text-anchor="middle" class="small">save old dist params</text>
+
+  <rect x="330" y="658" width="464" height="276" class="box"/>
+  <text x="562" y="694" text-anchor="middle" class="h2">RolloutStorage transition</text>
+  <rect x="358" y="724" width="176" height="42" class="box green"/><text x="446" y="751" text-anchor="middle" class="small">observations</text>
+  <rect x="558" y="724" width="208" height="42" class="box blue"/><text x="662" y="751" text-anchor="middle" class="small">actions</text>
+  <rect x="358" y="782" width="176" height="42" class="box yellow"/><text x="446" y="809" text-anchor="middle" class="small">rewards, dones</text>
+  <rect x="558" y="782" width="208" height="42" class="box yellow"/><text x="662" y="809" text-anchor="middle" class="small">values = V_old</text>
+  <rect x="358" y="840" width="176" height="42" class="box purple"/><text x="446" y="867" text-anchor="middle" class="small">old log_prob</text>
+  <rect x="558" y="840" width="208" height="42" class="box purple"/><text x="662" y="867" text-anchor="middle" class="small">old dist params</text>
+  <text x="562" y="914" text-anchor="middle" class="tiny">old dist params are mainly for KL/adaptive LR, not required for ratio</text>
+
+  <path d="M266 284 H334" class="arrow"/>
+  <path d="M554 260 H594" class="arrow"/>
+  <path d="M694 418 V658" class="arrow"/>
+  <path d="M444 333 V438" class="arrow dash"/>
+  <path d="M554 502 C640 502 690 574 690 658" class="arrow"/>
+  <path d="M266 436 C296 436 300 744 330 744" class="arrow"/>
+  <path d="M266 474 C300 474 308 800 330 800" class="arrow"/>
+
+  <rect x="82" y="720" width="206" height="154" class="note"/>
+  <text x="185" y="754" text-anchor="middle" class="h2">Add this</text>
+  <text x="185" y="792" text-anchor="middle" class="small">done mask in GAE</text>
+  <text x="185" y="822" text-anchor="middle" class="small">timeout bootstrap</text>
+  <text x="185" y="852" text-anchor="middle" class="small">advantage normalization</text>
+
+  <rect x="920" y="94" width="832" height="920" class="panel"/>
+  <text x="1336" y="142" text-anchor="middle" class="h2">2. Backward PPO update</text>
+
+  <rect x="984" y="188" width="298" height="128" class="box blue"/>
+  <text x="1133" y="226" text-anchor="middle" class="h2">Compute GAE / returns</text>
+  <text x="1133" y="264" text-anchor="middle" class="tiny">delta = r + gamma * V_next * mask - V</text>
+  <text x="1133" y="292" text-anchor="middle" class="tiny">A = delta + gamma * lambda * mask * A_next</text>
+
+  <rect x="1398" y="188" width="276" height="128" class="box blue"/>
+  <text x="1536" y="226" text-anchor="middle" class="h2">Mini-batches</text>
+  <text x="1536" y="264" text-anchor="middle" class="small">flatten env x steps</text>
+  <text x="1536" y="292" text-anchor="middle" class="small">repeat for learning epochs</text>
+
+  <rect x="1032" y="402" width="244" height="138" class="box green"/>
+  <text x="1154" y="440" text-anchor="middle" class="h2">Current actor</text>
+  <text x="1154" y="480" text-anchor="middle" class="small">actor_obs_batch -> new dist</text>
+  <text x="1154" y="510" text-anchor="middle" class="small">evaluate stored old action</text>
+
+  <rect x="1330" y="402" width="282" height="138" class="box yellow"/>
+  <text x="1471" y="440" text-anchor="middle" class="h2">Current critic</text>
+  <text x="1471" y="480" text-anchor="middle" class="small">critic_obs_batch -> V_new</text>
+  <text x="1471" y="510" text-anchor="middle" class="small">compare against return</text>
+
+  <rect x="1010" y="608" width="312" height="122" class="good"/>
+  <text x="1166" y="642" text-anchor="middle" class="h2">Correct PPO ratio</text>
+  <text x="1166" y="682" text-anchor="middle" class="mono">ratio = exp(logp_new(a_old)</text>
+  <text x="1166" y="710" text-anchor="middle" class="mono">              - logp_old(a_old))</text>
+
+  <rect x="1360" y="608" width="288" height="122" class="good"/>
+  <text x="1504" y="642" text-anchor="middle" class="h2">Value loss</text>
+  <text x="1504" y="682" text-anchor="middle" class="small">MSE(V_new, return)</text>
+  <text x="1504" y="710" text-anchor="middle" class="small">or clipped value loss</text>
+
+  <rect x="1010" y="778" width="312" height="112" class="box blue"/>
+  <text x="1166" y="812" text-anchor="middle" class="h2">Actor surrogate</text>
+  <text x="1166" y="852" text-anchor="middle" class="small">max(-A*ratio, -A*clipped_ratio)</text>
+
+  <rect x="1360" y="778" width="288" height="112" class="box purple"/>
+  <text x="1504" y="812" text-anchor="middle" class="h2">KL / entropy</text>
+  <text x="1504" y="852" text-anchor="middle" class="small">KL uses old/new dist params</text>
+
+  <rect x="1156" y="932" width="350" height="54" class="box pink"/>
+  <text x="1331" y="966" text-anchor="middle" class="h2">loss.backward -> grad clip -> optimizer.step</text>
+
+  <path d="M1282 252 H1398" class="arrow"/>
+  <path d="M1536 316 V364 C1536 384 1484 384 1471 402" class="arrow dash"/>
+  <path d="M1536 316 V364 C1536 384 1190 384 1154 402" class="arrow dash"/>
+  <path d="M1154 540 V608" class="arrow"/>
+  <path d="M1471 540 V608" class="arrow"/>
+  <path d="M1166 730 V778" class="arrow"/>
+  <path d="M1504 730 V778" class="arrow"/>
+  <path d="M1166 890 C1166 922 1250 932 1331 932" class="arrow"/>
+  <path d="M1504 890 C1504 922 1414 932 1331 932" class="arrow"/>
+
+  <rect x="958" y="336" width="310" height="58" class="bad"/>
+  <text x="1113" y="362" text-anchor="middle" class="tiny">Update uses stored actions;</text>
+  <text x="1113" y="382" text-anchor="middle" class="tiny">do not resample during update</text>
+
+  <rect x="1372" y="336" width="292" height="58" class="note"/>
+  <text x="1518" y="362" text-anchor="middle" class="tiny">old dist params -> KL;</text>
+  <text x="1518" y="382" text-anchor="middle" class="tiny">not the main ratio path</text>
+</svg>

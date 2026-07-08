@@ -40,6 +40,8 @@ research 작업 때만 읽는 on-demand 인벤토리다. 새 paper/source/catego
 - 2025-luo-gcnt - GCNT: GCN(local)+WL(global) morphology 추출 → q/k 주입 + full attention, morphology-agnostic RL
 - 2026-shin-abd-net - ABD-NET: ABA forward dynamics 구조를 GNN policy actor에 임베드, G1/Go2 sim-to-real
 - 2025-zhou-hyper-gcn - Hyper-GCN: adaptive non-uniform hyper-graph(multi-joint synergy) + virtual hyper-joint(global hub) + Divergence Loss, skeleton HAR
+- 2025-liu-mash - MASH: limb(팔/다리)=agent MARL(MAPPO)+shared-parameter actor+global critic, 단일 휴머노이드 locomotion coordination
+- 2026-miao-gt-td3 - GT-TD3: GCN(local)+kinematic-aware biased-attention Transformer(global) actor + 무수정 TD3, 7-DoF manipulator 궤적 추종
 
 ### Sources
 
@@ -69,3 +71,4 @@ research 작업 때만 읽는 on-demand 인벤토리다. 새 paper/source/catego
 - 2026-06-25-g1-tracking-baseline - mjlab built-in Unitree G1 motion imitation/tracking PPO baseline before BoT actor comparison
 - 2026-06-28-g1-centroidal-cmm-vs-baselines - graph_centroidal task에서 CMM 주입 Transformer(v0) vs Topology/BoT/GCNT 4-way (planned)
 - 2026-06-29-g1-29dof-vanilla-bot - CMM/centroidal-root 확장 전 gate: mjlab 29-DOF G1 task에서 Vanilla BoT가 유의미한지 확인 (planned)
+- 2026-07-08-g1-limb-marl-gcn-token-critic - 22-DOF 4-limb MARL: limb-local GCN actor ×4 + BoT token-group critic, MASH식 독립 task 설계 (planned)

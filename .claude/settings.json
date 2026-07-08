@@ -16,7 +16,19 @@
       "Bash(./scripts/wiki_doctor.sh)",
       "Bash(git rev-list *)",
       "Bash(echo \"main↔origin/develop ahead/behind: $\\(git rev-list --left-right --count main...origin/develop \\)\")",
-      "Bash(git branch *)"
+      "Bash(git branch *)",
+      "WebFetch(domain:www.mdpi.com)",
+      "Bash(git -C /home/frlab/mj_rl log --oneline a0fdf20..63f0e3d)",
+      "Bash(git commit *)",
+      "Bash(pdftotext \"/home/frlab/research-wiki/AI-Sessions/raw/papers/2025-luo-gcnt.pdf\" gcnt.txt)",
+      "Bash(/home/frlab/anaconda3/envs/mjlab_env/bin/python -m pytest tests/test_gcn.py -q)",
+      "Bash(/home/frlab/anaconda3/envs/mjlab_env/bin/python -m unittest tests.test_gcn -v)",
+      "Bash(/home/frlab/anaconda3/envs/mjlab_env/bin/python -)",
+      "Bash(git clone *)",
+      "Bash(curl -sL -A \"Mozilla/5.0 \\(X11; Linux x86_64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36\" \"https://www.mdpi.com/2075-1702/14/4/397/pdf\" -o gt-td3.pdf --max-time 90)",
+      "Bash(curl -s -A \"Mozilla/5.0 \\(X11; Linux x86_64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36\" -e \"https://www.mdpi.com/2075-1702/14/4/397\" -H \"Accept: application/pdf\" -o gt-td3b.pdf -w \"%{http_code}\\\\n\" \"https://www.mdpi.com/2075-1702/14/4/397/pdf?version=1\")",
+      "Bash(scripts/wiki_doctor.sh)",
+      "Bash(pdfinfo /home/frlab/mj_rl/machines-14-00397-v2.pdf)"
     ],
     "additionalDirectories": [
       "/home/frlab",

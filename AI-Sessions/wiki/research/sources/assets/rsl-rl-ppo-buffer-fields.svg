@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="920" viewBox="0 0 1500 920">
+  <defs>
+    <style>
+      .bg { fill: #f7f6f2; }
+      .card { fill: #ffffff; stroke: #222; stroke-width: 3; rx: 18; }
+      .box { fill: #f2f4f7; stroke: #222; stroke-width: 2.2; rx: 10; }
+      .green { fill: #bcebc8; }
+      .blue { fill: #b9dcf4; }
+      .yellow { fill: #ffe89a; }
+      .purple { fill: #d7c4fb; }
+      .pink { fill: #ffd0d0; }
+      .title { font: 700 36px Arial, sans-serif; fill: #111; }
+      .h2 { font: 700 25px Arial, sans-serif; fill: #111; }
+      .text { font: 20px Arial, sans-serif; fill: #111; }
+      .small { font: 16px Arial, sans-serif; fill: #111; }
+      .mono { font: 16px "Liberation Mono", Consolas, monospace; fill: #111; }
+      .arrow { stroke: #222; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <path d="M0,0 L12,4 L0,8 Z" fill="#222"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1500" height="920"/>
+  <text x="750" y="58" text-anchor="middle" class="title">What to store in RSL-RL PPO rollout buffer</text>
+
+  <rect x="64" y="108" width="400" height="700" class="card"/>
+  <text x="264" y="154" text-anchor="middle" class="h2">During act(obs)</text>
+  <rect x="104" y="204" width="320" height="70" class="box green"/>
+  <text x="264" y="246" text-anchor="middle" class="text">observations</text>
+  <rect x="104" y="302" width="320" height="70" class="box blue"/>
+  <text x="264" y="344" text-anchor="middle" class="text">actions = actor.sample()</text>
+  <rect x="104" y="400" width="320" height="70" class="box yellow"/>
+  <text x="264" y="442" text-anchor="middle" class="text">values = critic(obs)</text>
+  <rect x="104" y="498" width="320" height="70" class="box purple"/>
+  <text x="264" y="540" text-anchor="middle" class="text">actions_log_prob</text>
+  <rect x="104" y="596" width="320" height="88" class="box purple"/>
+  <text x="264" y="632" text-anchor="middle" class="text">distribution_params</text>
+  <text x="264" y="660" text-anchor="middle" class="small">mu/std or alpha/beta etc.</text>
+
+  <rect x="550" y="108" width="400" height="700" class="card"/>
+  <text x="750" y="154" text-anchor="middle" class="h2">After env.step(action)</text>
+  <rect x="590" y="220" width="320" height="70" class="box yellow"/>
+  <text x="750" y="262" text-anchor="middle" class="text">rewards</text>
+  <rect x="590" y="328" width="320" height="70" class="box yellow"/>
+  <text x="750" y="370" text-anchor="middle" class="text">dones</text>
+  <rect x="590" y="436" width="320" height="96" class="box pink"/>
+  <text x="750" y="474" text-anchor="middle" class="text">time_outs extra</text>
+  <text x="750" y="504" text-anchor="middle" class="small">reward += gamma * V_old * timeout</text>
+  <rect x="590" y="592" width="320" height="92" class="box green"/>
+  <text x="750" y="628" text-anchor="middle" class="text">add_transition()</text>
+  <text x="750" y="658" text-anchor="middle" class="small">then clear temporary transition</text>
+
+  <rect x="1036" y="108" width="400" height="700" class="card"/>
+  <text x="1236" y="154" text-anchor="middle" class="h2">Used later in update</text>
+  <rect x="1076" y="210" width="320" height="86" class="box purple"/>
+  <text x="1236" y="246" text-anchor="middle" class="text">old_actions_log_prob</text>
+  <text x="1236" y="274" text-anchor="middle" class="small">ratio denominator</text>
+  <rect x="1076" y="324" width="320" height="86" class="box purple"/>
+  <text x="1236" y="360" text-anchor="middle" class="text">old_distribution_params</text>
+  <text x="1236" y="388" text-anchor="middle" class="small">KL / adaptive learning rate</text>
+  <rect x="1076" y="438" width="320" height="86" class="box yellow"/>
+  <text x="1236" y="474" text-anchor="middle" class="text">values = V_old</text>
+  <text x="1236" y="502" text-anchor="middle" class="small">GAE and value clipping</text>
+  <rect x="1076" y="552" width="320" height="86" class="box blue"/>
+  <text x="1236" y="588" text-anchor="middle" class="text">actions</text>
+  <text x="1236" y="616" text-anchor="middle" class="small">stored old action is re-evaluated</text>
+
+  <path d="M464 640 H550" class="arrow"/>
+  <path d="M950 638 H1036" class="arrow"/>
+  <path d="M464 532 C510 532 512 252 550 252" class="arrow"/>
+  <path d="M950 484 C1000 484 1008 482 1036 482" class="arrow"/>
+
+  <text x="750" y="858" text-anchor="middle" class="mono">Mental model: store old action + old log_prob + old value + old dist params; update computes new log_prob and new value.</text>
+</svg>
