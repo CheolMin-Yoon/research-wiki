@@ -12,6 +12,7 @@ status: active
 
 ## 소속 논문 (ingested)
 - [[AI-Sessions/wiki/research/papers/2013-orin-centroidal-dynamics|2013-orin-centroidal-dynamics]] — centroidal dynamics를 로봇 전신 운동량 관점에서 정식화한 기반 논문.
+- [[AI-Sessions/wiki/research/papers/2023-gao-hybrid-momentum-arm-compensation|2023-gao-hybrid-momentum-arm-compensation]] — 팔 swing의 angular+linear momentum으로 dynamic walking disturbance를 보상하는 model-based WBC/QP.
 
 ## To-ingest backlog (미수록 — raw/wiki에 아직 없음)
 - Capture Point: A Step toward Humanoid Push Recovery 2006

@@ -36,12 +36,16 @@ research 작업 때만 읽는 on-demand 인벤토리다. 새 paper/source/catego
 - 2017-vaswani-attention - Attention Is All You Need
 - 2024-sferrazza-body-transformer - Body Transformer, embodiment graph masked attention
 - 2013-orin-centroidal-dynamics - Centroidal dynamics & CMM
+- 2023-gao-hybrid-momentum-arm-compensation - 팔 swing의 angular+linear momentum으로 biped dynamic walking disturbance를 보상하는 WBC/QP
 - 2021-ying-graphormer - Graphormer: SPD·degree·edge encoding으로 GNN을 Transformer special case로 포괄
 - 2025-luo-gcnt - GCNT: GCN(local)+WL(global) morphology 추출 → q/k 주입 + full attention, morphology-agnostic RL
 - 2026-shin-abd-net - ABD-NET: ABA forward dynamics 구조를 GNN policy actor에 임베드, G1/Go2 sim-to-real
 - 2025-zhou-hyper-gcn - Hyper-GCN: adaptive non-uniform hyper-graph(multi-joint synergy) + virtual hyper-joint(global hub) + Divergence Loss, skeleton HAR
 - 2025-liu-mash - MASH: limb(팔/다리)=agent MARL(MAPPO)+shared-parameter actor+global critic, 단일 휴머노이드 locomotion coordination
 - 2026-miao-gt-td3 - GT-TD3: GCN(local)+kinematic-aware biased-attention Transformer(global) actor + 무수정 TD3, 7-DoF manipulator 궤적 추종
+- 2025-butterfield-mi-hgnn - MI-HGNN: URDF/kinematic topology 기반 heterogeneous graph(base/joint/foot)로 contact/GRF supervised learning
+- 2025-xie-ms-hgnn - MS-HGNN: MI-HGNN에 morphological symmetry group, node orbit, physical sign encoder/decoder를 결합한 dynamics HGNN
+- 2025-wei-ms-ppo - MS-PPO: MS-style symmetry graph representation을 PPO actor-critic에 적용, equivariant actor + invariant critic
 
 ### Sources
 
@@ -49,7 +53,7 @@ research 작업 때만 읽는 on-demand 인벤토리다. 새 paper/source/catego
 
 - frameworks: mj-rl (active implementation: Unitree G1 humanoid locomotion RL), mjlab-code, rsl-rl-code, mj-control-code
 - dynamics/gpu: modern-robotics-code, casadi-on-gpu-code (mj_rl `source/assets/cuda` GPU 백엔드)
-- policy/refs: body-transformer-code, graph-transformer-code, 2024-lee-footstep-planning-rl-code, 2025-lee-humanoid-arm-cam-marl-code, mpc-rl-code (mjlab push-box loco-manipulation reference)
+- policy/refs: body-transformer-code, graph-transformer-code, 2024-lee-footstep-planning-rl-code, 2025-lee-humanoid-arm-cam-marl-code, mpc-rl-code (mjlab push-box loco-manipulation reference), mi-hgnn-code, ms-hgnn-code
 
 ### Categories
 

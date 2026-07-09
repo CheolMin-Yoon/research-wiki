@@ -46,6 +46,7 @@ centroidal momentum은 정의상 $h_G = A_G(q)\,\dot q$, $\dot h_G = \sum_i \tex
 - **Body Transformer**: morphology token + adjacency hard/mixed mask. 구조 bias는 static kinematic adjacency이고 token화는 node-type별 Linear.
 - **GCNT**: GCN+WL morphology extraction + full attention + learnable distance/SPD soft-bias. GCN+hard-mask 중복을 피하고 morphology feature를 q/k로 주입한다.
 - **ABD-Net**: ABA forward-dynamics 구조(child→parent)를 GNN message passing에 임베드. 단 inertia/motion-subspace를 learnable($B_i, W_i$)로 두어 dynamics를 *학습*한다. node=link(ABA가 rigid-body 재귀라서), action=joint.
+- **MI-HGNN → MS-HGNN → MS-PPO**: MI-HGNN은 kinematic topology를 heterogeneous graph(base/joint/foot)로 만드는 문법이고, MS-HGNN은 여기에 morphological symmetry group(node orbit + physical sign encoder/decoder)을 붙인다. MS-PPO는 그 contract를 RL actor-critic으로 올려 actor equivariance와 critic invariance를 만든다.
 - **Graphormer**: attention logit에 spatial/edge/degree bias를 더하는 soft-bias 원형.
 - **이 아이디어의 차별점**: 구조 bias의 출처를 static distance/adjacency가 아니라 **state-dependent physical quantity(CMM, wrench)**로 두고, morphology token에 **centroidal token**을 추가한다. 단일 G1 scope에서는 morphology-agnostic universality보다 물리 coupling 표현이 우선이다. 정밀 비교는 아래 "관계 정답지로서의 CMM" 참조.
 
@@ -86,6 +87,41 @@ BoT는 kinematic tree를 가져가는 architecture이므로, 순수 BoT의 token
 | contact edge | measured/estimated wrench, contact state | site token이 $\dot h_G$와 force redistribution에 주는 효과 |
 
 이때 CMM과 dCMM은 예측 label이 아니라 계산해서 주는 physical context다. 학습 대상은 `A_G`나 `\dot A_G`를 맞히는 것이 아니라, 그 물리 좌표계를 보고 어떤 joint/contact/action이 centroidal burden을 부담할지 결정하는 policy다. 즉 QP/WBC가 명시적으로 푸는 contact wrench allocation을, morphology+CMM+contact-conditioned RL policy가 interaction과 task/centroidal reward로 암묵 학습하게 한다.
+
+## 2026-07-09 정제: MS-style symmetry contract for G1 WBC
+
+MS-PPO가 최종 참조점이면 단순 graph topology보다 **morphological symmetry contract**가 먼저다. rsl_rl식 mirror augmentation은 학습 데이터를 대칭으로 늘리는 장치이고, MS-style 구조는 네트워크 함수공간 자체를 다음처럼 제한한다.
+
+| 구성 | 목표 |
+|---|---|
+| node orbit | left/right 또는 replicated body part의 graph permutation 정의 |
+| physical sign mask | mirror 시 raw feature/action 좌표의 부호 변환 정의 |
+| symmetry encoder | physical transform을 graph reindexing으로 바꾼다 |
+| equivariant actor | `pi(mirror(obs)) = mirror(pi(obs))` |
+| invariant critic | `V(mirror(obs)) = V(obs)` |
+
+G1 WBC momentum에는 **2 actor upper/lower**가 4 actor limb 분할보다 MS-style 주장에 더 맞다.
+
+```text
+lower actor graph:
+  pelvis
+  left_hip, left_knee, left_ankle
+  right_hip, right_knee, right_ankle
+
+upper actor graph:
+  torso
+  left_shoulder, left_elbow, left_wrist
+  right_shoulder, right_elbow, right_wrist
+```
+
+- `pelvis`는 lower locomotion/support core node.
+- `torso`는 upper momentum/posture core node.
+- left/right limb complex nodes define C2 orbits.
+- node는 반드시 scalar joint 또는 physical link와 1:1일 필요가 없다. MS-PPO G1도 hip/knee/ankle joint-complex node를 사용한다.
+- CMM/CAM contribution은 scalar joint별로만 넣기보다 hip/knee/ankle, shoulder/elbow/wrist complex별 sum/mean/projection으로 올리는 편이 해부학적 node와 더 잘 맞는다.
+- critic은 upper/lower graph를 모두 읽되 invariant head를 써서 symmetric states에 같은 value를 주도록 한다.
+
+이 방향의 차별점은 "MS-PPO 복제"가 아니라 **MS-style morphology-symmetry graph + CMM/CAM-conditioned WBC momentum feature**다.
 
 실험 명명은 다음처럼 분리한다.
 
@@ -163,6 +199,6 @@ C1은 baseline, C2/C3는 structure guide 변이다.
 ## Links
 
 - 관련 category: [[centroidal-wbc]] · [[rl-algorithms-frameworks]] · [[morphology-aware-policy]] · [[graph-transformer-rl]] · [[loco-manipulation]] · [[dynamics-guided-rl]] · [[novelty]]
-- 근거 논문: 2024-sferrazza-body-transformer · 2025-luo-gcnt · 2026-shin-abd-net · 2021-ying-graphormer · 2013-orin-centroidal-dynamics · 2024-lee-footstep-planning-rl · 2025-lee-humanoid-arm-cam-marl
+- 근거 논문: 2024-sferrazza-body-transformer · 2025-luo-gcnt · 2026-shin-abd-net · 2021-ying-graphormer · 2013-orin-centroidal-dynamics · 2023-gao-hybrid-momentum-arm-compensation · 2024-lee-footstep-planning-rl · 2025-lee-humanoid-arm-cam-marl · 2025-butterfield-mi-hgnn · 2025-xie-ms-hgnn · 2025-wei-ms-ppo
 - 실험 계획: [[AI-Sessions/wiki/research/experiments/2026-06-28-g1-centroidal-cmm-vs-baselines|2026-06-28-g1-centroidal-cmm-vs-baselines]] (4-way 비교, H2=CAM reward ablation으로 representation vs reward 검증)
 - raw 원본: AI-Sessions/raw/ideas/physical-feature-graph.md

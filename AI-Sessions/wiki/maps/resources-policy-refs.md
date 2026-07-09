@@ -14,6 +14,8 @@ status: active
 - [[AI-Sessions/wiki/research/sources/2024-lee-footstep-planning-rl-code|2024-lee-footstep-planning-rl-code]]
 - [[AI-Sessions/wiki/research/sources/2025-lee-humanoid-arm-cam-marl-code|2025-lee-humanoid-arm-cam-marl-code]]
 - [[AI-Sessions/wiki/research/sources/mpc-rl-code|mpc-rl-code]]
+- [[AI-Sessions/wiki/research/sources/mi-hgnn-code|mi-hgnn-code]]
+- [[AI-Sessions/wiki/research/sources/ms-hgnn-code|ms-hgnn-code]]
 
 ## Summary
 

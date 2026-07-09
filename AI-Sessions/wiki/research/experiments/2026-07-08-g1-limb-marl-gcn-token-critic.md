@@ -3,7 +3,7 @@ tags: [tier/low]
 type: experiment
 date: 2026-07-08
 status: active
-source: mj_rl source/tasks (planned independent task package)
+source: mj_rl source/tasks/wbc_momentum
 related_papers: AI-Sessions/wiki/research/papers/2025-liu-mash.md, AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer.md
 related_sources: AI-Sessions/wiki/research/sources/mj-rl.md
 ---
@@ -113,7 +113,7 @@ source/tasks/wbc_momentum/
                                       #   자기 limb slice) + whole-body Mapping(critic 전용)
   agent/
     __init__.py
-    rsl_rl_wbc_momentum_ppo_cfg.py   # MultiAgentRlCfg: ActorUnitCfg 4개(GCNActor) +
+    rsl_rl_ctde_ppo_cfg.py           # MultiAgentRlCfg: ActorUnitCfg 4개(GCNActor) +
                                       #   CriticUnitCfg 1개(TokenGroupCritic, value_keys 4개)
   mdp/
     __init__.py
@@ -139,22 +139,118 @@ source/tasks/wbc_momentum/
 - leg unit: 기존 centroidal leg 세팅 (lr=4.1e-4, clip≈0.121, γ≈0.975, std_range=(0.05,2.0)).
 - arm unit: conservative 세팅 condition B (init_std=0.5, std_range=(0.05,1.0), clip=0.05, lr=1e-5, entropy=0.0, zero_init_last_layer) — 근거: [[AI-Sessions/wiki/research/experiments/2026-06-28-g1-centroidal-cmm-vs-baselines|2026-06-28-g1-centroidal-cmm-vs-baselines]] 2026-07-05 ablation.
 
+## Run Matrix / Current Interpretation (2026-07-08)
+
+Baseline comparison target is not only WBC A vs B, but **centroidal modular 2-policy** vs WBC 4-limb CTDE. Centroidal uses arm entropy `0.0`; therefore WBC runs intended for architectural comparison should also use arm entropy `0.0`.
+
+| Label | Output dir | Main cfg | Arm entropy | Note |
+|---|---|---|---:|---|
+| Centroidal baseline | `/home/frlab/mj_rl/outputs/g1_centroidal/2026-07-07_21-21-28` | 2 actor + 2 MLP critic (`leg`, `arm`) | 0.0 | Stable reference; 3000 iter complete. |
+| WBC A-entropy | `/home/frlab/mj_rl/outputs/g1_wbc_momentum/2026-07-08_21-10-09` | 4 GCN actors + shared token critic, `include_base_token=True`, critic `node_mlp_layers=1` | 0.01 | Not fair vs centroidal because arm entropy differs; useful as "can WBC tolerate arm exploration?" side run. |
+| WBC B0 | `/home/frlab/mj_rl/outputs/g1_wbc_momentum/2026-07-08_21-58-37` | same, `include_base_token=False`, critic `node_mlp_layers=1` | 0.0 | Cleaner against centroidal entropy, but base-token ablation only; at early steps B0 improved reward vs A-entropy yet termination remained noisy. |
+| **WBC A0-token2** | next run, `run_name=A0-token2` | `include_base_token=True`, `broadcast_global_to_joints=True`, critic `node_mlp_layers=2` | 0.0 | Current next experiment: match centroidal arm entropy, restore base token, strengthen critic tokenizer to GT-TD3-style 2-layer token lifting. |
+
+Same-step event readback before A0-token2:
+
+| Step | Metric | Centroidal | WBC A-entropy | WBC B0 |
+|---:|---|---:|---:|---:|
+| 205 | mean reward | 43.24 | 41.62 | 43.51 |
+| 205 | episode length | 243.88 | 235.51 | 237.32 |
+| 205 | leg tracking xy | 7.85 | 7.05 | 7.16 |
+| 205 | arm CAM reward | 1.12 | 1.66 | 1.32 |
+| 205 | bad contact terminations | 0.63 | 0.71 | 0.88 |
+
+Interpretation: WBC already gives stronger arm CAM reward in A-entropy, but centroidal remains the stability reference. B0's early mean reward can match centroidal, yet its termination metrics are not clearly better. A0-token2 tests whether the shared token critic was under-tokenizing `q/dq/last_action/cam/dcam` by using 2-layer node MLP while keeping the centroidal-compatible conservative arm entropy.
+
+### CAM frame alignment decision (2026-07-08)
+
+Current A0-token2 keeps the existing RAL2025-style reward surface unchanged and treats reward as the fixed comparison contract. The inherited CAM reward semantics are mixed-frame: CAM xy terms are body/base-frame stabilization signals, while CAM z tracking is world-vertical yaw momentum. In contrast, current WBC token features use a full base-frame per-joint projection (`k_j^b · e_cam^b`, `dk_j^b · e_cam^b`) because the CMM column and CAM error must share one frame for the scalar projection to be physically interpretable.
+
+Decision: **do not change rewards during A0-token2**. Changing reward now would confound architecture/tokenizer effects with objective changes. Finish A0-token2 first, compare it against WBC A-entropy, WBC B0, and the centroidal baseline, then run a token-only frame-alignment ablation if needed.
+
+Planned next ablation: `A0-token2-mixed` (name tentative). Keep rewards fixed, but align token semantics to the RAL2025 mixed-frame objective, e.g. base-frame xy contribution plus world-frame z/yaw contribution, or separate xy and z CAM-credit features. If mixed tokens improve stability or CAM tracking, the conclusion is that reward/feature frame alignment matters. If not, full base-frame projection is sufficient for near-upright locomotion and remains the cleaner graph-token representation.
+
+### Upper/lower context-node hypothesis (2026-07-09)
+
+New structural hypothesis: CTDE centroidal MARL does **not** need to compress all global/centroidal information into one shared `base` token, nor does every limb actor need to receive the same base context. A single base token can become an information bottleneck and an overly broad shared context: locomotion/support features, command/phase, torso/gravity, and CAM compensation have different relevance for legs and arms.
+
+Proposed replacement: split the context into two semantic nodes.
+
+- `lower` node: locomotion/support context for both leg actors — base velocity, command, phase/contact schedule, projected gravity, support-related state.
+- `upper` node: torso/arm/CAM-compensation context for both arm actors — CAM/dCAM, torso angular state, upper-body momentum compensation state.
+- critic: centralized token set includes both `lower` and `upper` nodes plus all 22 joint tokens, so upper-lower coupling is still visible to the value model.
+
+Actor routing:
+
+```text
+left_leg/right_leg  actor: lower node + own leg joint tokens
+left_arm/right_arm  actor: upper node + own arm joint tokens
+critic: lower node + upper node + whole-body joint tokens
+```
+
+Interpretation: this keeps decentralized execution while removing the requirement that one base token represent both walking stabilization and arm momentum compensation. It also matches the physical role split: lower body maintains locomotion/support; upper body provides CAM/torso compensation. Run this after optimizer stabilization, before changing the reward surface.
+
+### MS-style 2-actor redesign hypothesis (2026-07-09)
+
+After ingesting MI-HGNN/MS-HGNN/MS-PPO, the stronger structural hypothesis is to move from 4 independent limb actors toward **2 morphology-symmetry actors**:
+
+```text
+lower actor:
+  pelvis + left/right hip/knee/ankle complex nodes -> 12D leg action
+
+upper actor:
+  torso + left/right shoulder/elbow/wrist complex nodes -> 10D arm action
+```
+
+Rationale:
+
+- MS-PPO's G1 construction does not require one node per actuated DoF; it groups lower-body DoFs into hip/knee/ankle joint-complex nodes.
+- A 2-actor upper/lower split lets left/right live inside one actor graph, so C2 equivariance can be enforced structurally instead of making left and right actors learn compatible behavior separately.
+- `pelvis` and `torso` are self-orbit context/core nodes and naturally separate lower support/locomotion from upper CAM/posture compensation.
+- The current `modules/symmetry.py` mirror augmentation remains useful as a physical sign/permutation contract, but MS-style actor/critic requires node orbit, feature sign masks, action decoder masks, and invariant critic readout on top.
+
+This is a next-generation architecture track after optimizer stabilization. It should be compared against the current 4-limb CTDE GCN actor setup, not mixed into A0-token2.
+
+### Experiment notation decision (2026-07-09)
+
+Future WBC experiment records should make model capacity explicit with `width x layers` notation. The main comparison axes are:
+
+- `gcn=64x4`: morphology/graph message-passing encoder width 64, 4 layers.
+- `token=64x2`: node/token observation MLP width 64, 2 layers.
+- `critic=64xN`: critic encoder/head width and layer count when it differs from the actor.
+
+Use these in run names or table columns instead of only prose labels. Example: `M1-morph2-eq-gcn64x4-token64x2`. This keeps architecture changes separable from PPO hyperparameters, which are intentionally matched to the centroidal leg/arm settings.
+
+### Next ablation order (2026-07-09)
+
+After the current `M1-morph2-eq`/`gcn64x4-token64x2` run, keep PPO parameters and graph depth fixed and isolate the token-feature choices:
+
+1. `gcn64x4-token64x1`: reduce node/token observation MLP from 2 layers to 1 layer while keeping the 5-D joint token features (`q`, `dq`, `last_action`, `cam`, `dcam`). This tests whether the CMM scalar credit features need only a shallow/near-linear lift.
+2. `gcn64x4-token64x1-noCMM`: remove the two CMM-derived joint scalar features and use only `q`, `dq`, `last_action` per joint. This tests whether joint-level CMM credit is adding useful signal beyond state/action history and base-node CAM context.
+
+Interpretation target: if `token64x1` is more stable than `token64x2`, the 2-layer token MLP may be over-amplifying weak scalar credit. If `noCMM` is comparable, the current joint-level CMM scalars are weak under this reward/frame setup and should be treated as optional rather than core.
+
 ## Open Items
 
 - limb별 phase offset(temporal director) 주입 여부.
 - 좌/우 shared-parameter actor 지원 여부 — 지원하려면 `MultiAgentPPO`/`ActorUnitCfg` 계약 확장 필요.
-- ~~critic `include_base_token`~~ → **True로 확정** (2026-07-08): limb value head가 BoT 인코딩된 base+limb token을 함께 pooling — "critic 헤드 4개가 base node + limb node를 묶어 advantage 산출" 의도의 구현.
+- MS-style 2-actor redesign: lower actor(pelvis + hip/knee/ankle C2 graph) and upper actor(torso + shoulder/elbow/wrist C2 graph), with equivariant actor and invariant critic. This likely supersedes pure 4-limb actors if symmetry is the core research claim.
+- critic `include_base_token`: ablation axis. `True` = base token + limb token pooling, `False` = limb token pooling only. Fair centroidal comparison must hold arm entropy fixed.
 - ~~explicit base node ablation~~ → **core node가 v0로 승격** (위 "base 주입 결정 개정"). 반대 방향 ablation(broadcast 버전, core star 대신 chain-only)이 이제 후속 항목.
 - baseline 비교 대상: MLP 4-limb(MASH-faithful) vs GCN 4-limb vs 기존 leg/arm 2-policy.
+- A0-token2 이후: if stability still trails centroidal, test `broadcast_global_to_joints=False, include_base_token=True` so base context is read only at value-head pooling and not mixed into every joint token.
+- A0-token2 이후: compare full base-frame CAM-credit token vs RAL2025-aligned mixed-frame CAM-credit token before touching the reward surface.
+- A0-token2 이후: test `upper/lower` context-node split so leg actors read lower locomotion context and arm actors read upper/CAM context, while the centralized critic reads both.
 
 ## Status / Next
 
-- status: **planned** (설계 확정, task 패키지 미구현 — 사용자 구현 예정).
-- 1) task 패키지(env_cfg+mdp+mapping+agent) 구현 → 2) smoke(forward/shape) → 3) 2-policy modular 대비 sanity → 4) baseline 비교.
+- status: **active implementation + early training**. Task package exists at `/home/frlab/mj_rl/source/tasks/wbc_momentum`; early WBC A/B runs are under `/home/frlab/mj_rl/outputs/g1_wbc_momentum`.
+- next: run `A0-token2` at least to the same comparison windows (≈205 and ≈500 iter), then compare against centroidal baseline on reward, episode length, termination rates, leg tracking, arm CAM reward, and dCAM penalty.
 
 ## Links
 
 - paper: [[AI-Sessions/wiki/research/papers/2025-liu-mash|2025-liu-mash]] (limb=agent MARL 원형)
+- paper: [[AI-Sessions/wiki/research/papers/2025-wei-ms-ppo|2025-wei-ms-ppo]] (morphological symmetry PPO target)
 - source: [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]] (GCNActor·TokenGroupCritic·MultiAgentRlCfg 계약)
 - category: [[AI-Sessions/wiki/research/categories/morphology-aware-policy|morphology-aware-policy]]
 - 선행 hyperparameter 근거: [[AI-Sessions/wiki/research/experiments/2026-06-28-g1-centroidal-cmm-vs-baselines|2026-06-28-g1-centroidal-cmm-vs-baselines]]
