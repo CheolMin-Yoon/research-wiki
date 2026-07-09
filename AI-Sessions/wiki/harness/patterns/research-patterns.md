@@ -87,6 +87,45 @@ Better approach:
 
 근거·수치 정본: AI-Sessions/wiki/research/experiments/2026-06-27-cusadi-vs-casadi-on-gpu-g1.md (해당 환경에서 casadi-on-gpu가 ~10–20× 우세).
 
+## Positive Pattern — 좌우 대칭(C2) GCN 관절 관측을 mirror-safe하게 설계하기
+
+morphology GCN actor/critic에 CMM 기반 per-joint feature(예: 각운동량 생성
+capacity, 목표 방향 정렬도)를 추가할 때 mirror(`obs_mirror`/`action_mirror`)
+부호를 올바르게 유도하고 검증하는 순서. isaac_humanoid의 `gcn_ctde` task에서
+`cam_projection`(오차 projection) → `cam_capacity_x/y/z` + `cam_des_alignment`
+(코사인 정렬)로 feature를 바꾸며 처음 정식으로 도출·검증했다.
+
+1. **raw error/가속도 기반 feature를 관측에 그대로 넣지 않는다.** `CAM_des - CAM`
+   같은 오차는 평상시 거의 0이다가 외란/리셋 순간에만 스파이크한다 — 이런
+   "보통 0, 가끔 큰 값" 통계는 online running-normalization(`EmpiricalNormalization`)이
+   작은 std로 수렴한 상태에서 스파이크가 오면 정규화 후 값이 오히려 증폭된다.
+   `dCMM`/`ddq` 기반 dCAM도 접촉 임팩트 순간 가속도가 튀는 물리량이라 마찬가지로
+   위험하다. 대신 raw 상태(pose-only capacity, dq/ddq 없음)나 코사인처럼 구조적으로
+   bounded인 quantity를 우선한다.
+2. **per-joint pseudovector feature의 mirror 부호 = 축 부호 × 관절 부호.**
+   `CM_ang = CMM_angular @ dq`가 미러 하에서도 성립해야 한다는 물리적 제약에서
+   유도된다: 관절 속도의 자기 부호(`leg_rep.sign[j]`, 기존 joint_pos/vel mirror가
+   이미 씀)와 그 축이 pseudovector로서 갖는 부호(`PSEUDOVECTOR_B_SIGN[axis]`)의
+   곱이 결합 부호다. 관절 permutation(좌우 스왑)도 기존 joint_pos/vel과
+   동일하게 적용해야 한다 — "이 term은 3-wide니까 축 부호만 있으면 된다"고
+   단순화하면 permutation을 빠뜨리는 실수를 하기 쉽다(실제로 이 프로젝트의
+   구 코드가 그랬다: 18-wide term에 축 부호 3개만 채우고 관절 permutation은
+   아예 안 함).
+3. **두 pseudovector의 내적(코사인 유사도 등)은 축 부호가 소거된다.** 두
+   벡터 모두 같은 축별 부호를 받으므로 내적에서 `sign^2=1`로 사라지고, 관절
+   자신의 mirror 부호만 남는다. "내적이라 mirror에 아예 영향 안 받는다"고
+   착각하지 않는다(관절 permutation과 관절 고유 부호는 여전히 적용됨).
+4. **algebra만 믿지 말고 실제 forward pass로 수치 검증한다.** `model(mirror(obs))
+   == action_mirror(model(obs))`를 랜덤 입력으로 직접 확인하는 테스트를 추가한다
+   (`c2_symmetrize=True`인 architecture는 이 등식이 정확히 성립해야 함). 손으로
+   유도한 부호가 맞았는지 확인하는 가장 강한 방법이며, `FLAT_OBS_MIRROR`
+   자체의 `M∘M=identity`(involution) 체크만으로는 부호가 실제로 물리적으로
+   맞는지까지는 보장 못 한다.
+
+근거·구현: AI-Sessions/wiki/research/sources/isaac-humanoid-code.md,
+`/home/frlab/isaac_humanoid/docs/decisions/2026-07-10-c2-mirror-contract.md`,
+`/home/frlab/isaac_humanoid/tests/test_gcn_mapping.py::test_c2_symmetrize_is_exactly_equivariant`.
+
 ## Links
 
 - [[AI-Sessions/wiki/harness/patterns/agent-patterns|agent-patterns]]

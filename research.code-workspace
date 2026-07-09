@@ -7,6 +7,14 @@
     {
       "name": "mj_rl",
       "path": "/home/frlab/mj_rl"
+    },
+    {
+      "name": "isaac_humanoid",
+      "path": "/home/frlab/isaac_humanoid"
+    },
+    {
+      "name": "LearningHumanoidArmMotion-RAL2025-Code",
+      "path": "/home/frlab/LearningHumanoidArmMotion-RAL2025-Code"
     }
   ],
   "settings": {}

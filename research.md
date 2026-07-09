@@ -51,7 +51,7 @@ research 작업 때만 읽는 on-demand 인벤토리다. 새 paper/source/catego
 
 성격별 카테고리 sub-hub(`maps/resources-*`)으로 묶여 graph에 연결된다.
 
-- frameworks: mj-rl (active implementation: Unitree G1 humanoid locomotion RL), mjlab-code, rsl-rl-code, mj-control-code
+- frameworks: mj-rl (active implementation: Unitree G1 humanoid locomotion RL), isaac-humanoid-code (mj_rl morphology GCN을 RAL2025 MIT Humanoid IsaacLab baseline에 이식하는 실험 레포), mjlab-code, rsl-rl-code, mj-control-code
 - dynamics/gpu: modern-robotics-code, casadi-on-gpu-code (mj_rl `source/assets/cuda` GPU 백엔드)
 - policy/refs: body-transformer-code, graph-transformer-code, 2024-lee-footstep-planning-rl-code, 2025-lee-humanoid-arm-cam-marl-code, mpc-rl-code (mjlab push-box loco-manipulation reference), mi-hgnn-code, ms-hgnn-code
 
