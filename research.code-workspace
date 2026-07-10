@@ -13,6 +13,10 @@
       "path": "/home/frlab/isaac_humanoid"
     },
     {
+      "name": "mj_ppo",
+      "path": "/home/frlab/mj_ppo"
+    },
+    {
       "name": "LearningHumanoidArmMotion-RAL2025-Code",
       "path": "/home/frlab/LearningHumanoidArmMotion-RAL2025-Code"
     }
