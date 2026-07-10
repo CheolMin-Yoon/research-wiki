@@ -23,8 +23,8 @@ source: AI-Sessions/raw/repos/mj-rl.md
 - `source/rl/config.py`: MAPPO 구조 dataclass — `AgentCfg`/`ValueCfg`/`ActorModelCfg`/`CriticModelCfg`/`MappoAlgorithmCfg`/`MappoRunnerCfg`. actor/critic별 `learning_rate`/`clip_param`/`entropy_coef`/`schedule`는 전부 동일 패턴: `X | None = None` → 미지정 시 전역 `algorithm` cfg로 fallback.
 - `source/rl/mappo.py`: MAPPO 알고리즘. **logical agent(액션 소유)** × **named value(reward/advantage 라우팅)** 두 축이 actor/critic 모델 그룹핑과 독립이다. 1-agent/1-value 케이스는 RSL-RL PPO와 텐서 의미론이 정확히 일치하도록 테스트로 고정. 2026-07-11: actor별 `schedule`(adaptive/fixed) 오버라이드 추가 — critic lr 동기화는 그 critic이 소비하는 actor가 **전부** fixed일 때만 그 critic도 고정된 채로 둔다.
 - `source/tasks/mlp_ctde/`: 첫 실제 MAPPO task. Full-body G1(23-DOF, waist는 joint equality로 고정, DOF는 유지)을 `lower_body`(legs, 12)/`upper_body`(arms, 10) 두 decentralized actor + 두 centralized-obs critic(각 critic은 자기 actor의 부분 관측과 무관하게 전신을 봄)으로 분해한다. `agent_cfg.py`의 lr/clip/gamma/lam/schedule 하이퍼파라미터는 RAL2025 `humanoid_full_modular_runner_cfg.py`의 `leg_algorithm`/`arm_algorithm`을 직접 이식한 것으로 확인(대조는 아래 Research-Relevant Patterns) — hidden_dims와 upper_body entropy_coef만 사용자의 의도적 편차.
-- `source/tasks/falcon/`: commit `7d24554`에서 추가되고 `eea5ada`에서 force/curriculum parity, `7abfd2e`에서 body-domain naming과 ACCAD lookup이 보강된 29-DOF task. ACCAD 252-motion pickle은 Git LFS로 포함되고 padded GPU tensor에서 벡터화 보간한다. actor observation은 FALCON 순서의 115-wide frame을 5-step history로 구성(575), critic은 base quaternion/linear velocity/좌우 손 외력을 추가한 128-wide frame이다. 좌우 손 외력은 wrist-yaw link의 virtual-hand point에서 MuJoCo-Warp runtime Jacobian과 arm effort limit으로 bound한 world-frame wrench다. 범용 point-force wrench 및 conservative force-bound tensor 연산은 `f733adf`에서 `utils.math_utils`로 승격했다. 활성 reward routing은 `lower_body` 39개/`upper_body` 10개이며 reward는 MJLab에서 control dt를 곱한다.
-- MAPPO optimizer는 공용 `MappoAlgorithmCfg.weight_decay`를 지원하며 FALCON은 Adam weight decay `1e-2`를 사용한다.
+- `source/tasks/falcon/`: `8bfdca4`에서 원본 FALCON README 실행 override까지 포함한 첫 정밀 parity pass를 완료한 29-DOF task다. ACCAD 252-motion reference, 15D/14D two-actor MAPPO, 575D actor/128D critic 계약을 유지하면서 reward/timeout, G1 pose·PD·limit, command/force/curriculum, train DR/noise를 원본 의미에 맞췄다. 상세 차이와 의도적으로 남긴 검증은 repo-local `docs/design/falcon-parity-audit-2026-07-11.md`가 정본이다. 범용 point-force wrench 및 conservative force-bound tensor 연산은 `utils.math_utils`가 소유한다.
+- FALCON optimizer는 원본과 같이 AdamW(decoupled weight decay `1e-2`)이며 empirical observation normalization과 std clamp를 사용하지 않는다.
 
 ## Current Contracts
 
@@ -39,13 +39,14 @@ source: AI-Sessions/raw/repos/mj-rl.md
 
 ## Verification Snapshot
 
-- 2026-07-11: 전체 **64 tests OK**. FALCON CPU 2-env finite/reset-wrench rollout과 GPU 4-env MAPPO 1 iteration(96 steps, lower/upper actor·critic 모두 update)을 통과했다.
+- 2026-07-11 `8bfdca4`: 전체 **67 tests OK**. FALCON CPU 2-env finite rollout, GPU 4-env MAPPO 1 update, GPU 16-env 2 update에서 lower/upper actor·critic이 모두 갱신되고 observation/reward가 finite함을 확인했다.
 - 이전 v1 검증 스냅샷은 archive를 본다(더 이상 유효하지 않은 구조 기준).
 
 ## Next
 
-1. 49개 reward 중 MuJoCo body-state로 대응한 항목의 Isaac Gym 원본 대비 수치 parity를 golden-state fixture로 확장한다.
-2. 16-env 이상 단기 학습으로 curriculum이 실제 episode 분포에서 상승하는지 확인한다.
+1. 49개 active reward를 IsaacGym 원본 고정 입력과 비교하는 golden-state fixture를 확장한다.
+2. 4096-env 장기 학습으로 constraint peak와 curriculum 분포를 확인한다.
+3. ACCAD pickle 내용, rubber-hand 말단 관성, 실제 결합 friction을 검증한다.
 
 ## Cautions
 
@@ -62,7 +63,7 @@ source: AI-Sessions/raw/repos/mj-rl.md
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/mj-rl.md
-- checked commit: f733adf (branch `refactor/mj-rl-v2`)
+- checked commit: 8bfdca4 (branch `refactor/mj-rl-v2`)
 - previous checked commit (v1, pre-rewrite): ffbb2c3 (`master`)
 - related RAL2025 reference (hyperparameter parity 확인): [[AI-Sessions/wiki/research/sources/2025-lee-humanoid-arm-cam-marl-code|2025-lee-humanoid-arm-cam-marl-code]]
 - related raw papers: 2024-lee-footstep-planning-rl.pdf, 2025-lee-humanoid-arm-cam-marl.pdf
