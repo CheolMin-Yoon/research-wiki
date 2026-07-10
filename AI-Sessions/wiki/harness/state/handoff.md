@@ -12,7 +12,7 @@ mode: implementation
 
 ## Current Goal
 
-`/home/frlab/mj_rl` branch `refactor/mj-rl-v2`의 commit `8bfdca4`까지 원본 FALCON 설정 정밀 parity의 첫 구현 pass를 완료했다. 구현 정본은 `mj-rl.md`, 상세 감사표는 repo-local `docs/design/falcon-parity-audit-2026-07-11.md`를 본다.
+`/home/frlab/mj_rl` branch `refactor/mj-rl-v2`의 commit `fbf2ece`까지 FALCON 정밀 parity와 보류 검증 자동화를 완료했다. 구현 정본은 `mj-rl.md`, 상세 감사표는 repo-local `docs/design/falcon-parity-audit-2026-07-11.md`를 본다.
 
 ## Read First
 
@@ -26,18 +26,17 @@ mode: implementation
 
 ## Next Implementation
 
-1. 49개 reward의 원본 FALCON golden-state parity를 확장한다.
-2. 4096-env 장기 학습으로 constraint peak와 curriculum progression을 확인한다.
-3. ACCAD pickle·말단 관성·결합 friction의 보류 검증을 마친다.
+1. 진행 중인 4096-env run 종료 시점의 reward/curriculum 결과를 분석한다.
+2. 필요 시 IsaacGym 환경을 별도 마련해 cross-simulator state replay를 추가한다.
 
 ## Current Facts
 
-- `/home/frlab/mj_rl` checked commit은 `8bfdca4`(`refactor/mj-rl-v2`)이다.
+- `/home/frlab/mj_rl` checked commit은 `fbf2ece`(`refactor/mj-rl-v2`)이다.
 - 도메인 토큰은 `lower_body`/`upper_body`/`waist` 셋뿐이다. `leg`/`arm` 어휘는 저장소 전체(주석 포함)에서 제거됐다. 원칙: 같은 개념에 두 철자 금지.
 - `layout.py`가 이름·인덱스·dim의 유일한 owner다. `graph.py`는 대칭/그래프 구조만 갖고 layout 사실을 재수출하지 않는다(`ACTION_DIM` 삭제됨).
 - MAPPO의 actor/critic 모델 개별 노브(lr/clip/entropy/schedule)는 전부 `X | None = None` → 전역 algorithm cfg fallback 패턴이다.
 - RAL2025(`humanoid_full_modular_runner_cfg.py`) 원본은 leg/arm 둘 다 `schedule="adaptive"`를 쓴다(arm lr=1e-5도 fixed 아님). mj_rl 현재 기본값이 이와 일치.
-- 검증: 전체 67 tests OK, CPU 2-env rollout, GPU 4-env MAPPO 1 update, GPU 16-env 2 update OK.
+- 검증: 전체 71 tests OK. 4096-env run은 iteration 1002/약 9,850만 env steps에서 계속 실행 중이다.
 
 ## Dirty / Sensitive Files
 
