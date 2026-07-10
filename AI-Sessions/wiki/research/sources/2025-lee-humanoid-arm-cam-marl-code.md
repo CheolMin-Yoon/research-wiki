@@ -29,6 +29,7 @@ source: AI-Sessions/raw/repos/2025-lee-humanoid-arm-cam-marl.md
 - reward에 CAM magnitude만 넣는 것이 아니라 base/leg/arm contribution을 분석 가능하게 기록한다.
 - CMM @ generalized velocity 형태의 계산을 policy observation과 post-analysis 양쪽에서 재사용한다.
 - vanilla task와 modular task를 나란히 둬 ablation이 가능하게 만든 점이 mj_rl 실험 구조에도 유용하다.
+- **하이퍼파라미터 대조(2026-07-11, `humanoid_full_modular_runner_cfg.py` 직접 확인)**: `leg_algorithm`/`arm_algorithm` 두 `RslRlPpoAlgorithmCfg`가 완전히 독립이며, **arm 쪽도 `schedule="adaptive"`를 그대로 쓴다** — `learning_rate=1e-5`처럼 낮은 값이 fixed가 아니라 adaptive KL 스케줄러의 시작점으로 설계됐다는 뜻이다(gamma/lam/clip_param/entropy_coef/epochs/mini_batches까지 leg=0.9751·0.12143·4.1e-4, arm=0.99·0.2·1e-5로 mj_rl `agent_cfg.py`와 일치 확인). mj_rl의 `rl/mappo.py`가 나중에 추가한 actor별 `schedule` 오버라이드 기능을 이 task에 켤지 말지 결정할 때는 이 사실을 baseline으로 삼는다 — 자세한 소비처는 [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]] Research-Relevant Patterns.
 
 ## 주의점
 

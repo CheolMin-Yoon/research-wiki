@@ -75,6 +75,17 @@ Multi-actor/multi-critic 실험은 runner class를 새로 늘리지 않고, acto
 4. 이름을 바꾸면 alias를 남기지 않고 observation cfg, mapping, cache, test call site를 함께 고친다.
 5. 헷갈리면 suffix를 먼저 붙이지 말고 “이 값이 desired/ref/cmd/current/derivative 중 무엇인가”를 말로 풀어본 뒤 이름을 정한다.
 
+## Positive Pattern — one token per domain concept
+
+같은 개념을 가리키는 이름이 layer/파일마다 다른 철자로 흩어지면(예: `leg`/`arm` vs `lower_body`/`upper_body`) grep 한 방으로 도메인 전체를 못 잡고, import-time assert가 조용히 깨진다. 2026-07-11 `mj_rl` v2 domain-token rename에서 이 문제를 두 번 직접 봤다: (1) task 레이어 reward 키가 `leg/`인데 module 상수는 `LOWER_BODY_REWARD_TERMS`라 assert 불일치, (2) `layout.py` 자신이 손-작성 원천(`LEFT_LEG_JOINTS`)과 파생 상수(`LOWER_BODY_JOINTS`)에서 서로 다른 어휘를 씀 — 원천은 "해부학이라 다른 어휘가 정당하다"고 절충했다가, 같은 파일 안에서 leg/arm과 lower_body/upper_body가 섞이는 것 자체가 모순이라는 사용자 지적으로 재통일했다.
+
+### Rule
+
+1. 도메인을 가리키는 토큰은 저장소 전체(주석·docstring 포함)에서 하나로 통일한다. 역할은 접미사로만 파생한다(`{token}_actor`, `{token}_critic`, `{token}_joint_pos`, reward `{token}/...`).
+2. "원천 데이터는 해부학적 이름을 써도 된다" 같은 절충은 같은 파일 안에 두 어휘가 공존하는 순간 깨진다 — 절충하지 말고 손-작성 원천부터 도메인 토큰으로 통일한다.
+3. 숫자·인덱스·dim처럼 파생 가능한 사실은 단일 owner 모듈(`layout.py`류)이 갖고, 구조(대칭·그래프)를 얹는 모듈(`graph.py`류)이 그 사실을 재수출하지 않는다 — 숫자가 필요한 소비자는 owner를 직접 참조한다. 재수출된 사실은 "이 소비자가 구조에도 의존한다"는 거짓 신호가 되고, owner 모듈보다 무거운 의존성(예: torch)을 끌어온다.
+4. rename 전에는 손-작성 원천 이름의 외부 사용처를 `grep`으로 전수 확인한다. 사용처가 0이면 파생값과 함께 안전하게 rename할 수 있다.
+
 ## Caution Pattern — viewer shutdown and debug viz
 
 Viewer에서 task별 debug visualization이 무거우면 종료가 늦거나 Viser threadpool close가 물릴 수 있다. Native MuJoCo handle을 SIGINT handler 안에서 직접 닫으면 double-close segfault 위험이 있으므로 피한다.

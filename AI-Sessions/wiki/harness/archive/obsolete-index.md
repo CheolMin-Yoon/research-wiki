@@ -17,3 +17,4 @@ status: active
 
 - [[AI-Sessions/wiki/harness/archive/archived-setup-log-2026-06-24|archived-setup-log-2026-06-24]]
 - [[AI-Sessions/wiki/harness/archive/archived-mj-rl-reflect-history-2026-07-03|archived-mj-rl-reflect-history-2026-07-03]] — `mj-rl.md` source note current-focus 압축 전 reflect 상세 이력.
+- [[AI-Sessions/wiki/harness/archive/archived-mj-rl-v1-2026-07-11|archived-mj-rl-v1-2026-07-11]] — mj_rl이 branch `refactor/mj-rl-v2`로 전면 재작성되기 전(v1: modules/primitives·tasks.bot_velocity 등) 구조 전체.
