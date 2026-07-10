@@ -10,9 +10,9 @@ source: AI-Sessions/raw/repos/mj-rl.md
 
 ## Summary
 
-사용자의 active Unitree G1 humanoid locomotion RL repo다. **repo가 branch `refactor/mj-rl-v2`로 전면 재작성됐다** — 이전 `modules/primitives`, `modules/models`, `modules/rl`, `tasks.bot_velocity`/`centroidal`/`eicp`/`waist_momentum` 구조는 사라지고 `source/{assets,rl,tasks,utils}` + `tasks.mlp_ctde` 단일 task로 새로 시작했다. v1 상세는 [[AI-Sessions/wiki/harness/archive/archived-mj-rl-v1-2026-07-11|archived-mj-rl-v1-2026-07-11]]에 보존한다.
+사용자의 active Unitree G1 humanoid locomotion RL repo다. branch `refactor/mj-rl-v2`에서 `tasks.mlp_ctde`와 `tasks.falcon` 두 실행 task를 가진다. FALCON task는 MJLab Asset Zoo의 physical/policy 29-DOF G1, ACCAD upper-body reference, lower 15D/upper 14D MAPPO를 MuJoCo Warp에서 실행한다. v1 상세는 [[AI-Sessions/wiki/harness/archive/archived-mj-rl-v1-2026-07-11|archived-mj-rl-v1-2026-07-11]]에 보존한다.
 
-이 digest는 **2026-07-11 세션에서 직접 다룬 범위만 검증**했다: `source/assets/{layout,graph,g1,dynamics}.py`, `source/rl/{config,mappo}.py`, `source/tasks/mlp_ctde/{agent_cfg,env_cfg}.py`, `tests/{test_mlp_ctde,test_mappo}.py`. `source/rl/{storage,routing}.py`, `source/tasks/mlp_ctde/mdp/*`, `source/utils/`, `scripts/`는 이번 세션에 열어보지 않았다 — 다음 reflect에서 v2 전체 재감사가 필요하다(미검증, 추측 아님).
+이 digest는 **2026-07-11 세션에서 직접 다룬 범위만 검증**했다: `source/assets/{layout,graph,g1,dynamics}.py`, `source/rl/{config,mappo}.py`, `source/tasks/{mlp_ctde,falcon}/`, `source/utils/math_utils.py`, `tests/`의 관련 MAPPO/FALCON/math coverage. 전체 v2 구조 중 이 밖의 파일은 필요 시 다음 reflect에서 재확인한다.
 
 ## Current Implementation Surface (검증됨)
 
@@ -23,6 +23,8 @@ source: AI-Sessions/raw/repos/mj-rl.md
 - `source/rl/config.py`: MAPPO 구조 dataclass — `AgentCfg`/`ValueCfg`/`ActorModelCfg`/`CriticModelCfg`/`MappoAlgorithmCfg`/`MappoRunnerCfg`. actor/critic별 `learning_rate`/`clip_param`/`entropy_coef`/`schedule`는 전부 동일 패턴: `X | None = None` → 미지정 시 전역 `algorithm` cfg로 fallback.
 - `source/rl/mappo.py`: MAPPO 알고리즘. **logical agent(액션 소유)** × **named value(reward/advantage 라우팅)** 두 축이 actor/critic 모델 그룹핑과 독립이다. 1-agent/1-value 케이스는 RSL-RL PPO와 텐서 의미론이 정확히 일치하도록 테스트로 고정. 2026-07-11: actor별 `schedule`(adaptive/fixed) 오버라이드 추가 — critic lr 동기화는 그 critic이 소비하는 actor가 **전부** fixed일 때만 그 critic도 고정된 채로 둔다.
 - `source/tasks/mlp_ctde/`: 첫 실제 MAPPO task. Full-body G1(23-DOF, waist는 joint equality로 고정, DOF는 유지)을 `lower_body`(legs, 12)/`upper_body`(arms, 10) 두 decentralized actor + 두 centralized-obs critic(각 critic은 자기 actor의 부분 관측과 무관하게 전신을 봄)으로 분해한다. `agent_cfg.py`의 lr/clip/gamma/lam/schedule 하이퍼파라미터는 RAL2025 `humanoid_full_modular_runner_cfg.py`의 `leg_algorithm`/`arm_algorithm`을 직접 이식한 것으로 확인(대조는 아래 Research-Relevant Patterns) — hidden_dims와 upper_body entropy_coef만 사용자의 의도적 편차.
+- `source/tasks/falcon/`: commit `7d24554`에서 추가되고 `eea5ada`에서 force/curriculum parity, `7abfd2e`에서 body-domain naming과 ACCAD lookup이 보강된 29-DOF task. ACCAD 252-motion pickle은 Git LFS로 포함되고 padded GPU tensor에서 벡터화 보간한다. actor observation은 FALCON 순서의 115-wide frame을 5-step history로 구성(575), critic은 base quaternion/linear velocity/좌우 손 외력을 추가한 128-wide frame이다. 좌우 손 외력은 wrist-yaw link의 virtual-hand point에서 MuJoCo-Warp runtime Jacobian과 arm effort limit으로 bound한 world-frame wrench다. 범용 point-force wrench 및 conservative force-bound tensor 연산은 `f733adf`에서 `utils.math_utils`로 승격했다. 활성 reward routing은 `lower_body` 39개/`upper_body` 10개이며 reward는 MJLab에서 control dt를 곱한다.
+- MAPPO optimizer는 공용 `MappoAlgorithmCfg.weight_decay`를 지원하며 FALCON은 Adam weight decay `1e-2`를 사용한다.
 
 ## Current Contracts
 
@@ -37,15 +39,13 @@ source: AI-Sessions/raw/repos/mj-rl.md
 
 ## Verification Snapshot
 
-- 2026-07-11: `PYTHONPATH=source /home/frlab/anaconda3/envs/mjlab_env/bin/python -m unittest discover -s tests -p 'test_*.py'` → **42 tests OK** (도메인 토큰 통일 + graph 의존 제거 + per-actor schedule 기능 추가 이후).
+- 2026-07-11: 전체 **64 tests OK**. FALCON CPU 2-env finite/reset-wrench rollout과 GPU 4-env MAPPO 1 iteration(96 steps, lower/upper actor·critic 모두 update)을 통과했다.
 - 이전 v1 검증 스냅샷은 archive를 본다(더 이상 유효하지 않은 구조 기준).
 
 ## Next
 
-1. v2 전체 재감사: `source/rl/{storage,routing}.py`, `source/tasks/mlp_ctde/mdp/*`, `source/utils/`, `scripts/`를 다음 세션에서 확인하고 이 digest에 채운다.
-2. working tree에 커밋 `c890973` 이후 대량 삭제(`docs/experiments/*`, `docs/figures/bot_*`, `.gitignore` 등)가 unstaged로 남아 있음(git status로 직접 관측, 내용 미분석) — 의도된 정리인지 다음 세션에서 확인.
-3. `ActorModelCfg.schedule='fixed'` per-actor 오버라이드는 구현만 되어 있고 `mlp_ctde` task는 미사용(RAL2025 parity 유지 목적). 실험적으로 켜려면 위 Research-Relevant Patterns 대조표를 baseline으로 삼는다.
-4. v1의 GCN/BoT/CasADi-GPU 자산이 v2로 재이식됐는지 여부는 미확인 — `source/assets/cuda/`가 v2에도 존재하는지부터 확인.
+1. 49개 reward 중 MuJoCo body-state로 대응한 항목의 Isaac Gym 원본 대비 수치 parity를 golden-state fixture로 확장한다.
+2. 16-env 이상 단기 학습으로 curriculum이 실제 episode 분포에서 상승하는지 확인한다.
 
 ## Cautions
 
@@ -62,7 +62,7 @@ source: AI-Sessions/raw/repos/mj-rl.md
 ## Links
 
 - raw repo: AI-Sessions/raw/repos/mj-rl.md
-- checked commit: c890973 (branch `refactor/mj-rl-v2`)
+- checked commit: f733adf (branch `refactor/mj-rl-v2`)
 - previous checked commit (v1, pre-rewrite): ffbb2c3 (`master`)
 - related RAL2025 reference (hyperparameter parity 확인): [[AI-Sessions/wiki/research/sources/2025-lee-humanoid-arm-cam-marl-code|2025-lee-humanoid-arm-cam-marl-code]]
 - related raw papers: 2024-lee-footstep-planning-rl.pdf, 2025-lee-humanoid-arm-cam-marl.pdf
