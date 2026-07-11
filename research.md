@@ -77,3 +77,4 @@ research 작업 때만 읽는 on-demand 인벤토리다. 새 paper/source/catego
 - 2026-06-29-g1-29dof-vanilla-bot - CMM/centroidal-root 확장 전 gate: mjlab 29-DOF G1 task에서 Vanilla BoT가 유의미한지 확인 (planned)
 - 2026-07-08-g1-limb-marl-gcn-token-critic - 22-DOF 4-limb MARL: limb-local GCN actor ×4 + BoT token-group critic, MASH식 독립 task 설계 (planned)
 - 2026-07-10-isaac-mit-gcn-jacobian-early-screen - RAL2025 MIT Humanoid IsaacLab에서 actuator parity 이후 baseline MLP vs 4개 GCN ablation 1시간 early-screen (active)
+- 2026-07-11-g1-29d-graph-mimic - MjLab G1 29D mimic의 lower/upper link-node 4-layer GCN baseline, kinematic-only learnable edge (active)

@@ -12,6 +12,43 @@ related_experiments: AI-Sessions/wiki/research/experiments/2026-06-25-g1-trackin
 
 # mjlab Errors
 
+## Error: class-based event term에 `reset`이 없으면 `debug_vis`가 조용히 안 불림
+
+### Symptom
+
+`graph_mimic_29d`에 새 class-based event(`GraphOverlayEvent`)를 만들어 `mode="startup"`으로 등록하고 `debug_vis(self, visualizer)`를 구현했다. Native viewer는 정상 실행되고 다른 debug overlay(motion tracking의 "ghost" mesh)는 R 키로 잘 토글되는데, 새로 만든 노드-엣지 오버레이만 아무 에러 없이 전혀 안 보였다.
+
+### Root Cause
+
+`mjlab/managers/event_manager.py`의 `EventManager._prepare_terms()`가 `debug_vis()`용 dispatch 목록(`self._mode_class_term_cfgs`)에 term을 넣는 조건은 `hasattr(term_cfg.func, "reset") and callable(term_cfg.func.reset)`이다. 이 조건은 **event의 `mode`(`startup`/`step`/`interval`/`reset`)와 완전히 무관**하다 — `mode="startup"`이라고 자동으로 들어가지 않는다. `EventManager.debug_vis()`는 이 `_mode_class_term_cfgs`만 순회하므로, `reset` 메서드가 없는 class는 `debug_vis`를 구현해도 절대 호출되지 않는다.
+
+더 헷갈리게 만드는 지점: `env.event_manager.get_term_cfg("name").func`로는 이 인스턴스를 문제없이 조회할 수 있다. 이건 `_mode_class_term_cfgs`와는 **별도의 일반 조회 경로**라서, "인스턴스가 존재하고 정상 생성됐다"는 확인만으로는 "실제 뷰어가 매 프레임 이걸 호출한다"는 걸 검증하지 못한다. 실제로 `term.debug_vis(FakeViz())`를 직접 호출해 테스트하면 이 필터를 완전히 우회하므로 "정상 동작"으로 잘못 확인하게 된다.
+
+### Trigger
+
+- 새 class-based event(특히 시각화 전용, `__call__`이 사실상 no-op인 것)를 만들면서 `reset`을 안 만들 때.
+- `debug_vis`를 직접 호출해서 테스트하고, 실제 dispatch 경로(`env.update_visualizers(visualizer)` 또는 `event_manager.debug_vis(visualizer)`)로는 검증하지 않을 때.
+- `HandForceEvent`(FALCON)처럼 이미 `reset`이 있는 class를 참고했지만, `reset`이 debug_vis 등록에 필요하다는 사실 자체를 몰랐을 때(그 클래스는 `reset`이 실제 per-env 상태 초기화 때문에 있는 거라, "왜 있는지" 목적이 달라서 이 조건과 연결하기 어렵다).
+
+### Fix
+
+빈 `reset(self, env_ids=None) -> None: pass`만 추가하면 된다. 실제 per-env 상태를 초기화할 필요가 없어도, `hasattr` 체크를 통과시키는 목적만으로 존재해도 무방하다.
+
+### Prevention Rule
+
+- mjlab에서 시각화 전용 class-based event(`debug_vis`만 의미 있고 `__call__`은 사실상 no-op)를 새로 만들 때는 `reset` 메서드를 (내용이 없어도) 반드시 같이 만든다.
+- debug_vis 관련 기능을 테스트할 때는 `term.debug_vis(visualizer)`를 직접 부르지 말고, 실제 뷰어가 쓰는 경로인 `env.update_visualizers(visualizer)`를 통해서 검증한다 — 그래야 `_mode_class_term_cfgs` 필터링까지 같이 검증된다.
+- "에러 없이 조용히 안 보인다"는 증상이 나오면, 먼저 그 term이 `EventManager._mode_class_term_cfgs`에 실제로 들어갔는지(`hasattr(func, "reset")`)부터 확인한다.
+
+### Related Experiments
+
+- `AI-Sessions/wiki/research/experiments/2026-07-11-g1-29d-graph-mimic.md` (node-edge graph debug overlay 구현 중 발견)
+
+### Links
+
+- 구현 source note: `AI-Sessions/wiki/research/sources/mj-rl.md`
+- 참고(이미 `reset`을 갖고 있어 이 문제를 겪지 않은 선례): `source/tasks/falcon/mdp/events.py`의 `HandForceEvent`
+
 ## Error: whole-body CoM 속도는 `subtreelinvel` 센서로만 얻는다
 
 ### Symptom

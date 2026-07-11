@@ -63,6 +63,28 @@ Multi-actor/multi-critic 실험은 runner class를 새로 늘리지 않고, acto
 3. task package는 env/mapping/reward/action 계약만 소유한다.
 4. 옛 import path를 되살리는 shim보다 새 경로로 호출부를 고친다.
 
+## Positive Pattern — strict PPO parity optimization
+
+RSL-RL PPO 또는 MAPPO를 기준 구현과 비교하는 실험에서는 "빠르게 만들기"보다 먼저
+학습 의미론을 고정한다. 2026-07-12 graph mimic GCN/MAPPO 병목 점검에서, host sync와
+불필요한 cat/scatter/index copy를 줄이는 fast path는 안전했지만 두 actor의 adaptive-KL
+host transfer를 한 번으로 묶는 시도는 autograd graph lifetime을 늘리고 RSL-RL식 즉시
+actor update 순서를 흐리므로 폐기했다.
+
+### Rule
+
+1. PPO sample cadence, epoch/minibatch 수, adaptive-KL 갱신 시점, gradient clipping,
+   optimizer step 순서는 성능 최적화에서 건드리지 않는다.
+2. 의미론 없는 이동만 먼저 제거한다: logging host transfer, single-agent cat,
+   single-group observation cat, identity action detokenizer scatter, single-value critic
+   index copy.
+3. actor/critic update 순서나 autograd graph lifetime을 바꾸는 최적화는 구조 변경으로
+   취급하고 별도 ablation으로 분리한다.
+4. `torch.compile`은 RSL-RL의 기존 `compile_model` hook으로만 실험하고, recompile-limit
+   경고나 eager 대비 이득 없음이 보이면 권장 명령에서 빼 둔다.
+5. 벤치마크는 warmup iteration을 제외하고 collection time, learning time, FPS를 따로
+   기록한다. 10% 미만 개선은 "구현 정리"이지 "속도 개선"으로 주장하지 않는다.
+
 ## Positive Pattern — repo-local naming contract first
 
 `/home/frlab/mj_rl`에서 새 관측 key, tensor 이름, 함수 이름을 만들 때는 먼저 `/home/frlab/mj_rl/네이밍.md`를 따른다. 로컬 약어를 즉석에서 붙이지 말고, 물리량 의미와 기존 public key 계약을 먼저 맞춘다.
@@ -97,7 +119,20 @@ Viewer에서 task별 debug visualization이 무거우면 종료가 늦거나 Vis
 3. Viser shutdown은 queued scene/debug update를 끝까지 기다리지 않게 non-blocking close patch를 사용한다.
 4. Native viewer는 `BaseViewer.run()`의 `finally: close()` 경로에 맡긴다.
 
-## Links
+## Positive Pattern — link-node 시각화 anchor: proximal/distal을 역할에 맞게 고른다
+
+mjlab `EntityData.body_link_pos_w`는 body의 **frame origin**(부모 joint가 붙는 지점)을 주지, 시각적 mesh 중심을 주지 않는다. link-as-node 그래프(`assets/graph.py`, `assets/graph_29.py`)에서 한 노드가 여러 joint를 묶을 때, "마지막 joint가 만드는 body"를 anchor로 고정하면 사지 끝 노드(ankle/wrist)에는 맞지만 몸통에 가장 가까운 노드(hip/shoulder)에는 안 맞는다 — hip은 pitch→roll→yaw 순서로 갈수록 무릎 쪽으로 내려가므로, 마지막 joint(yaw)의 body를 쓰면 hip 노드가 시각적으로 무릎 쪽에 붙어버린다.
+
+G1의 waist(yaw/roll/pitch)도 pelvis 바로 위 ~4cm 안에 전부 concentrated돼 있어서, `torso_link`의 frame origin은 가슴 높이가 아니라 pelvis 바로 위(waist 스택 끝)에 있다 — 척추/가슴에 해당하는 별도 body가 모델에 없다.
+
+### Rule
+
+1. 노드가 사지의 **원위(distal) 끝**을 대표하면(ankle, wrist) 그 노드의 **마지막** joint가 만드는 body를 anchor로 쓴다 — 이미 FALCON의 `FEET`(`*_ankle_roll_link`)/`HAND_LINKS`(`*_wrist_yaw_link`) SceneEntityCfg가 이 규약을 쓰고 있었다.
+2. 노드가 몸통에 가장 가까운 **근위(proximal) 관절**이면(hip, shoulder) **첫 번째** joint가 만드는 body를 anchor로 쓴다 — 그래야 무릎/팔꿈치 쪽으로 치우치지 않는다.
+3. 두 body를 평균 내서 xy 중심은 유지하고 z만 옮기고 싶을 때가 아니라면, 특정 body로 anchor를 바꾸는 것(예: 시각적으로 더 높은 다른 body 선택)은 x/y도 같이 딸려온다는 점을 주의한다 — 몸통 중심선 대신 팔/다리 한쪽으로 치우친 위치가 나올 수 있다.
+4. 시각적으로 "생각보다 위/아래"로 보이면 먼저 실제 body들의 `data.xpos`(또는 `body_link_pos_w`)를 `mj_kinematics` 후 직접 찍어서, anchor 자체가 잘못됐는지(위 3번) 아니면 그 body의 frame origin이 원래 그 위치인지(위 1/2번, 모델이 그렇게 생김) 구분한다.
+
+### Links
 
 - related source: AI-Sessions/wiki/research/sources/mj-rl.md
 - related error note: AI-Sessions/wiki/harness/errors/mjlab-errors.md

@@ -8,10 +8,6 @@
       "name": "mj_rl",
       "path": "/home/frlab/mj_rl"
     },
-    {
-      "name": "mj_rl_v1",
-      "path": "/home/frlab/mj_rl_v1"
-    }
   ],
   "settings": {}
 }

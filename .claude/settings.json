@@ -28,7 +28,10 @@
       "Bash(curl -sL -A \"Mozilla/5.0 \\(X11; Linux x86_64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36\" \"https://www.mdpi.com/2075-1702/14/4/397/pdf\" -o gt-td3.pdf --max-time 90)",
       "Bash(curl -s -A \"Mozilla/5.0 \\(X11; Linux x86_64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/126.0 Safari/537.36\" -e \"https://www.mdpi.com/2075-1702/14/4/397\" -H \"Accept: application/pdf\" -o gt-td3b.pdf -w \"%{http_code}\\\\n\" \"https://www.mdpi.com/2075-1702/14/4/397/pdf?version=1\")",
       "Bash(scripts/wiki_doctor.sh)",
-      "Bash(pdfinfo /home/frlab/mj_rl/machines-14-00397-v2.pdf)"
+      "Bash(pdfinfo /home/frlab/mj_rl/machines-14-00397-v2.pdf)",
+      "Bash(/home/frlab/anaconda3/envs/genesis_env/bin/python -m pip install torch --index-url https://download.pytorch.org/whl/cu130)",
+      "Bash(/home/frlab/anaconda3/envs/genesis_env/bin/python -m pip install genesis-world)",
+      "Bash(/home/frlab/anaconda3/envs/genesis_env/bin/python -c ' *)"
     ],
     "additionalDirectories": [
       "/home/frlab",
