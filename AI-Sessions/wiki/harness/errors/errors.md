@@ -11,6 +11,7 @@ status: active
 
 - [[AI-Sessions/wiki/harness/errors/mjlab-errors|mjlab-errors]]
 - [[AI-Sessions/wiki/harness/errors/obsidian-errors|obsidian-errors]]
+- [[AI-Sessions/wiki/harness/errors/isaacsim-errors|isaacsim-errors]]
 
 ## Summary
 

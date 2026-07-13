@@ -8,6 +8,10 @@
       "name": "mj_rl",
       "path": "/home/frlab/mj_rl"
     },
+    {
+      "name": "isaac_dex",
+      "path": "/home/frlab/isaac_dex"
+    }
   ],
   "settings": {}
 }
