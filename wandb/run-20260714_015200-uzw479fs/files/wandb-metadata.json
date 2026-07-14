@@ -1,0 +1,38 @@
+{
+  "os": "Linux-6.17.0-35-generic-x86_64-with-glibc2.39",
+  "python": "CPython 3.12.13",
+  "startedAt": "2026-07-13T16:52:00.185913Z",
+  "program": "/tmp/claude-1000/-home-frlab-research-wiki/e2c64b92-aec8-4e72-867f-5afebc1fdd1b/scratchpad/sync_wandb.py",
+  "git": {
+    "remote": "git@github.com:CheolMin-Yoon/research-wiki.git",
+    "commit": "394775cb17122866a9ee52522d2b5471f99cc2fa"
+  },
+  "email": "ycm99979@gmail.com",
+  "root": "/home/frlab/research-wiki",
+  "host": "frlab",
+  "executable": "/home/frlab/anaconda3/envs/mjlab_env/bin/python",
+  "cpu_count": 24,
+  "cpu_count_logical": 24,
+  "gpu": "NVIDIA GeForce RTX 5070 Laptop GPU",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "982240026624",
+      "used": "280114982912"
+    }
+  },
+  "memory": {
+    "total": "32967536640"
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA GeForce RTX 5070 Laptop GPU",
+      "memoryTotal": "8546942976",
+      "cudaCores": 4608,
+      "architecture": "Blackwell",
+      "uuid": "GPU-72aa4a07-068e-b41b-1dc3-b5d8acd65d9e"
+    }
+  ],
+  "cudaVersion": "13.0",
+  "writerId": "shazulud5b6npeoud26clhzsooiy5oae"
+}
