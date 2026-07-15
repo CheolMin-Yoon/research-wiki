@@ -3,7 +3,7 @@ tags: [tier/low]
 type: source
 date: 2026-06-27
 status: active
-source: /home/frlab/mpc-rl/README.md
+source: AI-Sessions/raw/repos/mpc-rl.md
 ---
 
 # 구현 분석: mpc-rl push-box loco-manipulation
