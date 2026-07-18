@@ -46,6 +46,7 @@ research 작업 때만 읽는 on-demand 인벤토리다. 새 paper/source/catego
 - 2025-butterfield-mi-hgnn - MI-HGNN: URDF/kinematic topology 기반 heterogeneous graph(base/joint/foot)로 contact/GRF supervised learning
 - 2025-xie-ms-hgnn - MS-HGNN: MI-HGNN에 morphological symmetry group, node orbit, physical sign encoder/decoder를 결합한 dynamics HGNN
 - 2025-wei-ms-ppo - MS-PPO: MS-style symmetry graph representation을 PPO actor-critic에 적용, equivariant actor + invariant critic
+- 2025-zhao-mg2l - MG2L: meta-CTDE multilevel task encoder + MIO 기반 G2L(global MI 최대화 → conditional MI reduction 최소화로 local 증류) + PIA, MAMRL task inference
 
 ### Sources
 

@@ -2,15 +2,11 @@
   "folders": [
     {
       "name": "research-wiki",
-      "path": "/home/frlab/research-wiki"
+      "path": "."
     },
     {
-      "name": "isaac_rl",
-      "path": "/home/frlab/isaac_rl"
-    },
-    {
-      "name": "isaac_dex",
-      "path": "/home/frlab/isaac_dex"
+      "name": "mj_rl",
+      "path": "/home/frlab/mj_rl"
     }
   ],
   "settings": {}

@@ -10,7 +10,11 @@ source: AI-Sessions/raw/ideas/physical-feature-graph.md
 
 ## Thesis
 
-Heavy limb·payload가 있는 humanoid loco-manipulation은 본질적으로 **coupled whole-body dynamics** 문제다. robot body를 structured token(**morphology token**)으로 표현하고, 거기에 안정성 물리 언어를 담은 **centroidal token**을 더해, policy가 *morphology 구조*와 *whole-body dynamic coupling* 둘 다에 attend하게 하는 **graph Transformer policy**를 제안한다. locomotion과 manipulation을 분리하면 학습은 쉬워지지만, arm·leg·object가 centroidal을 통해 balance에 함께 작용하는 경로가 표현에서 지워진다.
+Heavy limb·payload가 있는 humanoid loco-manipulation은 본질적으로 **coupled whole-body dynamics** 문제다. robot body를 structured token(**morphology token**)으로 표현하고, 거기에 안정성 물리 언어를 담은 **centroidal token**을 더해, policy가 *morphology 구조*와 *whole-body dynamic coupling* 둘 다에 attend하게 하는 **graph 내 연구 연결
+
+이 논문은 ￼￼rl-algorithms-frameworks￼￼ category의 PPO 원전이다. Lee 계열 humanoid locomotion 논문, rsl_rl, mj_rl의 on-policy 학습 구조를 이해하는 기본 축이다.
+
+구현 측면에서는 clipping, value loss, entropy, GAE, KL monitoring, timeout handling 같은 실무 디테일이 rsl_rl/mj_rl의 안정성에 직접 연결된다.Transformer policy**를 제안한다. locomotion과 manipulation을 분리하면 학습은 쉬워지지만, arm·leg·object가 centroidal을 통해 balance에 함께 작용하는 경로가 표현에서 지워진다.
 
 ## 왜 팔이 핵심 매개인가 (arm dual-role)
 
