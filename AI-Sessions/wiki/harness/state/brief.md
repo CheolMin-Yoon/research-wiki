@@ -13,10 +13,11 @@ research-wiki는 휴머노이드 RL 장기 연구를 위한 Research Agent Harne
 
 ## Active Research Direction
 
-Humanoid locomotion RL, centroidal/CAM, LIPM/eICP, graph/transformer policy를 중심으로 논문·source·idea·experiment를 축적한다. 현재 중심 아이디어는 CMM-conditioned graph/Transformer policy와 per-joint CAM credit이다.
+Humanoid locomotion RL, centroidal/CAM, LIPM/eICP, graph/transformer policy를 중심으로 논문·source·idea·experiment를 축적한다. 2026-07-18부터 메인 인사이트는 model-based critic(신체 분할 multi-critic CTDE의 per-critic 평가 신호를 MPC/QP로 생성/대체, AI-Sessions/wiki/research/idea-model-based-critic.md)이고, CMM-conditioned graph/Transformer policy(표현 축)와 per-joint CAM credit(계산된 credit 축)은 그 하위 축으로 재배치됐다.
 
 ## Current Canonical Pointers
 
+- 메인 인사이트(model-based critic): `AI-Sessions/wiki/research/idea-model-based-critic.md` (raw: `AI-Sessions/raw/ideas/model-based-critic.md`)
 - 구현 source current digest: `AI-Sessions/wiki/research/sources/mj-rl.md`
 - 구현 source history archive: `AI-Sessions/wiki/harness/archive/archived-mj-rl-reflect-history-2026-07-03.md`
 - CMM-conditioned graph Transformer 설계: `AI-Sessions/wiki/research/idea-physical-feature-graph.md`

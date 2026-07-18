@@ -123,7 +123,9 @@ rsl_rl `OnPolicyRunner`가 `alg_class = resolve_callable(cfg["algorithm"]["class
 
 ## Links
 
+- 메인 인사이트 (2026-07-18 재배치): [[AI-Sessions/wiki/research/idea-model-based-critic|idea-model-based-critic]] — 이 note는 그 설계공간의 (c) 계산된 분해 축
 - 상위 아이디어: [[AI-Sessions/wiki/research/idea-physical-feature-graph|idea-physical-feature-graph]] (E2 축의 정식화)
+- 파생 아이디어 (2026-07-18): [[AI-Sessions/wiki/research/idea-gpae-centroidal-advantage|idea-gpae-centroidal-advantage]] (S2 배관·learned counterfactual 대조군) · [[AI-Sessions/wiki/research/idea-kinematic-dependence-credit|idea-kinematic-dependence-credit]] (같은 advantage-level credit 원칙의 mimic IL 축)
 - 관련 category: [[centroidal-wbc]] · [[dynamics-guided-rl]] · [[graph-transformer-rl]] · [[rl-algorithms-frameworks]] · [[novelty]]
 - 근거 논문: [[AI-Sessions/wiki/research/papers/2013-orin-centroidal-dynamics|2013-orin-centroidal-dynamics]] (Eq.35 per-joint 분해) · [[AI-Sessions/wiki/research/papers/2025-lee-humanoid-arm-cam-marl|2025-lee-humanoid-arm-cam-marl]] (per-limb CAM)
 - 외부 framing 참조: OPID — On-Policy Skill Distillation for Agentic RL (arXiv 2606.26790, LLM agentic RL; 메커니즘 아닌 episode/step 2층 framing만 차용)
