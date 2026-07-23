@@ -7,7 +7,7 @@
 1. **자동**: 이 파일은 항상 context에 있습니다(얇게 유지).
 2. **init**: `architecture.md`(구조 지도) → `AI-Sessions/wiki/harness/state/brief.md`(현재 상태) → 이어받으면 `handoff.md`. 운용 규칙 본체는 `AI-Sessions/wiki/harness/policies/agent-policy.md`(+ `patterns/agent-patterns.md`).
 3. **영역 라우터(조건부)**: 운용 작업이면 `harness.md`, 연구 작업이면 `research.md` 중 해당하는 것만 읽고 거기서 detail로 라우팅합니다.
-4. **명령형 작업**: `prompts/<command>.md`만 추가로 읽습니다.
+4. **명령형 작업**: 공개 명령 `query`, `ingest`, `reflect` 중 해당 `prompts/<command>.md`만 추가로 읽습니다.
 
 `log.md`는 최근 흐름 복원이 필요할 때만 봅니다.
 
@@ -24,13 +24,16 @@
 
 ## Command Routing
 
-- `save` -> `prompts/save.md`
-- `reference` -> `prompts/reference.md`
 - `query` -> `prompts/query.md`
 - `ingest` -> `prompts/ingest.md`
-- `lint` -> `prompts/lint.md`
 - `reflect` -> `prompts/reflect.md`
-- `archive` -> `prompts/archive.md`
+
+## Automatic Lifecycle
+
+- 이어서 하기·현재 상태 요청은 brief/handoff를 자동으로 복원합니다.
+- ingest/reflect는 재사용 가치가 있는 내용만 저장합니다.
+- write 뒤에는 영향 범위에 맞는 doctor·tests·Louvain check를 자동 실행합니다.
+- 정리 요청은 별도 명령 없이 `archive-policy.md`를 읽고 처리합니다.
 
 ## Shared Protocol
 

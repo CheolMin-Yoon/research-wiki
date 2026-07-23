@@ -12,6 +12,7 @@ top_level_groups:
   harness: AI-Sessions/wiki/harness/
   maps: AI-Sessions/wiki/maps/
   prompts: prompts/
+  skills: .agents/skills/
   docs: .
 
 allowed_research_dirs:
@@ -47,13 +48,15 @@ research_schema:
     - comparison
 
 commands:
-  save: prompts/save.md
-  reference: prompts/reference.md
   query: prompts/query.md
   ingest: prompts/ingest.md
-  lint: prompts/lint.md
   reflect: prompts/reflect.md
-  archive: prompts/archive.md
+
+automatic_lifecycle:
+  resume_context: AI-Sessions/wiki/harness/state/handoff.md
+  durable_capture: AI-Sessions/wiki/harness/policies/agent-policy.md
+  post_write_validation: scripts/wiki_doctor.sh
+  archive_maintenance: AI-Sessions/wiki/harness/policies/archive-policy.md
 
 doctor:
   script: scripts/wiki_doctor.sh

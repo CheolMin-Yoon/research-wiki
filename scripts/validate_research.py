@@ -23,6 +23,8 @@ RESEARCH_TYPES = {
     "experiments": "experiment",
 }
 STABLE_TYPES = {"concept", "method", "task", "paper", "source", "comparison"}
+PUBLIC_COMMANDS = {"query", "ingest", "reflect"}
+RETIRED_PROMPTS = {"save", "reference", "lint", "archive"}
 COMMON_STATUSES = {"draft", "active", "curator-review", "superseded", "obsolete"}
 EXPERIMENT_STATUSES = {"planned", "active", "running", "done", "invalid", "archived"}
 WIKILINK_RE = re.compile(r"\[\[([^\]]+)\]\]")
@@ -291,6 +293,76 @@ def _validate_active_contract(root: Path) -> list[Finding]:
     return findings
 
 
+def _manifest_commands(path: Path) -> dict[str, str]:
+    """Parse the flat commands mapping from vault-manifest.yaml."""
+    commands: dict[str, str] = {}
+    in_commands = False
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line == "commands:":
+            in_commands = True
+            continue
+        if not in_commands:
+            continue
+        match = re.match(r"^  ([a-z0-9-]+):\s*(\S+)\s*$", line)
+        if match:
+            commands[match.group(1)] = match.group(2)
+            continue
+        if line and not line.startswith((" ", "#")):
+            break
+    return commands
+
+
+def _validate_command_interface(root: Path) -> list[Finding]:
+    findings: list[Finding] = []
+    manifest = root / "vault-manifest.yaml"
+    if not manifest.is_file():
+        return [Finding("command-interface", "vault-manifest.yaml", "manifest is missing")]
+
+    commands = _manifest_commands(manifest)
+    actual = set(commands)
+    if actual != PUBLIC_COMMANDS:
+        missing = sorted(PUBLIC_COMMANDS - actual)
+        unexpected = sorted(actual - PUBLIC_COMMANDS)
+        findings.append(
+            Finding(
+                "command-interface",
+                "vault-manifest.yaml",
+                f"public commands must be {sorted(PUBLIC_COMMANDS)}; missing={missing}, unexpected={unexpected}",
+            )
+        )
+    for command in sorted(PUBLIC_COMMANDS):
+        expected_path = f"prompts/{command}.md"
+        if commands.get(command) != expected_path:
+            findings.append(
+                Finding("command-interface", "vault-manifest.yaml", f"'{command}' must route to {expected_path}")
+            )
+        if not (root / expected_path).is_file():
+            findings.append(Finding("command-interface", expected_path, "public command prompt is missing"))
+
+    prompt_dir = root / "prompts"
+    allowed_files = {"prompts.md", *(f"{command}.md" for command in PUBLIC_COMMANDS)}
+    if prompt_dir.is_dir():
+        unexpected_files = sorted(path.name for path in prompt_dir.glob("*.md") if path.name not in allowed_files)
+        for name in unexpected_files:
+            findings.append(Finding("command-interface", f"prompts/{name}", "unexpected public prompt file"))
+
+    active_docs = [
+        root / "architecture.md",
+        root / "README.md",
+        root / "CLAUDE.md",
+        root / "AGENTS.md",
+        root / "prompts/prompts.md",
+        root / "AI-Sessions/wiki/harness/policies/agent-policy.md",
+    ]
+    retired_path_re = re.compile(r"prompts/(?:" + "|".join(sorted(RETIRED_PROMPTS)) + r")\.md")
+    for path in active_docs:
+        if path.is_file() and retired_path_re.search(path.read_text(encoding="utf-8")):
+            findings.append(
+                Finding("command-interface", path.relative_to(root).as_posix(), "routes to a retired prompt")
+            )
+    return findings
+
+
 def validate_repository(root: Path) -> list[Finding]:
     root = root.resolve()
     registry = root / "schema/research-topics.json"
@@ -312,6 +384,7 @@ def validate_repository(root: Path) -> list[Finding]:
     findings.extend(_validate_graph(root))
     findings.extend(_validate_base(root))
     findings.extend(_validate_active_contract(root))
+    findings.extend(_validate_command_interface(root))
     findings.extend(_validate_all_wikilinks(root))
     return sorted(set(findings))
 

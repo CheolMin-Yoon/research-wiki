@@ -12,7 +12,7 @@ mode: implementation
 
 ## Current Goal
 
-typed research model로의 전환 구현과 검증은 완료됐다. `research-wiki` 변경을 먼저 검토·병합한 뒤 `mj_rl`의 포인터 문서 변경을 별도 PR로 전달한다. 별도 tracking issue는 만들지 않는다.
+typed research model과 3-command interface 구현·검증은 완료됐다. `research-wiki` 변경을 먼저 검토·병합한 뒤 `mj_rl`의 포인터 문서 변경을 별도 PR로 전달한다. 별도 tracking issue는 만들지 않는다.
 
 ## Implemented
 
@@ -23,6 +23,9 @@ typed research model로의 전환 구현과 검증은 완료됐다. `research-wi
 - `mj_rl` 조사에서 comparison 5개, 직접 근거 paper 6개, `tsid-code` source 이관
 - pure-Python typed schema validator와 resolution 1.15 Louvain report
 - unit tests와 GitHub Actions quality gate
+- 공개 prompt를 query/ingest/reflect로 압축하고 resume/durable capture/post-write validation/archive maintenance를 자동 수명주기로 전환
+- wiki, repo-local docs, `.agents/skills`의 정본 경계와 source portal 원칙 명시
+- `mj_mpc` checked commit 기반 source/doc portal과 NIPFM flywheel 핵심 digest 추가
 
 ## Repository State
 
@@ -35,7 +38,7 @@ typed research model로의 전환 구현과 검증은 완료됐다. `research-wi
 ## Verification
 
 - `scripts/wiki_doctor.sh`: `ERROR=0`, `WARN=0`
-- `python3 -m unittest discover -s tests -v`: schema/topic/legacy/folder/relation/Louvain tests 통과
+- `python3 -m unittest discover -s tests -v`: schema/topic/legacy/folder/relation/command interface/Louvain 12 tests 통과
 - `python3 scripts/analyze_research_graph.py --check`: tracked report와 현재 graph 일치
 - 두 저장소 `git diff --check`: 통과
 

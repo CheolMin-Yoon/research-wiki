@@ -4,21 +4,22 @@
       "connected_communities": [
         2,
         3,
-        4,
-        7,
+        6,
+        11,
         12,
-        13
+        13,
+        14
       ],
-      "cross_community_edges": 9,
+      "cross_community_edges": 10,
       "node": "AI-Sessions/wiki/research/methods/model-predictive-control.md"
     },
     {
       "connected_communities": [
-        5,
-        7,
-        11,
+        4,
+        6,
+        10,
         12,
-        13
+        14
       ],
       "cross_community_edges": 7,
       "node": "AI-Sessions/wiki/research/tasks/humanoid-locomotion.md"
@@ -27,16 +28,26 @@
       "connected_communities": [
         2,
         4,
-        5
+        11,
+        13
       ],
-      "cross_community_edges": 3,
+      "cross_community_edges": 4,
       "node": "AI-Sessions/wiki/research/concepts/centroidal-dynamics.md"
     },
     {
       "connected_communities": [
+        4,
+        6,
+        11
+      ],
+      "cross_community_edges": 3,
+      "node": "AI-Sessions/wiki/research/methods/jax-solver.md"
+    },
+    {
+      "connected_communities": [
         2,
-        5,
-        6
+        4,
+        5
       ],
       "cross_community_edges": 3,
       "node": "AI-Sessions/wiki/research/methods/ppo.md"
@@ -45,7 +56,7 @@
       "connected_communities": [
         1,
         2,
-        4
+        13
       ],
       "cross_community_edges": 3,
       "node": "AI-Sessions/wiki/research/methods/whole-body-control.md"
@@ -61,47 +72,47 @@
     {
       "connected_communities": [
         12,
-        13
+        14
       ],
       "cross_community_edges": 2,
       "node": "AI-Sessions/wiki/research/comparisons/mpc-guided-rl-architectures.md"
     },
     {
       "connected_communities": [
+        1,
+        13
+      ],
+      "cross_community_edges": 2,
+      "node": "AI-Sessions/wiki/research/comparisons/romualdi-centroidal-mpc-vs-warpmpc.md"
+    },
+    {
+      "connected_communities": [
         2,
-        5
+        4
       ],
       "cross_community_edges": 2,
       "node": "AI-Sessions/wiki/research/concepts/lipm-icp.md"
     },
     {
       "connected_communities": [
-        5,
-        7
-      ],
-      "cross_community_edges": 2,
-      "node": "AI-Sessions/wiki/research/methods/jax-solver.md"
-    },
-    {
-      "connected_communities": [
-        7,
-        13
+        6,
+        14
       ],
       "cross_community_edges": 2,
       "node": "AI-Sessions/wiki/research/methods/multi-agent-reinforcement-learning.md"
     },
     {
       "connected_communities": [
-        8,
-        17
+        7,
+        18
       ],
       "cross_community_edges": 2,
       "node": "AI-Sessions/wiki/research/papers/2017-schulman-ppo.md"
     },
     {
       "connected_communities": [
-        5,
-        7
+        4,
+        6
       ],
       "cross_community_edges": 2,
       "node": "AI-Sessions/wiki/research/papers/2022-romualdi-centroidal-mpc.md"
@@ -116,16 +127,16 @@
     },
     {
       "connected_communities": [
-        9,
-        10
+        8,
+        9
       ],
       "cross_community_edges": 2,
       "node": "AI-Sessions/wiki/research/papers/2025-lee-humanoid-arm-cam-marl.md"
     },
     {
       "connected_communities": [
-        5,
-        11
+        4,
+        10
       ],
       "cross_community_edges": 2,
       "node": "AI-Sessions/wiki/research/papers/2026-li-mpc-guided-rl.md"
@@ -133,58 +144,59 @@
     {
       "connected_communities": [
         3,
-        5
+        4
       ],
       "cross_community_edges": 2,
       "node": "AI-Sessions/wiki/research/papers/2026-reiter-mpc-rl-survey.md"
     },
     {
       "connected_communities": [
+        4,
+        6
+      ],
+      "cross_community_edges": 2,
+      "node": "AI-Sessions/wiki/research/sources/mj-mpc-code.md"
+    },
+    {
+      "connected_communities": [
         1,
-        11
+        10
       ],
       "cross_community_edges": 2,
       "node": "AI-Sessions/wiki/research/sources/mj-rl.md"
     },
     {
       "connected_communities": [
-        10,
-        17
+        9,
+        18
       ],
       "cross_community_edges": 2,
       "node": "AI-Sessions/wiki/research/sources/momaland-code.md"
     },
     {
       "connected_communities": [
-        1
-      ],
-      "cross_community_edges": 1,
-      "node": "AI-Sessions/wiki/research/comparisons/romualdi-centroidal-mpc-vs-warpmpc.md"
-    },
-    {
-      "connected_communities": [
-        19
+        20
       ],
       "cross_community_edges": 1,
       "node": "AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer.md"
     },
     {
       "connected_communities": [
-        5
+        4
       ],
       "cross_community_edges": 1,
       "node": "AI-Sessions/wiki/research/papers/2025-jeon-residual-mpc.md"
     },
     {
       "connected_communities": [
-        9
+        8
       ],
       "cross_community_edges": 1,
       "node": "AI-Sessions/wiki/research/papers/2025-rsl-rl-library.md"
     },
     {
       "connected_communities": [
-        8
+        7
       ],
       "cross_community_edges": 1,
       "node": "AI-Sessions/wiki/research/sources/2025-lee-humanoid-arm-cam-marl-code.md"
@@ -198,49 +210,49 @@
     },
     {
       "connected_communities": [
-        10
+        9
       ],
       "cross_community_edges": 1,
       "node": "AI-Sessions/wiki/research/sources/casadi-on-gpu-code.md"
     },
     {
       "connected_communities": [
-        15
+        16
       ],
       "cross_community_edges": 1,
       "node": "AI-Sessions/wiki/research/sources/isaac-humanoid-code.md"
     },
     {
       "connected_communities": [
-        10
+        9
       ],
       "cross_community_edges": 1,
       "node": "AI-Sessions/wiki/research/sources/mpc-rl-code.md"
     },
     {
       "connected_communities": [
-        15
+        16
       ],
       "cross_community_edges": 1,
       "node": "AI-Sessions/wiki/research/sources/rsl-rl-code.md"
     },
     {
       "connected_communities": [
-        7
+        6
       ],
       "cross_community_edges": 1,
       "node": "AI-Sessions/wiki/research/sources/tsid-code.md"
     },
     {
       "connected_communities": [
-        4
+        11
       ],
       "cross_community_edges": 1,
       "node": "AI-Sessions/wiki/research/sources/warpmpc-code.md"
     },
     {
       "connected_communities": [
-        6
+        5
       ],
       "cross_community_edges": 1,
       "node": "AI-Sessions/wiki/research/tasks/loco-manipulation.md"
@@ -296,19 +308,8 @@
       "size": 3
     },
     {
-      "hub": "AI-Sessions/wiki/research/comparisons/romualdi-centroidal-mpc-vs-warpmpc.md",
-      "id": 4,
-      "label": "romualdi-centroidal-mpc-vs-warpmpc",
-      "members": [
-        "AI-Sessions/wiki/research/comparisons/romualdi-centroidal-mpc-vs-warpmpc.md",
-        "AI-Sessions/wiki/research/methods/jax-solver.md",
-        "AI-Sessions/wiki/research/papers/2022-romualdi-centroidal-mpc.md"
-      ],
-      "size": 3
-    },
-    {
       "hub": "AI-Sessions/wiki/research/methods/model-predictive-control.md",
-      "id": 5,
+      "id": 4,
       "label": "model-predictive-control",
       "members": [
         "AI-Sessions/wiki/research/comparisons/srbd-mpc-robustness-priorities.md",
@@ -319,7 +320,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/methods/multi-agent-reinforcement-learning.md",
-      "id": 6,
+      "id": 5,
       "label": "multi-agent-reinforcement-learning",
       "members": [
         "AI-Sessions/wiki/research/concepts/centralized-training-decentralized-execution.md",
@@ -330,7 +331,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/concepts/centroidal-dynamics.md",
-      "id": 7,
+      "id": 6,
       "label": "centroidal-dynamics",
       "members": [
         "AI-Sessions/wiki/research/concepts/centroidal-dynamics.md",
@@ -341,7 +342,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2025-lee-humanoid-arm-cam-marl.md",
-      "id": 8,
+      "id": 7,
       "label": "2025-lee-humanoid-arm-cam-marl",
       "members": [
         "AI-Sessions/wiki/research/papers/2013-orin-centroidal-dynamics.md",
@@ -352,7 +353,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2017-schulman-ppo.md",
-      "id": 9,
+      "id": 8,
       "label": "2017-schulman-ppo",
       "members": [
         "AI-Sessions/wiki/research/papers/2017-schulman-ppo.md",
@@ -363,7 +364,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/sources/mj-rl.md",
-      "id": 10,
+      "id": 9,
       "label": "mj-rl",
       "members": [
         "AI-Sessions/wiki/research/sources/2025-lee-humanoid-arm-cam-marl-code.md",
@@ -374,11 +375,21 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/comparisons/humanoid-mbc-teacher-integration.md",
-      "id": 11,
+      "id": 10,
       "label": "humanoid-mbc-teacher-integration",
       "members": [
         "AI-Sessions/wiki/research/comparisons/humanoid-mbc-teacher-integration.md",
         "AI-Sessions/wiki/research/sources/mpc-rl-code.md"
+      ],
+      "size": 2
+    },
+    {
+      "hub": "AI-Sessions/wiki/research/comparisons/romualdi-centroidal-mpc-vs-warpmpc.md",
+      "id": 11,
+      "label": "romualdi-centroidal-mpc-vs-warpmpc",
+      "members": [
+        "AI-Sessions/wiki/research/comparisons/romualdi-centroidal-mpc-vs-warpmpc.md",
+        "AI-Sessions/wiki/research/papers/2022-romualdi-centroidal-mpc.md"
       ],
       "size": 2
     },
@@ -393,8 +404,18 @@
       "size": 2
     },
     {
-      "hub": "AI-Sessions/wiki/research/methods/ppo.md",
+      "hub": "AI-Sessions/wiki/research/methods/jax-solver.md",
       "id": 13,
+      "label": "jax-solver",
+      "members": [
+        "AI-Sessions/wiki/research/methods/jax-solver.md",
+        "AI-Sessions/wiki/research/sources/mj-mpc-code.md"
+      ],
+      "size": 2
+    },
+    {
+      "hub": "AI-Sessions/wiki/research/methods/ppo.md",
+      "id": 14,
       "label": "ppo",
       "members": [
         "AI-Sessions/wiki/research/methods/ppo.md",
@@ -404,7 +425,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2025-butterfield-mi-hgnn.md",
-      "id": 14,
+      "id": 15,
       "label": "2025-butterfield-mi-hgnn",
       "members": [
         "AI-Sessions/wiki/research/papers/2025-butterfield-mi-hgnn.md",
@@ -414,7 +435,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/sources/momaland-code.md",
-      "id": 15,
+      "id": 16,
       "label": "momaland-code",
       "members": [
         "AI-Sessions/wiki/research/papers/2025-liu-mash.md",
@@ -424,7 +445,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2025-mjlab.md",
-      "id": 16,
+      "id": 17,
       "label": "2025-mjlab",
       "members": [
         "AI-Sessions/wiki/research/papers/2025-mjlab.md",
@@ -434,7 +455,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2025-rsl-rl-library.md",
-      "id": 17,
+      "id": 18,
       "label": "2025-rsl-rl-library",
       "members": [
         "AI-Sessions/wiki/research/papers/2025-rsl-rl-library.md",
@@ -444,7 +465,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2025-xie-ms-hgnn.md",
-      "id": 18,
+      "id": 19,
       "label": "2025-xie-ms-hgnn",
       "members": [
         "AI-Sessions/wiki/research/papers/2025-xie-ms-hgnn.md",
@@ -454,7 +475,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/sources/body-transformer-code.md",
-      "id": 19,
+      "id": 20,
       "label": "body-transformer-code",
       "members": [
         "AI-Sessions/wiki/research/sources/body-transformer-code.md",
@@ -464,7 +485,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2021-han-multiagent-model-based-credit.md",
-      "id": 20,
+      "id": 21,
       "label": "2021-han-multiagent-model-based-credit",
       "members": [
         "AI-Sessions/wiki/research/papers/2021-han-multiagent-model-based-credit.md"
@@ -473,7 +494,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2024-kapoor-prd-mappo.md",
-      "id": 21,
+      "id": 22,
       "label": "2024-kapoor-prd-mappo",
       "members": [
         "AI-Sessions/wiki/research/papers/2024-kapoor-prd-mappo.md"
@@ -482,7 +503,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2024-lyu-centralized-critics.md",
-      "id": 22,
+      "id": 23,
       "label": "2024-lyu-centralized-critics",
       "members": [
         "AI-Sessions/wiki/research/papers/2024-lyu-centralized-critics.md"
@@ -491,7 +512,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2025-alegre-amor.md",
-      "id": 23,
+      "id": 24,
       "label": "2025-alegre-amor",
       "members": [
         "AI-Sessions/wiki/research/papers/2025-alegre-amor.md"
@@ -500,7 +521,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2025-wei-ms-ppo.md",
-      "id": 24,
+      "id": 25,
       "label": "2025-wei-ms-ppo",
       "members": [
         "AI-Sessions/wiki/research/papers/2025-wei-ms-ppo.md"
@@ -509,7 +530,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2025-zhao-mg2l.md",
-      "id": 25,
+      "id": 26,
       "label": "2025-zhao-mg2l",
       "members": [
         "AI-Sessions/wiki/research/papers/2025-zhao-mg2l.md"
@@ -518,7 +539,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2025-zhao-mla.md",
-      "id": 26,
+      "id": 27,
       "label": "2025-zhao-mla",
       "members": [
         "AI-Sessions/wiki/research/papers/2025-zhao-mla.md"
@@ -527,7 +548,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2026-kim-gpae.md",
-      "id": 27,
+      "id": 28,
       "label": "2026-kim-gpae",
       "members": [
         "AI-Sessions/wiki/research/papers/2026-kim-gpae.md"
@@ -536,7 +557,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2026-le-dependence-graph-credit.md",
-      "id": 28,
+      "id": 29,
       "label": "2026-le-dependence-graph-credit",
       "members": [
         "AI-Sessions/wiki/research/papers/2026-le-dependence-graph-credit.md"
@@ -545,7 +566,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2026-miao-gt-td3.md",
-      "id": 29,
+      "id": 30,
       "label": "2026-miao-gt-td3",
       "members": [
         "AI-Sessions/wiki/research/papers/2026-miao-gt-td3.md"
@@ -554,7 +575,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2026-shin-abd-net.md",
-      "id": 30,
+      "id": 31,
       "label": "2026-shin-abd-net",
       "members": [
         "AI-Sessions/wiki/research/papers/2026-shin-abd-net.md"
@@ -563,7 +584,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/papers/2026-yardimci-critic-architecture.md",
-      "id": 31,
+      "id": 32,
       "label": "2026-yardimci-critic-architecture",
       "members": [
         "AI-Sessions/wiki/research/papers/2026-yardimci-critic-architecture.md"
@@ -572,7 +593,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/sources/mj-control-code.md",
-      "id": 32,
+      "id": 33,
       "label": "mj-control-code",
       "members": [
         "AI-Sessions/wiki/research/sources/mj-control-code.md"
@@ -581,7 +602,7 @@
     },
     {
       "hub": "AI-Sessions/wiki/research/sources/modern-robotics-code.md",
-      "id": 33,
+      "id": 34,
       "label": "modern-robotics-code",
       "members": [
         "AI-Sessions/wiki/research/sources/modern-robotics-code.md"
@@ -590,10 +611,10 @@
     }
   ],
   "connected_component_count": 19,
-  "edge_count": 78,
+  "edge_count": 81,
   "hubs": [
     {
-      "degree": 11,
+      "degree": 12,
       "node": "AI-Sessions/wiki/research/methods/model-predictive-control.md"
     },
     {
@@ -601,7 +622,7 @@
       "node": "AI-Sessions/wiki/research/tasks/humanoid-locomotion.md"
     },
     {
-      "degree": 5,
+      "degree": 6,
       "node": "AI-Sessions/wiki/research/concepts/centroidal-dynamics.md"
     },
     {
@@ -611,6 +632,10 @@
     {
       "degree": 4,
       "node": "AI-Sessions/wiki/research/comparisons/mpc-guided-rl-architectures.md"
+    },
+    {
+      "degree": 4,
+      "node": "AI-Sessions/wiki/research/methods/jax-solver.md"
     },
     {
       "degree": 4,
@@ -658,10 +683,6 @@
     },
     {
       "degree": 3,
-      "node": "AI-Sessions/wiki/research/methods/jax-solver.md"
-    },
-    {
-      "degree": 3,
       "node": "AI-Sessions/wiki/research/papers/2017-schulman-ppo.md"
     },
     {
@@ -699,6 +720,10 @@
     {
       "degree": 3,
       "node": "AI-Sessions/wiki/research/sources/isaac-humanoid-code.md"
+    },
+    {
+      "degree": 3,
+      "node": "AI-Sessions/wiki/research/sources/mj-mpc-code.md"
     },
     {
       "degree": 3,
@@ -813,8 +838,8 @@
       "node": "AI-Sessions/wiki/research/sources/ms-hgnn-code.md"
     }
   ],
-  "modularity": 0.523915,
-  "node_count": 69,
+  "modularity": 0.504496,
+  "node_count": 70,
   "orphans": [
     "AI-Sessions/wiki/research/papers/2021-han-multiagent-model-based-credit.md",
     "AI-Sessions/wiki/research/papers/2024-kapoor-prd-mappo.md",

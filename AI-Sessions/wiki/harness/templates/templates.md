@@ -26,4 +26,4 @@ status: active
 
 ## Summary
 
-노트 유형별 작성 형식을 담는 templates 폴더 hub다. ingest/save 시 해당 type의 template을 참조해 형식을 통일한다.
+노트 유형별 작성 형식을 담는 templates 폴더 hub다. ingest/reflect 시 해당 type의 template을 참조해 형식을 통일한다.

@@ -34,14 +34,15 @@ idea는 paper의 부모가 아니며 idea 변경은 paper의 경로나 topic을 
 
 ## Repository Ownership
 
-- 재사용 가능한 조사 결과의 정본은 `research-wiki`다.
-- `/home/frlab/mj_rl`에는 code contract, task/design, experiment artifact와 위키 포인터만 둔다.
-- `/home/frlab/mj_mpc`의 `CONTEXT.md`, `docs/coding_style.md`는 코드 계약이므로 저장소에 남는다.
+- 재사용 가능한 조사 결과와 프로젝트별 source portal의 정본은 `research-wiki`다.
+- `/home/frlab/mj_rl`, `/home/frlab/mj_mpc`에는 코드와 같은 revision에서 바뀌는 API·설정·실행·테스트 계약과 artifact를 둔다. wiki source portal에서 이를 연결한다.
+- `.agents/skills/`에는 반복 가능한 개인 에이전트 절차만 둔다. `jax-mpc`는 현재 자동 인식되는 repo-local skill이다.
 - `AI-Sessions/raw/`는 source of truth이며 기본 읽기 전용이다.
 
 ## Active Implementations
 
 - `/home/frlab/mj_rl`: humanoid RL/MBC 구현 저장소. 현재 구현 계약은 repo-local docs와 `research/sources/mj-rl.md`를 함께 본다.
+- `/home/frlab/mj_mpc`: G1 NIPFM/SQP 구현 저장소. 코드 계약은 repo-local docs, 재사용 가능한 digest와 문서 portal은 `research/sources/mj-mpc-code.md`를 본다.
 - `/home/frlab/isaac_humanoid`: RAL2025 MIT Humanoid baseline 위 morphology GCN 실험. 정본 digest는 `research/sources/isaac-humanoid-code.md`다.
 
 ## Operating Pointers
@@ -49,4 +50,5 @@ idea는 paper의 부모가 아니며 idea 변경은 paper의 경로나 topic을 
 - 시작: `architecture.md` → 이 brief → 필요하면 `handoff.md` → `research.md` 또는 `harness.md`.
 - 새 topic은 pending에 넣고 큐레이터 승인 전 note에 사용하지 않는다.
 - 구조·schema·link·Bases·graph·prompt 변경 후 doctor와 unit tests를 실행한다.
+- 공개 명령은 query/ingest/reflect뿐이며 재개·저장 판단·검사·정리는 자동 수명주기다.
 - Obsidian 설정은 앱을 종료한 상태에서 수정한다.

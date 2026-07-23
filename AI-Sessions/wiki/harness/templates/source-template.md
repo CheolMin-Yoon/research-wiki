@@ -26,6 +26,9 @@ source:
 ## Provenance
 - checked commit: <hash 또는 unavailable>. 미커밋 working tree 기준이면 그 사실을 명시.
 
+## Project Docs Boundary
+<wiki가 소유할 재사용 지식과 repo-local로 남길 코드 계약·artifact를 구분하고 링크>
+
 ## 핵심 파일
 <파일/디렉토리별 역할>
 

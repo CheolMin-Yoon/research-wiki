@@ -31,6 +31,18 @@ class ResearchSchemaTests(unittest.TestCase):
         (self.root / "AI-Sessions/wiki/maps").mkdir(parents=True)
         for filename in ("architecture.md", "research.md", "harness.md"):
             (self.root / filename).write_text("# clean\n", encoding="utf-8")
+        for filename in ("README.md", "CLAUDE.md", "AGENTS.md"):
+            (self.root / filename).write_text("# clean\n", encoding="utf-8")
+        for command in validate_research.PUBLIC_COMMANDS:
+            (self.root / f"prompts/{command}.md").write_text(f"# {command}\n", encoding="utf-8")
+        (self.root / "prompts/prompts.md").write_text("# Prompts\n", encoding="utf-8")
+        command_lines = "\n".join(
+            f"  {command}: prompts/{command}.md" for command in ("query", "ingest", "reflect")
+        )
+        (self.root / "vault-manifest.yaml").write_text(
+            f"schema_version: test\ncommands:\n{command_lines}\ndoctor:\n  script: scripts/wiki_doctor.sh\n",
+            encoding="utf-8",
+        )
 
         registry = {
             "schema_version": 1,
@@ -124,6 +136,20 @@ class ResearchSchemaTests(unittest.TestCase):
             extra="source: AI-Sessions/raw/repos/missing.md\n",
         )
         self.assertIn("provenance", self.codes())
+
+    def test_retired_prompt_file_is_rejected(self) -> None:
+        (self.root / "prompts/reference.md").write_text("# Reference\n", encoding="utf-8")
+        self.assertIn("command-interface", self.codes())
+
+    def test_unexpected_manifest_command_is_rejected(self) -> None:
+        manifest = self.root / "vault-manifest.yaml"
+        manifest.write_text(
+            manifest.read_text(encoding="utf-8").replace(
+                "commands:\n", "commands:\n  save: prompts/save.md\n"
+            ),
+            encoding="utf-8",
+        )
+        self.assertIn("command-interface", self.codes())
 
 
 if __name__ == "__main__":

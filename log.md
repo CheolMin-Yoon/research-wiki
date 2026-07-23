@@ -1,6 +1,6 @@
 # Agent Work Log
 
-이 파일은 `reference` 때 최근 연구 흐름을 빠르게 복원하기 위한 고신호 타임라인입니다. 모든 에이전트 실행을 남기지 말고, 다음 세션이 반드시 알아야 할 구조 변화, 큰 ingest, 결정, 실패만 한 줄로 기록합니다.
+이 파일은 자동 resume 때 최근 연구 흐름을 빠르게 복원하기 위한 고신호 타임라인입니다. 모든 에이전트 실행을 남기지 말고, 다음 세션이 반드시 알아야 할 구조 변화, 큰 ingest, 결정, 실패만 한 줄로 기록합니다.
 
 형식:
 
@@ -25,3 +25,4 @@ YYYY-MM-DD | kind | summary | linked files
 2026-07-18 | ingest | GPAE(AAMAS 2026, per-agent GAE 일반화+DT-ISR)와 dependence-graph credit(arXiv 2601.21523, meeting-time reward 절단+근사 graph bias bound) 논문 PDF ingest, idea-model-based-critic 하위 credit 축의 근거 논문으로 등록 | AI-Sessions/wiki/research/papers/2026-kim-gpae.md, AI-Sessions/wiki/research/papers/2026-le-dependence-graph-credit.md
 2026-07-18 | ingest | credit/multi-critic 서재 6편 일괄 ingest: Han 2021(semivalue+learned world model), Lyu JAIR(centralized critic 비판), PRD-MAPPO(attention relevant set), AMOR(신체그룹 vector critic+weight conditioning), MACA(multi-level counterfactual), Yardımcı(dual vs unified critic). idea-model-based-critic 논증 1–4의 근거·대조군 지형 완성 | AI-Sessions/wiki/research/papers/
 2026-07-24 | structure | idea→category→paper 트리를 typed research objects + canonical multi-topic metadata + Bases로 교체, category 7개 삭제, mj_rl 재사용 조사 정본 이관, schema/Louvain/CI gate 추가. raw diff 0 | CONTEXT.md, schema/research-topics.json, AI-Sessions/wiki/research/, scripts/
+2026-07-24 | harness | 공개 명령을 query/ingest/reflect로 압축하고 resume·durable capture·post-write validation·archive maintenance를 자동 수명주기로 전환. wiki/repo docs/.agents skills 정본 경계 확정 | prompts/, agent-policy.md, harness-decisions.md

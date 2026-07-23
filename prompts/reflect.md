@@ -9,6 +9,7 @@ tags: [tier/low]
 
 먼저 architecture.md, AI-Sessions/wiki/harness/state/brief.md를 확인해줘.
 
+0. 먼저 durable capture gate를 적용해. 다음 중 하나도 만족하지 않으면 아무 파일도 갱신하지 말고 저장하지 않은 이유만 알려줘: 다른 세션·프로젝트에서 재사용할 지식, 다음 세션에 꼭 필요한 handoff, 추적할 결정 근거, 반복될 실패 위험, 공유할 운용 규칙.
 1. 최근 experiment/source를 읽어 새로 알게 된 사실을 식별해줘.
 2. 단일 실험 사실은 AI-Sessions/wiki/research/experiments/에 둬.
 3. 재발 방지 실패는 AI-Sessions/wiki/harness/errors/로 승격해줘.
@@ -18,4 +19,6 @@ tags: [tier/low]
 7. 같은 사실을 여러 계층에 복붙하지 마. 계층 하나를 정본(canonical home)으로 정하고(구현→source, 논문→paper, 실험설계→experiment) 나머지 문서는 restate 대신 [[링크]]로 가리켜. state(brief/handoff)에는 코드 디테일·메커니즘을 넣지 말고 "무엇을 했다 + 어디를 봐라" 포인터와 현재상태만 둬. (근거: AI-Sessions/wiki/harness/patterns/agent-patterns.md "정본 한 곳에 두고 나머지는 링크")
 
 raw 원본은 수정하지 마. 추측은 미검증으로 표시하고, 근거와 해석을 분리해줘.
+
+write가 있었다면 마지막에 scripts/wiki_doctor.sh를 실행해 ERROR=0, WARN=0을 확인해. schema·script가 바뀌면 unit tests를, stable wikilink graph가 바뀌면 Louvain --check도 실행해.
 ```

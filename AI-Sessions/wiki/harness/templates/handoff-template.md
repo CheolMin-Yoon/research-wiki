@@ -15,7 +15,7 @@ date: YYYY-MM-DD
 status: active
 last_agent:
 suggested_next_agent:
-mode: planning | implementation | verification | reference | ingest | lint | archive
+mode: planning | implementation | verification | query | ingest | reflect | maintenance
 ---
 
 # Handoff

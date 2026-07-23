@@ -26,7 +26,7 @@
 
 ## Current Anchors
 
-- active implementation source: `AI-Sessions/wiki/research/sources/mj-rl.md`
+- active implementation sources: `AI-Sessions/wiki/research/sources/mj-rl.md`, `AI-Sessions/wiki/research/sources/mj-mpc-code.md`
 - central hypotheses: `AI-Sessions/wiki/research/ideas/idea-model-based-critic.md`, `AI-Sessions/wiki/research/ideas/idea-physical-feature-graph.md`
 - MPC/RL synthesis: `AI-Sessions/wiki/research/comparisons/mpc-guided-rl-architectures.md`
 
