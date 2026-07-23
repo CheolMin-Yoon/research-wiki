@@ -35,7 +35,7 @@ Obsidian의 기본 global graph는 stable research 타입(concept, method, task,
 
 ## Project Documentation Boundary
 
-여러 프로젝트에 재사용되는 연구 지식과 저장소 분석은 이 wiki의 typed research note가 정본이다. 코드와 같은 commit에서 바뀌어야 하는 API·설정·실행·테스트 계약은 `mj_rl`과 `mj_mpc`에 남기고, wiki의 source portal에서 해당 문서를 연결한다. skill은 지식 문서가 아니라 이 둘을 읽고 작업하는 절차다. 같은 내용을 wiki, skill, repo docs에 복제하지 않는다.
+여러 프로젝트에 재사용되는 연구 지식과 저장소 분석은 이 wiki의 typed research note가 정본이다. 코드와 같은 commit에서 바뀌어야 하는 API·변수·설정·실행 계약과 `tests/`는 `mj_rl`과 `mj_mpc`에 남기고, wiki의 source portal에서 해당 문서와 test 위치를 연결한다. 실험의 조건·측정·판정과 재사용할 오류 원인·예방은 wiki가 소유하되 raw artifact와 regression test는 프로젝트에 남긴다. skill은 지식 문서가 아니라 이 둘을 읽고 작업하는 절차다. 같은 내용을 wiki, skill, repo docs에 복제하지 않는다.
 
 ## Harness
 

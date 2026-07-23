@@ -39,6 +39,8 @@ status: active
 - research: concept/method/task/paper/source/comparison/idea/experiment 지식은 타입별 `AI-Sessions/wiki/research/` 폴더에 둔다. granular한 구현 작업 단위는 wiki가 아니라 프로젝트 레포에서 관리한다.
 - harness: agent 운영, 정책, 실패 방지, archive, eval, state는 `AI-Sessions/wiki/harness/`에 둔다.
 - prompts: 명령별 실행 규칙은 `prompts/`에 둔다.
+- project repos: source code, `tests/`, CI, API·변수·설정·실행 계약과 raw artifact는 각 저장소에 둔다.
+- skills: `.agents/skills/`에는 반복 가능한 agent procedure와 그 실행에만 필요한 reference/script를 둔다.
 
 ## Status Lifecycle
 

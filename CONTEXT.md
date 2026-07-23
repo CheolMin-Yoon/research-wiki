@@ -25,8 +25,8 @@ _Avoid_: Method, experiment run
 _Avoid_: Topic, literature category
 
 **Source**:
-코드나 저장소의 실제 구현 계약과 실행 경로를 분석한 연구 증거다.
-_Avoid_: Paper, generic implementation category
+코드나 저장소의 특정 revision에서 실제 구현과 실행 경로를 분석한 연구 증거다. live code contract 자체는 아니다.
+_Avoid_: Paper, repository contract, generic implementation category
 
 **Comparison**:
 공통 축으로 둘 이상의 근거를 대조해 선택 기준과 종합 판단을 제시하는 노트다.
@@ -47,3 +47,15 @@ _Avoid_: Automatic classifier
 **Strong Relation**:
 단순한 topic 공유가 아니라 설명, 구현, 근거, 대조 또는 검증의 의미가 있는 두 노트의 관계다.
 _Avoid_: Exhaustive backlink, co-membership edge
+
+**Repository Contract**:
+코드와 같은 revision에서 바뀌고 tests/CI로 검증되는 API, 변수, shape, 설정, 실행 규칙이다. 프로젝트 저장소가 정본이다.
+_Avoid_: Wiki knowledge, source digest
+
+**Project Portal**:
+한 저장소의 checked revision, 재사용 가능한 구현 digest, repo-local contract와 artifact 위치를 연결하는 source note다.
+_Avoid_: Mirrored docs folder, manual file inventory
+
+**Skill**:
+wiki 지식과 repository contract를 읽어 반복 작업을 수행하는 triggerable agent procedure다.
+_Avoid_: Research note, project documentation

@@ -21,6 +21,12 @@ source: AI-Sessions/raw/repos/mj-rl.md
 
 이 digest는 **2026-07-12 세션에서 직접 다룬 범위만 검증**했다: `source/assets/{layout,layout_29,graph,graph_29,g1,dynamics}.py`, `source/models/gcn/`, `source/rl/{config,mappo}.py`, `source/tasks/{mlp_ctde,falcon,graph_mimic_29d}/`, `source/utils/{math_utils,graph_viz}.py`, `tests/`의 관련 MAPPO/FALCON/GCN/graph/math coverage. 전체 v2 구조 중 이 밖의 파일은 필요 시 다음 reflect에서 재확인한다.
 
+## Project Docs Boundary
+
+- repo-local canonical contract: `docs/design/`, `docs/tasks/`, `docs/handoff.md`, source code, `tests/`, CI와 실행 artifact
+- wiki migration target: `docs/research/`의 조사 본문, `docs/experiments.md`의 조건·측정·판정, `docs/errors.md`의 재사용할 원인·예방
+- migration 뒤 repo에는 exact wiki revision, 저장소별 적용 차이, 실행 script/artifact와 named regression test pointer만 남긴다.
+
 ## Current Implementation Surface (검증됨)
 
 - `source/assets/layout.py`: G1 23-DOF joint 이름·순서·인덱스의 단일 손-작성 원천. 손-작성은 `LEFT/RIGHT_LOWER_BODY_JOINTS`(6+6), `WAIST_JOINTS`(1), `LEFT/RIGHT_UPPER_BODY_JOINTS`(5+5) 좌/우 튜플과 SDK 모터 인덱스뿐이고, DOF/slice/NQ·NV/`qpos_slice`/`qvel_slice`/`joint_group_of`는 전부 파생이다. **leg/arm 어휘는 저장소 전체에서 제거됨**(2026-07-11) — 도메인 토큰은 `lower_body`/`upper_body`/`waist` 셋뿐이다.

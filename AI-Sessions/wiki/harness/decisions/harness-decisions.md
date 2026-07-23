@@ -36,10 +36,10 @@ status: active
 ## Wiki, repo docs, skills의 정본 경계
 
 - wiki: 프로젝트를 가로질러 재사용할 개념·방법·근거·비교·실험과 source portal
-- repo docs: 코드와 같은 revision에서 바뀌는 API·설정·실행·테스트 계약과 artifact
+- repo docs와 tests: 코드와 같은 revision에서 바뀌는 API·변수·설정·실행 계약, executable regression과 artifact
 - `.agents/skills/`: 위 둘을 읽고 반복 작업을 수행하는 짧은 절차와 필요한 reference/script
 
-동일 본문을 세 위치에 복제하지 않는다. `mj_rl`/`mj_mpc` docs를 wiki에서 찾게 만들되, 코드 결합 문서는 repo-local 링크로 관리한다.
+동일 본문을 세 위치에 복제하지 않는다. `mj_rl`/`mj_mpc` docs를 wiki에서 찾게 만들되, 코드 결합 문서와 tests는 repo-local 링크로 관리한다. 실험 결과와 재사용할 error 교훈만 wiki로 옮기고 실행 script, raw artifact, named regression은 repo에 남긴다.
 
 ## Links
 

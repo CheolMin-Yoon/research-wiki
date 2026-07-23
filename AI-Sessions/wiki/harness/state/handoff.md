@@ -49,6 +49,7 @@ typed research model과 3-command interface 구현·검증은 완료됐다. `res
 3. global graph가 stable research 타입과 research-map만 표시하고 orphan을 숨기는지 확인한다.
 4. local graph에서 idea/experiment 근거 relation이 보이는지 확인한다.
 5. wiki PR 병합 후에만 `mj_rl` 포인터 PR을 연다.
+6. 후속 docs 이관은 `mj_rl/docs/{research,experiments,errors}`의 durable 내용과 `mj_mpc/docs/flywheel_inertia.md`만 대상으로 한다. design/tasks/handoff/coding contracts와 두 저장소의 tests는 repo-local로 유지한다.
 
 ## Rollback
 

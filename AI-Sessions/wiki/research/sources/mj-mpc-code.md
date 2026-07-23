@@ -24,7 +24,7 @@ G1 보행용 NIPFM NMPC를 C++ 식과 대조 가능한 NumPy oracle에서 시작
 
 ## Project Docs Boundary
 
-- repo-local canonical contract: `CONTEXT.md`, `docs/coding_style.md`. 이름, shape, dtype, 코드 구조와 같은 규칙은 코드와 같은 commit에서 바뀌어야 한다.
+- repo-local canonical contract: `CONTEXT.md`, `docs/coding_style.md`, `tests/`. 이름, shape, dtype, 코드 구조와 executable regression은 코드와 같은 commit에서 바뀌어야 한다.
 - wiki canonical digest: 이 source note의 구현 구조와 NIPFM flywheel 해석. 여러 프로젝트에서 재사용할 concept/method 결론은 관련 typed note로 승격한다.
 - migration candidate: `docs/flywheel_inertia.md`의 긴 derivation은 wiki 정본으로 승격한 뒤 repo에는 checked wiki revision과 구현 차이만 남긴다.
 

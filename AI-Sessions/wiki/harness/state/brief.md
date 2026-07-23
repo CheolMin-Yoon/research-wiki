@@ -35,7 +35,7 @@ idea는 paper의 부모가 아니며 idea 변경은 paper의 경로나 topic을 
 ## Repository Ownership
 
 - 재사용 가능한 조사 결과와 프로젝트별 source portal의 정본은 `research-wiki`다.
-- `/home/frlab/mj_rl`, `/home/frlab/mj_mpc`에는 코드와 같은 revision에서 바뀌는 API·설정·실행·테스트 계약과 artifact를 둔다. wiki source portal에서 이를 연결한다.
+- `/home/frlab/mj_rl`, `/home/frlab/mj_mpc`에는 코드와 같은 revision에서 바뀌는 API·변수·설정·실행 계약, tests와 artifact를 둔다. 실험 결과와 재사용 error는 wiki가 소유하고 source portal에서 양쪽을 연결한다.
 - `.agents/skills/`에는 반복 가능한 개인 에이전트 절차만 둔다. `jax-mpc`는 현재 자동 인식되는 repo-local skill이다.
 - `AI-Sessions/raw/`는 source of truth이며 기본 읽기 전용이다.
 
