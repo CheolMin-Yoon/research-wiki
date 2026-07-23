@@ -1,8 +1,13 @@
 ---
-tags: [tier/low]
 type: experiment
 date: 2026-06-29
 status: planned
+topics:
+  - humanoid
+  - locomotion
+  - reinforcement-learning
+  - morphology-aware-policy
+  - graph-policy
 source: mj_rl source/tasks/graph_transformer + mjlab Unitree-G1 29-DOF task surface
 related_papers: AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer.md, AI-Sessions/wiki/research/papers/2025-mjlab.md, AI-Sessions/wiki/research/papers/2017-schulman-ppo.md
 related_sources: AI-Sessions/wiki/research/sources/mj-rl.md, AI-Sessions/wiki/research/sources/body-transformer-code.md, AI-Sessions/wiki/research/sources/mjlab-code.md
@@ -124,9 +129,9 @@ conda run --no-capture-output -n mjlab_env \
 - If MLP learns but all BoT variants fail, the failure is likely architecture-tokenization/readout rather than reward/task feasibility.
 - If BoT learns but is worse than MLP, CMM/centroidal-root can be justified as a dynamics prior rather than a task rescue patch.
 
-## Links
+## Relations
 
 - source: [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]]
 - BoT source: [[AI-Sessions/wiki/research/sources/body-transformer-code|body-transformer-code]]
-- idea gate: [[AI-Sessions/wiki/research/idea-physical-feature-graph|idea-physical-feature-graph]]
+- idea gate: [[AI-Sessions/wiki/research/ideas/idea-physical-feature-graph|idea-physical-feature-graph]]
 - downstream CMM experiment: [[AI-Sessions/wiki/research/experiments/2026-06-28-g1-centroidal-cmm-vs-baselines|2026-06-28-g1-centroidal-cmm-vs-baselines]]

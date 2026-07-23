@@ -1,8 +1,12 @@
 ---
-tags: [tier/low]
 type: experiment
 date: 2026-06-25
 status: planned
+topics:
+  - humanoid
+  - locomotion
+  - reinforcement-learning
+  - imitation-learning
 source: mjlab_env installed mjlab package
 related_papers: AI-Sessions/wiki/research/papers/2025-mjlab.md, AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer.md
 related_sources: AI-Sessions/wiki/research/sources/mjlab-code.md, AI-Sessions/wiki/research/sources/body-transformer-code.md, AI-Sessions/wiki/research/sources/mj-rl.md
@@ -247,7 +251,10 @@ Copy this block for each meaningful run.
 /home/frlab/mj_rl/models/motion_tracking.best.json
 ```
 
-## Links
+## Relations
 
-- papers: 2025-mjlab, 2024-sferrazza-body-transformer
-- sources: mjlab-code, body-transformer-code, mj-rl
+- paper: [[AI-Sessions/wiki/research/papers/2025-mjlab|2025-mjlab]]
+- paper: [[AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer|2024-sferrazza-body-transformer]]
+- source: [[AI-Sessions/wiki/research/sources/mjlab-code|mjlab-code]]
+- source: [[AI-Sessions/wiki/research/sources/body-transformer-code|body-transformer-code]]
+- implementation: [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]]

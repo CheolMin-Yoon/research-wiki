@@ -13,21 +13,28 @@ target_type: idea
 type: idea
 date: YYYY-MM-DD
 status: draft | active | superseded
+topics:
+  - canonical-topic
 source:
 ---
 
 # 아이디어: <이름>
 
-## Summary
+## Hypothesis
+<반증 가능한 한 문장>
 
-## 핵심 인사이트
+## Falsification
+<어떤 관찰이면 가설을 버리거나 수정하는가>
 
-## 근거
-<연결되는 paper/source/category. 근거와 해석을 구분>
+## Evidence For
+<찬성 근거와 해석을 분리>
 
-## 연구적 함의
+## Evidence Against
+<반대 근거, 실패 가능성, 대안 설명>
 
-## 피해야 할 주장
+## Related Experiments
+<가설을 판정하는 experiment만 전체 경로 wikilink>
 
-## Links
+## Relations
+<설명 가치가 있는 concept/method/task/comparison 관계만 전체 경로 wikilink>
 ```

@@ -13,6 +13,8 @@ target_type: experiment
 type: experiment
 date: YYYY-MM-DD
 status: planned | running | done | invalid | archived
+topics:
+  - canonical-topic
 project:
 source:
 ---
@@ -51,6 +53,6 @@ source:
 
 ## Next Experiment
 
-## Links
-<관련 paper/source/category/idea/policy를 [[wikilink]]로 연결. `related_*` frontmatter를 쓰면 여기에 mirror>
+## Relations
+<검증하는 idea와 직접 사용한 paper/source/method만 전체 경로 [[wikilink]]로 연결>
 ```

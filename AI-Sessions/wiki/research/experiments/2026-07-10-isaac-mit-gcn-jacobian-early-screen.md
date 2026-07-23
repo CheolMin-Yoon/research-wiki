@@ -1,8 +1,12 @@
 ---
-tags: [tier/low]
 type: experiment
 date: 2026-07-10
 status: active
+topics:
+  - humanoid
+  - locomotion
+  - reinforcement-learning
+  - graph-policy
 source: isaac_humanoid source/tasks/ral2025_mit
 related_sources: AI-Sessions/wiki/research/sources/isaac-humanoid-code.md, AI-Sessions/wiki/research/sources/mj-rl.md, AI-Sessions/wiki/research/sources/2025-lee-humanoid-arm-cam-marl-code.md
 ---
@@ -116,12 +120,12 @@ parity 테스트를 유지했고, 그 결과 3번째 run은 원래 의도했던 
 /home/frlab/isaac_humanoid/logs/rsl_rl/Humanoid_GCN_CTDE/
 ```
 
-## Links
+## Relations
 
 - pattern: [[AI-Sessions/wiki/harness/patterns/agent-patterns|agent-patterns]] (사례 6/7 — git checkout 사고, nohup/setsid 재발)
 - source: [[AI-Sessions/wiki/research/sources/isaac-humanoid-code|isaac-humanoid-code]]
 - source: [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]]
 - source: [[AI-Sessions/wiki/research/sources/2025-lee-humanoid-arm-cam-marl-code|2025-lee-humanoid-arm-cam-marl-code]]
-- related idea: [[AI-Sessions/wiki/research/idea-physical-feature-graph|idea-physical-feature-graph]]
-- related idea: [[AI-Sessions/wiki/research/idea-centroidal-momentum-allocation-credit|idea-centroidal-momentum-allocation-credit]]
+- related idea: [[AI-Sessions/wiki/research/ideas/idea-physical-feature-graph|idea-physical-feature-graph]]
+- related idea: [[AI-Sessions/wiki/research/ideas/idea-centroidal-momentum-allocation-credit|idea-centroidal-momentum-allocation-credit]]
 - repo-local details: `/home/frlab/isaac_humanoid/docs/experiments/2026-07-10-gcn-ctde.md`

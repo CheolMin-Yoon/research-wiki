@@ -1,8 +1,12 @@
 ---
-tags: [tier/low]
 type: experiment
 date: 2026-07-11
 status: active
+topics:
+  - humanoid
+  - imitation-learning
+  - morphology-aware-policy
+  - graph-policy
 source: /home/frlab/mj_rl
 related_sources: AI-Sessions/wiki/research/sources/mj-rl.md
 related_experiments: AI-Sessions/wiki/research/experiments/2026-06-25-g1-tracking-baseline.md
@@ -189,7 +193,7 @@ python scripts/train.py G1-GRAPH-MIMIC-29D \
   --agent.run-name graph_mimic_29d_kinematic
 ```
 
-## Links
+## Relations
 
 - implementation digest: [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]]
 - MjLab MLP tracking baseline: [[AI-Sessions/wiki/research/experiments/2026-06-25-g1-tracking-baseline|2026-06-25-g1-tracking-baseline]]

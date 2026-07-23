@@ -1,8 +1,13 @@
 ---
-tags: [tier/low]
 type: experiment
 date: 2026-06-28
 status: active
+topics:
+  - humanoid
+  - locomotion
+  - reinforcement-learning
+  - centroidal-dynamics
+  - graph-policy
 source: mj_rl source/tasks/graph_centroidal
 related_papers: AI-Sessions/wiki/research/papers/2013-orin-centroidal-dynamics.md, AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer.md, AI-Sessions/wiki/research/papers/2025-luo-gcnt.md, AI-Sessions/wiki/research/papers/2025-lee-humanoid-arm-cam-marl.md
 related_sources: AI-Sessions/wiki/research/sources/mj-rl.md, AI-Sessions/wiki/research/sources/casadi-on-gpu-code.md, AI-Sessions/wiki/research/sources/body-transformer-code.md, AI-Sessions/wiki/research/sources/2025-lee-humanoid-arm-cam-marl-code.md
@@ -12,7 +17,7 @@ related_sources: AI-Sessions/wiki/research/sources/mj-rl.md, AI-Sessions/wiki/re
 
 ## Question
 
-동일한 `graph_centroidal` task(reward·obs·PPO 고정)에서 actor/critic architecture만 바꿀 때, **CMM A_G(q)을 node에 주입한 Transformer(v0)** 가 Topology/BoT/GCNT baseline 대비 (a) whole-body balance/CAM 성능, (b) sample efficiency, (c) CAM reward 의존도를 개선하는가? 설계 정본: `AI-Sessions/wiki/research/idea-physical-feature-graph.md` "확정 v0 스펙".
+동일한 `graph_centroidal` task(reward·obs·PPO 고정)에서 actor/critic architecture만 바꿀 때, **CMM A_G(q)을 node에 주입한 Transformer(v0)** 가 Topology/BoT/GCNT baseline 대비 (a) whole-body balance/CAM 성능, (b) sample efficiency, (c) CAM reward 의존도를 개선하는가? 연구 가설은 `AI-Sessions/wiki/research/ideas/idea-physical-feature-graph.md`, 이 실험의 v0 조건은 아래 비교 계약이 소유한다.
 
 ## Repository Boundary
 
@@ -81,8 +86,8 @@ cd /home/frlab/mj_rl
 - status: **planned** (모델 미구현). 선행: plan `구현 로드맵` Part 1–3.
 - 1) v0 모델·obs 확장·cfg 구현 → 2) smoke로 forward/shape 검증 → 3) sanity 4-way → 4) full + H1–H3 분석 → run record 추가.
 
-## Links
+## Relations
 
-- idea: AI-Sessions/wiki/research/idea-physical-feature-graph.md
+- hypothesis: [[AI-Sessions/wiki/research/ideas/idea-physical-feature-graph|idea-physical-feature-graph]]
 - sources: [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]] · [[AI-Sessions/wiki/research/sources/casadi-on-gpu-code|casadi-on-gpu-code]]
 - 비교 baseline 선행 실험: [[AI-Sessions/wiki/research/experiments/2026-06-25-g1-tracking-baseline|2026-06-25-g1-tracking-baseline]]
