@@ -1,4 +1,4 @@
-schema_version: harness-v1
+schema_version: harness-v2
 
 entry_files:
   - architecture.md
@@ -17,8 +17,12 @@ top_level_groups:
 allowed_research_dirs:
   - papers
   - sources
-  - categories
+  - concepts
+  - methods
+  - tasks
+  - ideas
   - experiments
+  - comparisons
 
 allowed_harness_dirs:
   - state
@@ -30,15 +34,17 @@ allowed_harness_dirs:
   - templates
   - evals
 
-# C4 whitelist mirror — wiki_doctor.sh C16이 script 상수와 이 목록의 drift를 WARN한다.
-allowed_categories:
-  - centroidal-wbc
-  - rl-algorithms-frameworks
-  - morphology-aware-policy
-  - graph-transformer-rl
-  - loco-manipulation
-  - dynamics-guided-rl
-  - novelty
+research_schema:
+  topic_registry: schema/research-topics.json
+  validator: scripts/validate_research.py
+  community_report: exports/research-communities.json
+  stable_types:
+    - concept
+    - method
+    - task
+    - paper
+    - source
+    - comparison
 
 commands:
   save: prompts/save.md
@@ -63,9 +69,7 @@ state_limits:
   handoff_max_lines: 120
   log_max_lines: 30
 
-# C13 state layer purity — state(brief/handoff)는 포인터+현재상태만 두고
-# 코드 메커니즘(구현 디테일)은 정본(source/paper)에 두고 링크한다.
-# wiki_doctor.sh C13이 script 상수를 사용하고, C16이 아래 regex와 drift를 WARN한다.
+# state(brief/handoff)는 포인터+현재상태만 두고 코드 메커니즘은 정본에 둔다.
 state_purity:
   files:
     - AI-Sessions/wiki/harness/state/brief.md
@@ -78,6 +82,7 @@ raw_policy:
   graph_visible_wikilink_allowed: false
 
 graph_registration:
-  required_for_new_active_docs: true
+  typed_research: frontmatter_and_bases
+  harness: folder_hub
   raw_graph_links_allowed: false
   archive_active_hub_exposure_allowed: false

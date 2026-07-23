@@ -11,6 +11,7 @@ status: active
 
 - [[AI-Sessions/wiki/harness/decisions/obsidian-decisions|obsidian-decisions]]
 - [[AI-Sessions/wiki/harness/decisions/harness-decisions|harness-decisions]]
+- [[AI-Sessions/wiki/harness/decisions/research-decisions|research-decisions]]
 
 ## Summary
 

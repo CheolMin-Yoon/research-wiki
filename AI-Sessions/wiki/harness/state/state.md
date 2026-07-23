@@ -12,6 +12,7 @@ status: active
 - [[AI-Sessions/wiki/harness/state/brief|brief]]
 - [[AI-Sessions/wiki/harness/state/handoff|handoff]]
 - [[AI-Sessions/wiki/harness/state/tasks|tasks]]
+- [[AI-Sessions/wiki/harness/state/research-backlog|research-backlog]]
 
 ## Summary
 

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "active": [
+    "humanoid",
+    "reinforcement-learning",
+    "locomotion",
+    "loco-manipulation",
+    "imitation-learning",
+    "centroidal-dynamics",
+    "model-predictive-control",
+    "whole-body-control",
+    "multi-agent-rl",
+    "credit-assignment",
+    "morphology-aware-policy",
+    "graph-policy",
+    "jax-solver"
+  ],
+  "aliases": {
+    "rl": "reinforcement-learning",
+    "marl": "multi-agent-rl",
+    "mpc": "model-predictive-control",
+    "wbc": "whole-body-control",
+    "jax_solver": "jax-solver",
+    "loco-manip": "loco-manipulation"
+  },
+  "pending": []
+}
