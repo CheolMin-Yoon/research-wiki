@@ -1,8 +1,12 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-07-10
 status: active
+topics:
+  - humanoid
+  - locomotion
+  - reinforcement-learning
+  - graph-policy
 source: AI-Sessions/raw/repos/isaac-humanoid.md
 ---
 
@@ -78,7 +82,7 @@ source: AI-Sessions/raw/repos/isaac-humanoid.md
   현재 유일한 실행 기록이고, 첫 GCN CTDE 학습은 이 세션의 observation 재설계
   직후 막 시작하는 단계다.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/isaac-humanoid.md
 - checked commit: 4351ffb ("init", `main`) + 2026-07-10 uncommitted 작업

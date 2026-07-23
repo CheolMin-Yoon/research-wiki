@@ -1,8 +1,14 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-06-27
 status: active
+topics:
+  - humanoid
+  - locomotion
+  - loco-manipulation
+  - reinforcement-learning
+  - centroidal-dynamics
+  - model-predictive-control
 source: AI-Sessions/raw/repos/mpc-rl.md
 ---
 
@@ -183,10 +189,9 @@ First experiments:
 - hand contact reward만 강하면 손으로 밀기보다 기대거나 box를 걸치는 local optimum이 생길 수 있다. leg-box collision penalty와 robot-box yaw/distance reward가 같이 필요하다.
 - `mpc-rl`은 mjlab 1.2.0에 pin되어 있고 현재 `mj_rl` env는 더 최신 MuJoCo/mjlab stack이므로 API는 반드시 현재 설치본으로 검증해야 한다.
 
-## Links
+## Relations
 
 - [[AI-Sessions/wiki/maps/resources-policy-refs|resources-policy-refs]]
-- [[AI-Sessions/wiki/research/categories/loco-manipulation|loco-manipulation]]
 - [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]]
 - repo URL: https://github.com/junhengl/mpc-rl.git
 - checked commit: `97e37648d19b635f9b233c7146c28e68a8d672eb`

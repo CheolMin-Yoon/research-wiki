@@ -1,8 +1,10 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-06-24
 status: active
+topics:
+  - locomotion
+  - reinforcement-learning
 source: AI-Sessions/raw/repos/2025-rsl-rl-library.md
 ---
 
@@ -35,7 +37,7 @@ source: AI-Sessions/raw/repos/2025-rsl-rl-library.md
 - custom model은 actor/critic output shape, distribution parameterization, recurrent 여부를 rsl_rl interface에 정확히 맞춰야 한다.
 - 실행은 라이브러리 README와 consuming repo의 runner config를 통해 확인한다.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/2025-rsl-rl-library.md
 - raw paper: AI-Sessions/raw/papers/2025-rsl-rl-library.pdf

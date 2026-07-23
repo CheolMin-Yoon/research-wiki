@@ -1,8 +1,10 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-06-24
 status: active
+topics:
+  - morphology-aware-policy
+  - graph-policy
 source: AI-Sessions/raw/repos/graph-transformer.md
 ---
 
@@ -64,7 +66,7 @@ source: AI-Sessions/raw/repos/graph-transformer.md
 - 실행은 notebook별 cell 흐름을 개념 검산용으로만 최소 참고한다.
 - 사용자 워크플로우: 노트북에서 구현·검증 → `body_transformer/lib/`로 export → 다음 버전이 import. 노트북마다 graph utils·SimpleMapping 등이 divergent하게 중복 정의돼 있으므로 에이전트가 임의로 추출·병합하지 말고 사용자 export를 기다린다.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/graph-transformer.md
 - 원본 논문 레포 분석: [[AI-Sessions/wiki/research/sources/body-transformer-code|body-transformer-code]]

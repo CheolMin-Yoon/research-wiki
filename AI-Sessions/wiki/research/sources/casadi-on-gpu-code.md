@@ -1,8 +1,10 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-06-27
 status: active
+topics:
+  - model-predictive-control
+  - jax-solver
 source: AI-Sessions/raw/repos/casadi-on-gpu.md
 ---
 
@@ -45,7 +47,7 @@ CasADi 심볼릭 `Function`을 CUDA 커널로 codegen해 GPU에서 수천 인스
 - CasADi dense 출력은 column-major라 행렬 출력은 `(N,cols,rows)` 후 transpose로 읽는다(`pinocchio.py _alloc_mat`).
 - DOF mapping은 항상 [[AI-Sessions/wiki/research/sources/mj-rl|mj-rl]]의 task contract를 기준으로 확인한다. Current G1 kernels include 23DOF full-body and 13DOF leg+waist layouts in the same registry.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/casadi-on-gpu.md
 - upstream checked commit: 6c4481a

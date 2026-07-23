@@ -1,8 +1,15 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-07-11
 status: active
+topics:
+  - humanoid
+  - locomotion
+  - reinforcement-learning
+  - multi-agent-rl
+  - credit-assignment
+  - model-predictive-control
+  - jax-solver
 source: AI-Sessions/raw/repos/mj-rl.md
 ---
 
@@ -69,7 +76,7 @@ source: AI-Sessions/raw/repos/mj-rl.md
 - v1 이전 reflect 이력: [[AI-Sessions/wiki/harness/archive/archived-mj-rl-reflect-history-2026-07-03|archived-mj-rl-reflect-history-2026-07-03]]
 - 삭제 오판 교훈(구조 변경 이후에도 원칙은 유효): [[AI-Sessions/wiki/harness/errors/mjlab-errors|mjlab-errors]]
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/mj-rl.md
 - checked commit: cf81c31 + 2026-07-12 uncommitted graph-mimic/MAPPO fast-path working tree (branch `refactor/mj-rl-v2`)

@@ -1,8 +1,10 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-07-09
 status: active
+topics:
+  - morphology-aware-policy
+  - graph-policy
 source: AI-Sessions/raw/repos/mi-hgnn.md
 checked_commit: 0e47175
 ---
@@ -60,7 +62,6 @@ Not enough for current WBC:
 - no morphology-sign encoder/decoder;
 - no semantic upper/lower G1 node grouping.
 
-## Links
+## Relations
 
 - paper: [[AI-Sessions/wiki/research/papers/2025-butterfield-mi-hgnn|2025-butterfield-mi-hgnn]]
-- category: [[AI-Sessions/wiki/research/categories/morphology-aware-policy|morphology-aware-policy]]

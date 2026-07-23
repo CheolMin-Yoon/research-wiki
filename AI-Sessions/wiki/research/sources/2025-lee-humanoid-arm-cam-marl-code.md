@@ -1,8 +1,13 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-06-24
 status: active
+topics:
+  - humanoid
+  - loco-manipulation
+  - reinforcement-learning
+  - multi-agent-rl
+  - centroidal-dynamics
 source: AI-Sessions/raw/repos/2025-lee-humanoid-arm-cam-marl.md
 ---
 
@@ -37,7 +42,7 @@ source: AI-Sessions/raw/repos/2025-lee-humanoid-arm-cam-marl.md
 - PhysX/IsaacLab generalized mass matrix와 mjlab/MuJoCo의 frame, velocity convention은 별도로 검증해야 한다.
 - 실행은 README의 submodule 초기화와 `scripts/train_modular.py`, `scripts/play_modular.py` 흐름만 최소 참고한다.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/2025-lee-humanoid-arm-cam-marl.md
 - raw paper: AI-Sessions/raw/papers/2025-lee-humanoid-arm-cam-marl.pdf

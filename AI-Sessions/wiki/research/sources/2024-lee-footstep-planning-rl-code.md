@@ -1,8 +1,12 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-06-24
 status: active
+topics:
+  - humanoid
+  - locomotion
+  - reinforcement-learning
+  - centroidal-dynamics
 source: AI-Sessions/raw/repos/2024-lee-footstep-planning-rl.md
 ---
 
@@ -35,7 +39,7 @@ source: AI-Sessions/raw/repos/2024-lee-footstep-planning-rl.md
 - 논문 구조는 MIT Humanoid와 point-foot 가정에 맞춰져 있어 Unitree G1의 ankle/foot geometry와는 보상 해석이 달라질 수 있다.
 - 실행은 README의 IsaacGym setup, `gym/scripts/train.py`, `gym/scripts/play.py` 흐름만 최소 참고한다.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/2024-lee-footstep-planning-rl.md
 - raw paper: AI-Sessions/raw/papers/2024-lee-footstep-planning-rl.pdf

@@ -1,8 +1,9 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-06-24
 status: active
+topics:
+  - whole-body-control
 source: AI-Sessions/raw/repos/modern-robotics.md
 ---
 
@@ -35,7 +36,7 @@ source: AI-Sessions/raw/repos/modern-robotics.md
 - UR5e 중심 예제와 humanoid G1 kinematics는 joint layout과 frame convention이 다르다.
 - 실행은 chapter별 script/notebook을 수식 검산용으로만 최소 참고한다.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/modern-robotics.md
 - checked commit: ee49b600f058349e2d045ad76fad1d035cd0045f

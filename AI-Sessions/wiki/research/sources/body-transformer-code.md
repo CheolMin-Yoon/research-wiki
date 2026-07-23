@@ -1,8 +1,11 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-06-24
 status: active
+topics:
+  - reinforcement-learning
+  - morphology-aware-policy
+  - graph-policy
 source: AI-Sessions/raw/repos/2024-sferrazza-body-transformer.md
 ---
 
@@ -52,7 +55,7 @@ PyTorch `src_mask`에서 `True`=**blocked**. 코드에서 `mask=~self.adjacency_
 - mask 의미가 `allowed attention`인지 `blocked attention`인지 PyTorch API와 local wrapper에서 반드시 재확인해야 한다.
 - 실행은 imitation learning/RL README의 환경별 script 흐름만 최소 참고한다.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/2024-sferrazza-body-transformer.md
 - local clone: /home/frlab/BodyTransformer

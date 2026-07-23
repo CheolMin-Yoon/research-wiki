@@ -1,8 +1,10 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-07-09
 status: active
+topics:
+  - morphology-aware-policy
+  - graph-policy
 source: AI-Sessions/raw/repos/ms-hgnn.md
 checked_commit: 9fac4a1
 ---
@@ -46,7 +48,6 @@ For G1 WBC momentum, the closest adaptation is C2:
 - upper orbit pairs: left/right shoulder, elbow, wrist;
 - CMM/CAM scalar or vector features must have sign rules consistent with body/world frame choices.
 
-## Links
+## Relations
 
 - paper: [[AI-Sessions/wiki/research/papers/2025-xie-ms-hgnn|2025-xie-ms-hgnn]]
-- category: [[AI-Sessions/wiki/research/categories/morphology-aware-policy|morphology-aware-policy]]

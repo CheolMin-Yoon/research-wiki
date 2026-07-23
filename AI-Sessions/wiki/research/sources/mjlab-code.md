@@ -1,8 +1,11 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-06-24
 status: active
+topics:
+  - humanoid
+  - locomotion
+  - reinforcement-learning
 source: AI-Sessions/raw/repos/2025-mjlab.md
 ---
 
@@ -35,7 +38,7 @@ MuJoCo Warp와 Isaac Lab 스타일 manager API를 결합한 robotics RL framewor
 - mjlab의 `com` naming은 body CoM과 whole-body CoM을 혼동하기 쉬우므로 mj_rl 쪽에서는 `subtree_com`, `subtree_linvel` 사용 여부를 확인해야 한다.
 - 실행은 README의 `uvx --from mjlab --refresh demo`, train/play script 흐름만 최소 참고한다.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/2025-mjlab.md
 - raw paper: AI-Sessions/raw/papers/2025-mjlab.pdf

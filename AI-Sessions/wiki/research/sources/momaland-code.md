@@ -1,8 +1,11 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-07-15
 status: active
+topics:
+  - reinforcement-learning
+  - multi-agent-rl
+  - credit-assignment
 source: AI-Sessions/raw/repos/momaland.md
 checked_commit: 2387b18
 ---
@@ -156,10 +159,9 @@ momaland parallel env를 rsl_rl 스타일 VecEnv로 감싸 우리 modular runner
 
 지금 마일스톤(γ screen seed 43/44 confirmation) 이후, 논문 generality 섹션이 필요해지는 시점에 Path A를 먼저 — 우리 additive-GAE가 humanoid 밖 표준 MOMARL 벤치에서 도는 걸 보이는 게 목적이고, adapter 비용이 낮다. Path B-lite는 그 실험에 비교군이 필요할 때만.
 
-## Links
+## Relations
 
 - 우리 구현 digest: [[AI-Sessions/wiki/research/sources/isaac-humanoid-code|isaac-humanoid-code]]
 - 러너 구조: [[AI-Sessions/wiki/research/sources/rsl-rl-code|rsl-rl-code]]
-- category: [[AI-Sessions/wiki/research/categories/rl-algorithms-frameworks|rl-algorithms-frameworks]]
 - 관련 논문 노트: [[AI-Sessions/wiki/research/papers/2025-liu-mash|2025-liu-mash]] (limb=agent MARL)
 - MOMAland 논문(노트 미작성): Felten et al., "MOMAland: A Set of Benchmarks for Multi-Objective Multi-Agent Reinforcement Learning", arXiv:2407.16312

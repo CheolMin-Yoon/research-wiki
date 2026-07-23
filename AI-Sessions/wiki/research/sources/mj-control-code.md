@@ -1,8 +1,10 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-06-24
 status: active
+topics:
+  - humanoid
+  - whole-body-control
 source: AI-Sessions/raw/repos/mj-control.md
 ---
 
@@ -35,7 +37,7 @@ source: AI-Sessions/raw/repos/mj-control.md
 - Pinocchio, CasADi, QP solver 의존성이 있어 학습 loop 내부보다 offline validation 또는 controller oracle로 쓰는 편이 안전하다.
 - 실행은 notebook/main script를 controller 검산용으로만 최소 참고한다.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/mj-control.md
 - checked commit: d0165a4e05ade5770dfc79d6eb752c6ffb234733

@@ -1,8 +1,10 @@
 ---
-tags: [tier/low]
 type: source
 date: 2026-07-23
 status: active
+topics:
+  - model-predictive-control
+  - jax-solver
 source: /home/frlab/WarpMPC/README.md
 ---
 
@@ -41,7 +43,7 @@ stage functions
 
 재사용 절차와 상세 근거는 `.agents/skills/jax-mpc/`에 저장했다. Codex/Claude 전역 skill 이름은 `$jax-mpc`다.
 
-## Links
+## Relations
 
 - local repository: `/home/frlab/WarpMPC`
 - checked commit: `e5ddb20a1fcb06453e97f31936b3f7c5164e7ca1`
