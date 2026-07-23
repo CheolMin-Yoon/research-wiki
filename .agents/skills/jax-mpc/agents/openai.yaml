@@ -1,0 +1,4 @@
+interface:
+  display_name: "JAX MPC"
+  short_description: "WarpMPC식 sparse SQP와 JAX 포팅 가이드"
+  default_prompt: "Use $jax-mpc to design a fixed-pattern sparse SQP and its NumPy-to-JAX validation path."
