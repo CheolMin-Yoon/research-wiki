@@ -5,7 +5,7 @@ status: active
 topics:
   - model-predictive-control
   - jax-solver
-source: /home/frlab/WarpMPC/README.md
+source: https://github.com/hshose/WarpMPC/tree/e5ddb20a1fcb06453e97f31936b3f7c5164e7ca1
 ---
 
 # 구현 분석: WarpMPC
