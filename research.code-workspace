@@ -5,6 +5,10 @@
       "path": "."
     },
     {
+      "name": "mj_mpc",
+      "path": "/home/frlab/mj_mpc"
+    },
+    {
       "name": "mj_rl",
       "path": "/home/frlab/mj_rl"
     }
