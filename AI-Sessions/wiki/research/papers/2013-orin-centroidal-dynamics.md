@@ -1,8 +1,11 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-06-24
 status: active
+topics:
+  - humanoid
+  - centroidal-dynamics
+  - whole-body-control
 source: AI-Sessions/raw/papers/2013-orin-centroidal-dynamics.pdf
 ---
 
@@ -42,11 +45,10 @@ $$h_G = \begin{bmatrix} k_G \\ l_G \end{bmatrix} = A_G(q)\,\dot{q}$$
 
 ## 내 연구 연결
 
-이 논문은 `centroidal-wbc` category의 centroidal dynamics 원전 역할을 한다. humanoid arm motion, CAM reward, whole-body CoM/CAM feature를 모두 같은 centroidal language로 묶는 근거다.
+이 논문은 centroidal dynamics의 원전 역할을 한다. humanoid arm motion, CAM reward, whole-body CoM/CAM feature를 모두 같은 centroidal language로 묶는 근거다.
 
 Physical Feature Graph에서는 CoM, CMM, CAM을 raw joint state와 다른 안정성 해석 좌표로 취급하는 근거가 된다.
 
-## Links
+## Relations
 
-- category: centroidal-wbc
 - related papers: [[AI-Sessions/wiki/research/papers/2025-lee-humanoid-arm-cam-marl|2025-lee-humanoid-arm-cam-marl]]

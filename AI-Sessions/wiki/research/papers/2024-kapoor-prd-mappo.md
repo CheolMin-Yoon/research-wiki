@@ -1,8 +1,11 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-18
 status: active
+topics:
+  - reinforcement-learning
+  - multi-agent-rl
+  - credit-assignment
 source: "AI-Sessions/raw/papers/2024-kapoor-prd-mappo.pdf"
 ---
 
@@ -37,6 +40,4 @@ MAPPO는 강력하지만 개별 agent 행동에 credit을 귀속하는 문제가
 - **분산 스케일링 명제는 논증 3–4의 비용함수**: per-joint 26–29 agent로 세분화할수록 공유 advantage의 분산 비용이 선형 이상으로 커진다는 정량 근거 — 분해(라우팅·counterfactual·계산 credit)의 필요성을 팀 크기 함수로 서술할 수 있게 한다.
 - shared-reward 버전은 global reward만 있는 centroidal 축에도 routing 계열을 적용할 수 있는 경로 — (b) 대조군 후보에 GPAE와 함께 추가.
 
-## Links
-
-- category: [[AI-Sessions/wiki/research/categories/rl-algorithms-frameworks|rl-algorithms-frameworks]]
+## Relations

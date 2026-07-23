@@ -1,8 +1,11 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-18
 status: active
+topics:
+  - reinforcement-learning
+  - multi-agent-rl
+  - credit-assignment
 source: "AI-Sessions/raw/papers/2024-lyu-centralized-critics.pdf"
 ---
 
@@ -31,6 +34,4 @@ CTDE에서 centralized critic(전체 시스템 정보·true state 접근)으로 
 - **주의: 우리 셋업의 state-based critic**: 2A2C·GCN CTDE의 critic은 state 기반이고 actor는 의도적 부분관측(leg/arm obs group)이다. 시뮬레이션 proprioception은 거의 완전관측이라 bias 위험이 작지만, 관측 노이즈·sim-to-real·정보수집형 과제로 가면 주장 2가 적용되므로 history(-state) critic 전환을 검토해야 한다.
 - 벤치마크의 부분관측성 부족이 이론 문제를 가린다는 지적은 ΔA류 진단(2026-kim-gpae)처럼 **표준 지표 밖의 평가 설계**가 필요하다는 우리 관찰과 공명.
 
-## Links
-
-- category: [[AI-Sessions/wiki/research/categories/rl-algorithms-frameworks|rl-algorithms-frameworks]]
+## Relations

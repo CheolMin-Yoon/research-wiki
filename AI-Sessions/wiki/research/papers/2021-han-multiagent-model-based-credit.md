@@ -1,8 +1,11 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-18
 status: active
+topics:
+  - reinforcement-learning
+  - multi-agent-rl
+  - credit-assignment
 source: "AI-Sessions/raw/papers/2021-han-multiagent-model-based-credit.pdf"
 ---
 
@@ -40,6 +43,4 @@ kinematics tree(bodies/joints/actuators)로 로봇을 multiagent 시스템으로
 - coalition 크기 분석(cheetah 상호의존 ↔ ant 독립)은 "critic/credit 분할 = coupling 구조 따라야" 주장의 독립 증거 — 우리는 그 결합 구조를 실험 대신 $A_G$/JSIM block으로 사전 계산한다.
 - joint=agent + local 관측 + 분산 실행 셋업은 MASH/2A2C 계열의 선행 원형(2021)으로, 논증 1의 근거 목록에 추가.
 
-## Links
-
-- category: [[AI-Sessions/wiki/research/categories/rl-algorithms-frameworks|rl-algorithms-frameworks]]
+## Relations

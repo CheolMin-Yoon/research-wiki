@@ -1,8 +1,11 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-08
 status: active
+topics:
+  - reinforcement-learning
+  - morphology-aware-policy
+  - graph-policy
 source: AI-Sessions/raw/papers/2026-miao-gt-td3.pdf
 ---
 
@@ -54,6 +57,4 @@ source: AI-Sessions/raw/papers/2026-miao-gt-td3.pdf
 - goal 정보를 모든 joint node에 broadcast하는 encoding은 mj_rl Tokenizer의 `broadcast_global_to_joints`와 동일 패턴 — feature-level virtual hub의 단일팔 사례.
 - 도메인 차이 유의: 단일 팔 tracking, single-agent TD3, floating base 없음 — humanoid locomotion으로의 전이 주장에는 직접 근거가 못 된다.
 
-## Links
-
-- category: [[AI-Sessions/wiki/research/categories/graph-transformer-rl|graph-transformer-rl]]
+## Relations

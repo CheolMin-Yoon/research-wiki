@@ -1,8 +1,11 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-18
 status: active
+topics:
+  - reinforcement-learning
+  - multi-agent-rl
+  - credit-assignment
 source: "AI-Sessions/raw/papers/2025-zhao-mla.pdf"
 ---
 
@@ -36,6 +39,4 @@ global reward를 **겹침을 허용하는 agent 부분집합들의 합** $r(s,a)
 - **상태 의존 level 가중 $\psi(s)$**: contact 전환 시 유효 협력 level이 바뀐다는 우리 가설(contact가 결합 재배선)의 기성 메커니즘 — AMOR의 weight conditioning과 함께 "critic/level 가중의 상태 의존화" 축을 이룬다.
 - 가중을 PG가 못 배우는 이유(기대값 무차별)와 CMA-ES 우회는 우리가 advantage mixing 가중을 설계할 때 만날 동일 문제의 선례.
 
-## Links
-
-- category: [[AI-Sessions/wiki/research/categories/rl-algorithms-frameworks|rl-algorithms-frameworks]]
+## Relations

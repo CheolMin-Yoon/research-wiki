@@ -1,8 +1,14 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-06-24
 status: active
+topics:
+  - humanoid
+  - locomotion
+  - loco-manipulation
+  - reinforcement-learning
+  - centroidal-dynamics
+  - multi-agent-rl
 source: AI-Sessions/raw/papers/2025-lee-humanoid-arm-cam-marl.pdf
 ---
 
@@ -26,12 +32,11 @@ arm agent는 stylistic arm swing을 흉내내는 것이 아니라 CAM tracking/d
 
 ## 내 연구 연결
 
-이 논문은 `loco-manipulation` category에서 CAM 기반 팔-다리 coordination과 PPO 기반 학습을 연결하는 직접 근거다. 또한 humanoid arm dual role 아이디어에서 팔을 단순 upper-body output이 아니라 centroidal stabilization 요소로 보는 핵심 선행근거다.
+이 논문은 CAM 기반 팔-다리 coordination과 PPO 기반 학습을 연결하는 직접 근거다. 또한 humanoid arm dual role 아이디어에서 팔을 단순 upper-body output이 아니라 centroidal stabilization 요소로 보는 핵심 선행근거다.
 
 Physical Feature Graph 관점에서는 CAM이 observation/reward에 들어갈 때 arm-leg coupling이 더 해석 가능한 형태로 학습될 수 있음을 보여준다.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/2025-lee-humanoid-arm-cam-marl.md
-- source note: 2025-lee-humanoid-arm-cam-marl-code
-- category: loco-manipulation
+- implementation: [[AI-Sessions/wiki/research/sources/2025-lee-humanoid-arm-cam-marl-code|2025-lee-humanoid-arm-cam-marl-code]]

@@ -1,9 +1,10 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-09
 status: active
-primary_category: morphology-aware-policy
+topics:
+  - morphology-aware-policy
+  - graph-policy
 source: arXiv:2409.11146v3
 ---
 
@@ -56,7 +57,6 @@ But it is insufficient for the current G1 WBC direction because it does not enfo
 
 For WBC momentum, MI-HGNN is the reference for topology-aware graph construction, while MS-HGNN/MS-PPO are the references for symmetry-aware policy structure.
 
-## Links
+## Relations
 
-- category: [[AI-Sessions/wiki/research/categories/morphology-aware-policy|morphology-aware-policy]]
 - source: [[AI-Sessions/wiki/research/sources/mi-hgnn-code|mi-hgnn-code]]

@@ -1,9 +1,10 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-09
 status: active
-primary_category: morphology-aware-policy
+topics:
+  - morphology-aware-policy
+  - graph-policy
 source: PMLR v283 / arXiv:2412.01297
 ---
 
@@ -64,7 +65,6 @@ For G1 WBC momentum, this suggests:
 - hip/knee/ankle and shoulder/elbow/wrist complex nodes are more symmetry-aligned than one node per scalar joint;
 - CMM/CAM features need sign masks consistent with the chosen body/world frame.
 
-## Links
+## Relations
 
-- category: [[AI-Sessions/wiki/research/categories/morphology-aware-policy|morphology-aware-policy]]
 - source: [[AI-Sessions/wiki/research/sources/ms-hgnn-code|ms-hgnn-code]]

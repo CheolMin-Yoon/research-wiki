@@ -1,8 +1,14 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-06
 status: active
+topics:
+  - humanoid
+  - locomotion
+  - reinforcement-learning
+  - multi-agent-rl
+  - credit-assignment
+  - morphology-aware-policy
 source: "AI-Sessions/raw/papers/MASH_ Cooperative-Heterogeneous Multi-Agent Reinforcement Learning for Single Humanoid Robot Locomotion.pdf"
 ---
 
@@ -44,10 +50,8 @@ source: "AI-Sessions/raw/papers/MASH_ Cooperative-Heterogeneous Multi-Agent Rein
 
 ## 내 연구 연결
 
-- MASH는 **morphology를 명시적 그래프/attention으로 인코딩하지 않고**, "limb = agent + shared-parameter + global critic"이라는 MARL 분해로 관절 간 협응을 얻는다. Physical Feature Graph 아이디어([[AI-Sessions/wiki/research/idea-physical-feature-graph|idea-physical-feature-graph]])의 CMM-conditioned attention 접근과는 다른 축의 solution(알고리즘/학습 구조 vs representation)이라 직접 baseline은 아니지만, "팔-다리 coupling을 어떻게 정책 구조에 반영하는가"라는 동일 문제의식을 공유한다.
+- MASH는 **morphology를 명시적 그래프/attention으로 인코딩하지 않고**, "limb = agent + shared-parameter + global critic"이라는 MARL 분해로 관절 간 협응을 얻는다. Physical Feature Graph 아이디어([[AI-Sessions/wiki/research/ideas/idea-physical-feature-graph|idea-physical-feature-graph]])의 CMM-conditioned attention 접근과는 다른 축의 solution(알고리즘/학습 구조 vs representation)이라 직접 baseline은 아니지만, "팔-다리 coupling을 어떻게 정책 구조에 반영하는가"라는 동일 문제의식을 공유한다.
 - global critic이 전신 상태(모터+외란+접촉+CoM 관련 항)를 관측하는 방식은 우리 idea의 centroidal token 주입과 목적은 비슷하나(전신 정보를 학습 신호로), MASH는 이를 critic에만 주고 actor는 limb-local observation만 쓴다는 점이 다르다(우리는 actor 쪽 attention에 CMM을 직접 주입).
 - shared-parameter actor(좌우 대칭 pair 공유)는 GCNT/BoT류 morphology-aware 인코더의 대안적/저비용 baseline으로 참고할 수 있다.
 
-## Links
-
-- category: [[AI-Sessions/wiki/research/categories/morphology-aware-policy|morphology-aware-policy]]
+## Relations

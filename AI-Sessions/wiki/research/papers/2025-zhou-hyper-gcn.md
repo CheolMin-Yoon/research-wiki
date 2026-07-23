@@ -1,8 +1,10 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-06-30
 status: active
+topics:
+  - morphology-aware-policy
+  - graph-policy
 source: AI-Sessions/raw/papers/2025-zhou-hyper-gcn.pdf
 ---
 
@@ -67,9 +69,9 @@ GCN 계열(ST-GCN→CTR-GCN→HD-GCN→BlockGCN)은 binary edge에서 channel/to
 - **vs [[AI-Sessions/wiki/research/papers/2021-ying-graphormer|Graphormer]]**: hyper-joint = Graphormer **VNode**(=BERT [CLS])의 hyper-graph 판. Graphormer는 SPD soft bias로 전 pair attention 유지, Hyper-GCN은 incidence matrix로 hyper-edge aggregation. 둘 다 "global hub token + 구조 주입" 패턴.
 - **도메인 주의(상충 아님, 적용 차이)**: 이 논문은 **action recognition(지각)** 이고 RL control이 아니다. topology/virtual-node 메커니즘은 이식 가능하지만, hyper-graph 구성이 **temporal pooling 후 spatial-only**라는 점, multi-stream(J/B/JM/BM) ensemble 전제 등은 control policy로 그대로 옮기기 어렵다.
 
-## Links
+## Relations
 
 - raw paper: AI-Sessions/raw/papers/2025-zhou-hyper-gcn.pdf
-- category: graph-transformer-rl
 - related papers: [[AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer|2024-sferrazza-body-transformer]] · [[AI-Sessions/wiki/research/papers/2021-ying-graphormer|2021-ying-graphormer]] · [[AI-Sessions/wiki/research/papers/2025-luo-gcnt|2025-luo-gcnt]]
-- ideas: idea-physical-feature-graph · idea-centroidal-momentum-allocation-credit
+- hypothesis: [[AI-Sessions/wiki/research/ideas/idea-physical-feature-graph|idea-physical-feature-graph]]
+- credit-hypothesis: [[AI-Sessions/wiki/research/ideas/idea-centroidal-momentum-allocation-credit|idea-centroidal-momentum-allocation-credit]]

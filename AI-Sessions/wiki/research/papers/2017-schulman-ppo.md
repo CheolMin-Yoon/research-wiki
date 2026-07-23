@@ -1,8 +1,9 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-06-24
 status: active
+topics:
+  - reinforcement-learning
 source: AI-Sessions/raw/papers/2017-schulman-ppo.pdf
 ---
 
@@ -47,11 +48,10 @@ $$L^{CLIP+VF+S} = \hat{\mathbb{E}}_t\!\left[L^{CLIP} - c_1 L^{VF} + c_2 S[\pi_\t
 
 ## 내 연구 연결
 
-이 논문은 `rl-algorithms-frameworks` category의 PPO 원전이다. Lee 계열 humanoid locomotion 논문, rsl_rl, mj_rl의 on-policy 학습 구조를 이해하는 기본 축이다.
+이 논문은 PPO의 원전이며, Lee 계열 humanoid locomotion 논문, rsl_rl, mj_rl의 on-policy 학습 구조를 이해하는 기본 축이다.
 
 구현 측면에서는 clipping, value loss, entropy, GAE, KL monitoring, timeout handling 같은 실무 디테일이 rsl_rl/mj_rl의 안정성에 직접 연결된다.
 
-## Links
+## Relations
 
-- category: rl-algorithms-frameworks
 - related papers: [[AI-Sessions/wiki/research/papers/2025-rsl-rl-library|2025-rsl-rl-library]], [[AI-Sessions/wiki/research/papers/2024-lee-footstep-planning-rl|2024-lee-footstep-planning-rl]], [[AI-Sessions/wiki/research/papers/2025-lee-humanoid-arm-cam-marl|2025-lee-humanoid-arm-cam-marl]]

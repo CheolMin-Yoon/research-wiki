@@ -1,8 +1,11 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-17
 status: active
+topics:
+  - reinforcement-learning
+  - multi-agent-rl
+  - credit-assignment
 source: "AI-Sessions/raw/papers/2025-zhao-mg2l.pdf"
 ---
 
@@ -53,6 +56,4 @@ context-based meta-RL(PEARL류: context c에서 task 표현 z를 추론해 polic
 - **PIA + transition-tuple 입력 + priority buffer**는 morphology 구조 없이 set 집계로 순열 불변성을 얻는 인코더 — BoT/GCNT류 topology-aware token 인코더와 대비되는 저구조 대안. token-group critic이나 context 인코더 설계 시 aggregation baseline으로 참고.
 - actor loss를 encoder에서 배제하고 표현 학습을 auxiliary(대조) loss에 맡기는 설계, dynamics prediction loss가 MARL nonstationarity에서 해롭다는 ablation 결과는 우리 쪽 auxiliary loss 설계에 바로 쓸 수 있는 부정적 근거.
 
-## Links
-
-- category: [[AI-Sessions/wiki/research/categories/rl-algorithms-frameworks|rl-algorithms-frameworks]]
+## Relations

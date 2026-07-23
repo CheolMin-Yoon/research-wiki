@@ -1,8 +1,11 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-06-27
 status: active
+topics:
+  - reinforcement-learning
+  - morphology-aware-policy
+  - graph-policy
 source: AI-Sessions/raw/papers/2025-luo-gcnt.pdf
 ---
 
@@ -54,9 +57,8 @@ message-passing(NerveNet, SMP/DGN) → pure Transformer(AMORPHEUS, "My body is a
 - **vs [[AI-Sessions/wiki/research/papers/2021-ying-graphormer|Graphormer]]**: distance embedding은 Graphormer spatial encoding(SPD→learnable bias)과 동일 계열. GCNT는 거기에 GCN local + WL global 추출을 더한 것.
 - **idea-physical-feature-graph 연결**: GCN/WL이 morphology graph를 추출하듯, stability-language coupling graph도 같은 패턴(local 추출 + full attention + 거리 soft bias)으로 표현 가능. BoT 이식 후보 메커니즘: ① Q/K(morphology)·V(observation) 분리, ② residual GCN 블록, ③ distance soft-bias(Graphormer식).
 
-## Links
+## Relations
 
 - raw paper: AI-Sessions/raw/papers/2025-luo-gcnt.pdf
-- category: graph-transformer-rl
 - related papers: [[AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer|2024-sferrazza-body-transformer]] · [[AI-Sessions/wiki/research/papers/2021-ying-graphormer|2021-ying-graphormer]]
-- ideas: idea-physical-feature-graph
+- hypothesis: [[AI-Sessions/wiki/research/ideas/idea-physical-feature-graph|idea-physical-feature-graph]]

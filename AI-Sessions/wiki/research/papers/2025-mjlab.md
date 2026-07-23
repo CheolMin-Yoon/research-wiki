@@ -1,8 +1,11 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-06-24
 status: active
+topics:
+  - humanoid
+  - locomotion
+  - reinforcement-learning
 source: AI-Sessions/raw/papers/2025-mjlab.pdf
 ---
 
@@ -26,8 +29,7 @@ architecture는 scene/entity/sensor/actuator/manager/RL wrapper로 구성되며,
 
 mjlab은 mj_rl의 simulation/environment 기반이다. PPO 알고리즘 자체의 근거라기보다, source layer에서 manager-based env 구성, MuJoCo Warp 병렬화, native sensor/actuator/task 구조를 가져오는 대상으로 본다.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/2025-mjlab.md
-- source note: mjlab-code
-- category: rl-algorithms-frameworks
+- implementation: [[AI-Sessions/wiki/research/sources/mjlab-code|mjlab-code]]

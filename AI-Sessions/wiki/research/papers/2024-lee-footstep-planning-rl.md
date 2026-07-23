@@ -1,8 +1,12 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-06-24
 status: active
+topics:
+  - humanoid
+  - locomotion
+  - reinforcement-learning
+  - centroidal-dynamics
 source: AI-Sessions/raw/papers/2024-lee-footstep-planning-rl.pdf
 ---
 
@@ -44,12 +48,11 @@ ICP는 그 자리에 발을 디디면 시스템이 정지하는 지면상의 점
 
 ## 내 연구 연결
 
-이 논문은 `dynamics-guided-rl` category에서 LIPM/ICP 기반 footstep guidance의 핵심 근거다. mj_rl의 eICP/LIPM footstep task를 raw state RL이 아니라 reduced-order physics가 제공하는 저차원 안정성 힌트를 RL에 넣는 구조로 해석하게 해준다.
+이 논문은 LIPM/ICP 기반 footstep guidance의 핵심 근거다. mj_rl의 eICP/LIPM footstep task를 raw state RL이 아니라 reduced-order physics가 제공하는 저차원 안정성 힌트를 RL에 넣는 구조로 해석하게 해준다.
 
 Physical Feature Graph 관점에서는 CoM, velocity, ICP, footstep이 raw observation 이상의 stability language가 될 수 있음을 보여주는 직접 근거다.
 
-## Links
+## Relations
 
 - raw repo: AI-Sessions/raw/repos/2024-lee-footstep-planning-rl.md
-- source note: 2024-lee-footstep-planning-rl-code
-- category: dynamics-guided-rl
+- implementation: [[AI-Sessions/wiki/research/sources/2024-lee-footstep-planning-rl-code|2024-lee-footstep-planning-rl-code]]

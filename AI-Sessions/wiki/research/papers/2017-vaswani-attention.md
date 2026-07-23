@@ -1,8 +1,9 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-06-24
 status: active
+topics:
+  - graph-policy
 source: AI-Sessions/raw/papers/2017-vaswani-attention.pdf
 ---
 
@@ -40,9 +41,8 @@ self-attention은 임의의 두 위치를 $O(1)$ path length로 연결해 long-r
 
 ## 내 연구 연결
 
-이 논문은 `graph-transformer-rl` category에서 Transformer attention의 원전이다. Body Transformer와 Physical Feature Graph 아이디어는 이 attention 구조를 robot body graph 또는 physical feature graph의 masked relation으로 제한하는 방향이다.
+이 논문은 Transformer attention의 원전이다. Body Transformer와 Physical Feature Graph 아이디어는 이 attention 구조를 robot body graph 또는 physical feature graph의 masked relation으로 제한하는 방향이다.
 
-## Links
+## Relations
 
-- category: graph-transformer-rl
 - related papers: [[AI-Sessions/wiki/research/papers/2024-sferrazza-body-transformer|2024-sferrazza-body-transformer]]

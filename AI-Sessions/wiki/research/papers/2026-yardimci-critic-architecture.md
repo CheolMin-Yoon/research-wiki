@@ -1,8 +1,13 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-18
 status: active
+topics:
+  - humanoid
+  - loco-manipulation
+  - reinforcement-learning
+  - multi-agent-rl
+  - credit-assignment
 source: "AI-Sessions/raw/papers/2026-yardimci-critic-architecture.pdf"
 ---
 
@@ -32,6 +37,4 @@ source: "AI-Sessions/raw/papers/2026-yardimci-critic-architecture.pdf"
 - **"gradient 간섭" = coupling의 학습적 표현**: 언제 unified가 무너지는가에 대한 이들의 답은 사후 관찰(간섭 발생)뿐이다. 우리의 매핑 사전 block-구조 기준은 **언제 분리해야 하는지를 사전에 예측**하는 원리(off-diagonal coupling 크기)를 제공 — 이 논문의 관찰(loco↔arm 간섭)은 contact 없는 reach에서도 base 경유 hub 결합이 있다는 우리 가설과 부합.
 - future work(29-DoF triple critic)가 우리 영역으로 접근 중 — 시간적 우선권 측면에서 (d1)/분할 기준 실험을 서두를 근거.
 
-## Links
-
-- category: [[AI-Sessions/wiki/research/categories/rl-algorithms-frameworks|rl-algorithms-frameworks]]
+## Relations

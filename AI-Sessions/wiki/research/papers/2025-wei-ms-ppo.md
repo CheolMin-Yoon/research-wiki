@@ -1,9 +1,11 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-09
 status: active
-primary_category: morphology-aware-policy
+topics:
+  - reinforcement-learning
+  - morphology-aware-policy
+  - graph-policy
 source: arXiv:2512.00727
 ---
 
@@ -78,6 +80,4 @@ For the current G1 WBC momentum idea, the most natural translation is:
 
 This makes the research claim more specific than MS-PPO: morphology-symmetry graph policy plus centroidal/CMM-conditioned WBC momentum features.
 
-## Links
-
-- category: [[AI-Sessions/wiki/research/categories/morphology-aware-policy|morphology-aware-policy]]
+## Relations

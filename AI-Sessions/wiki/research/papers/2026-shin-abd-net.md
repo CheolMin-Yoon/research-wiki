@@ -1,8 +1,12 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-06-25
 status: active
+topics:
+  - humanoid
+  - reinforcement-learning
+  - morphology-aware-policy
+  - graph-policy
 source: "AI-Sessions/raw/papers/Articulated-Body Dynamics Network:.pdf"
 ---
 
@@ -54,6 +58,4 @@ $$\pi_\theta = \Psi \circ \mathcal{M} \circ \Phi$$
 - **G1 구현**: MuJoCo XML에서 kinematic tree를 추출하는 `01_MuJoCo_XML_to_RobotGraph.ipynb` 흐름이 ABD-NET child→parent 관계 추출에도 직접 활용된다.
 - **Physical Feature Graph 아이디어**: dynamics 전파 방향이 stability 정보(CoM·DCM·CAM) coupling의 방향성 힌트가 될 수 있다.
 
-## Links
-
-- category: graph-transformer-rl
+## Relations

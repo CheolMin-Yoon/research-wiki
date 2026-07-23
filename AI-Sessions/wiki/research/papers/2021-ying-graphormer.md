@@ -1,8 +1,9 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-06-25
 status: active
+topics:
+  - graph-policy
 source: "AI-Sessions/raw/papers/Do Transformers Really Perform Bad.pdf"
 ---
 
@@ -43,6 +44,4 @@ Centrality Encoding + Spatial Encoding + Edge Encoding 조합으로 GCN, GraphSA
 - **Physical Feature Graph 아이디어**: SPD-based spatial encoding은 stability language graph에서 CoM·DCM·CAM 간 coupling 거리를 attention bias로 주입하는 방식으로 확장 가능하다.
 - Graphormer 계열 참고 코드(PyG `gps`/`gat`/`super_gat` 등)는 PyG 공식 예제에 있다. Graph_Transformer repo에 두었던 사본 `GraphTransformer/`는 2026-06-27 중복으로 삭제했다.
 
-## Links
-
-- category: graph-transformer-rl
+## Relations

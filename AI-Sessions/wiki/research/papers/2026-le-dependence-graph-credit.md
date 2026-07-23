@@ -1,8 +1,12 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-18
 status: active
+topics:
+  - reinforcement-learning
+  - multi-agent-rl
+  - credit-assignment
+  - graph-policy
 source: "AI-Sessions/raw/papers/2026-le-dependence-graph-credit.pdf"
 ---
 
@@ -49,6 +53,4 @@ MPE star-spread(known graph, N=5→100): global reward는 N 증가에 급락, DG
 - **단일 로봇에선 hub 때문에 완전 분리가 불가능**: floating base/centroidal 결합으로 모든 joint 쌍의 meeting time이 짧다(base 경유 ≤2) — 순수 local reward(per-limb 근시안)가 로봇에서 실패하는 이유의 이론적 표현. 결합 강도는 이진 edge가 아니라 CMM이 정량화하므로, **가중(weighted) dependence graph** 확장이 자연스러운 다음 질문.
 - 벤치마크·구현은 discrete action(LBF/SMAClite) 전제 — 이식 대상은 advantage 함수 하나(idea-kinematic-dependence-credit 참조).
 
-## Links
-
-- category: [[AI-Sessions/wiki/research/categories/rl-algorithms-frameworks|rl-algorithms-frameworks]]
+## Relations

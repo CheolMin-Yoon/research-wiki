@@ -1,8 +1,12 @@
 ---
-tags: [tier/low]
 type: paper
 date: 2026-07-08
 status: active
+topics:
+  - humanoid
+  - locomotion
+  - centroidal-dynamics
+  - whole-body-control
 source: AI-Sessions/raw/papers/2023-gao-hybrid-momentum-arm-compensation.pdf
 ---
 
@@ -38,7 +42,6 @@ controller는 두 층이다. 먼저 arm momentum compensation regulator가 swing
 - 2-actor upper/lower BoT-Mix 구조에서는 leg actor가 swing leg disturbance를, arm actor가 compensating momentum을 담당한다는 본 논문의 controller decomposition을 더 자연스럽게 반영할 수 있다.
 - 평가 metric은 yaw drift, CAM/CMM-related error, platform descent 또는 push recovery survival, arm torque smoothness가 맞다.
 
-## Links
+## Relations
 
-- category: centroidal-wbc
 - related papers: [[AI-Sessions/wiki/research/papers/2013-orin-centroidal-dynamics|2013-orin-centroidal-dynamics]], [[AI-Sessions/wiki/research/papers/2025-lee-humanoid-arm-cam-marl|2025-lee-humanoid-arm-cam-marl]]
