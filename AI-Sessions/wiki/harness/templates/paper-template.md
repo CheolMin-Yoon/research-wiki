@@ -13,6 +13,8 @@ target_type: paper
 type: paper
 date: YYYY-MM-DD
 status: draft | active | superseded
+topics:
+  - canonical-topic
 source:
 ---
 
@@ -30,6 +32,6 @@ source:
 ## 내 연구 연결
 <사용자 연구/구현과 연결되는 지점. 추측이면 명시>
 
-## Links
-<관련 source/category/idea/experiment를 [[wikilink]]로 연결. `related_*` frontmatter를 쓰면 여기에 mirror. raw는 graph-visible wikilink로 직접 연결하지 않음>
+## Relations
+<설명 가치가 있는 concept/method/task/source/comparison 관계만 전체 경로 [[wikilink]]로 연결. topic 중복은 relation으로 만들지 않고 raw는 wikilink하지 않음>
 ```

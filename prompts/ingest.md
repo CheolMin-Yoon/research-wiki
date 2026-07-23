@@ -7,20 +7,23 @@ tags: [tier/low]
 ```text
 AI-Sessions/raw/에 추가된 자료를 ingest 해줘.
 
-먼저 architecture.md, research.md, AI-Sessions/wiki/harness/state/brief.md를 확인해줘.
+먼저 architecture.md, research.md, research-policy, schema/research-topics.json, AI-Sessions/wiki/harness/state/brief.md를 확인해줘.
 
-raw 원본은 읽기 전용으로 취급하고 수정·삭제하지 마. 새 wiki 문서를 만들기 전에 research.md 인벤토리와 관련 wiki 노트를 먼저 확인해서 중복을 피하고, 같은 주제가 있으면 새 문서보다 기존 노트 갱신을 우선해줘. 상충하는 내용은 덮어쓰지 말고 "상충:"으로 표시해줘.
+raw 원본은 읽기 전용으로 취급하고 수정·삭제하지 마. Research Library와 관련 노트를 확인해 중복을 피하고, 같은 객체가 있으면 새 문서보다 기존 노트 갱신을 우선해. 상충하는 내용은 덮어쓰지 말고 근거별로 분리해.
 
-- 논문이면: AI-Sessions/wiki/research/papers/에 근거 노트를 작성해줘.
-- 레퍼런스 구현 GitHub 레포나 코드 자료면: AI-Sessions/wiki/research/sources/에 구현 분석 노트를 작성해줘.
-- 사용자 아이디어·인사이트면: 새 idea 파일을 만들지 말고 `AI-Sessions/wiki/research/idea-physical-feature-graph.md`에 통합할지 판단해줘.
-- 실험 사실이면: AI-Sessions/wiki/research/experiments/에 작성해줘.
-- 결정, 실패, anti-pattern이면: AI-Sessions/wiki/harness/ 아래 decisions, errors, patterns 중 맞는 곳에 연결해줘.
-- granular한 구현 작업 단위는 wiki에 만들지 말고 프로젝트 레포에서 관리해줘.
+- 논문: research/papers의 검증 가능한 paper 근거 노트
+- 코드·GitHub 저장소: research/sources의 실제 구현 분석
+- 정의·원리: promotion gate를 통과할 때 concept 또는 method
+- 로봇 문제 설정: task
+- 여러 근거의 선택 기준·종합: comparison
+- 사용자 가설: 반증 조건이 있는 idea
+- 실행 사실: experiment
+- 결정·실패·anti-pattern: harness의 decision/error/pattern
+- granular 구현 작업: wiki가 아니라 프로젝트 저장소
 
-category는 7개(centroidal-wbc/rl-algorithms-frameworks/morphology-aware-policy/graph-transformer-rl/loco-manipulation/dynamics-guided-rl/novelty)만 사용해줘. 새 category 노트를 만들지 말고, category는 research-map에 직접 붙이지 말고 idea의 근거 축으로 연결해. paper는 primary category 1개에서 full-path wikilink로 graph 등록해줘. idea/harness/state/pattern 문서에서는 paper wikilink 대신 plaintext path/name을 쓰고, 세부 메커니즘이나 일회성 용어는 paper/source 본문에 둬.
+모든 research note는 type/date/status/topics/source 계약을 따르고 canonical topic만 사용해. alias, unknown, pending topic을 note에 쓰지 마. 새 후보는 pending queue에 추가해 큐레이터에게 승인을 요청해. category, primary_category, 단일 소속 규칙은 사용하지 마.
 
-새 graph 노트(source/idea 등)는 frontmatter에 `tier/*` 태그를 부여하고 해당 섬 hub에 등록해줘(obsidian-policy 참조). paper는 idea-linked category를 통해 research-map 아래에 등록하되 harness-map과 wikilink로 연결하지 않는다. 작업이 끝나면 research.md와 필요한 map/state를 갱신해줘. log.md는 큰 ingest나 운영 규칙 변화일 때만 한 줄로 남겨줘.
+topic membership은 graph edge가 아니다. 설명 가치가 있는 관계만 ## Relations에 전체 경로 wikilink로 기록하고, raw는 source property/plain path로만 남겨. idea 변경은 paper 등록·이동을 유발하지 않는다. 수동 paper/source inventory와 자동 backlink를 만들지 말고 Bases를 사용해.
 
-map/index/link/structure를 건드렸으면 마지막에 scripts/wiki_doctor.sh를 실행해줘. ERROR가 있으면 완료 보고 전에 고치거나 못 고친 이유를 보고하고, 그대로 두는 WARN은 이유를 남겨줘.
+큰 ingest나 운용 규칙 변화만 log.md에 한 줄 남겨. 마지막에 scripts/wiki_doctor.sh와 unit tests를 실행해 ERROR=0, WARN=0을 확인해줘.
 ```

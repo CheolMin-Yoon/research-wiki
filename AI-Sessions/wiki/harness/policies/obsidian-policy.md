@@ -1,72 +1,57 @@
 ---
 tags: [tier/low]
 type: policy
-date: 2026-06-24
+date: 2026-07-24
 status: active
 ---
 
 # Obsidian Policy
 
-vault/graph 구조와 그 변경(migration) 규칙이다. graph·구조·map·prompt routing을 바꾸는 작업일 때 읽는다.
+vault 조회, graph, migration 규칙의 정본이다.
 
-## Top-Level Islands
+## Research Views
 
-graph는 서로 edge로 연결되지 않는 **3개 독립 섬**이다. 각 섬은 root(tier/top) 하나에서 tier별로 뻗는다. 상세 근거는 [[AI-Sessions/wiki/harness/decisions/obsidian-decisions|obsidian-decisions]].
+`AI-Sessions/wiki/research/research-library.base`가 연구 목록의 정본 조회 계층이다. Stable Knowledge, Evidence, Comparisons, Active Ideas, Experiments, Draft/Curator Review 여섯 view를 제공한다. multi-topic note는 `topics` property로 여러 필터에서 조회하며, 별도 community plugin은 사용하지 않는다.
 
-- `research-map`(섬 root): idea/resources/experiments(상위). category는 idea에서 fanout하고 category → paper로 내려감
-- `harness-map`(섬 root): state/rules/lessons/machinery group(상위) → 폴더 hub(중위) → 파일(하위)
-- `docs-map`(섬 root): prompts 허브 + root entry 문서(상위) → 개별 prompt(하위)
+기본 global graph에는 `research-map`과 stable research 타입(`concept`, `method`, `task`, `paper`, `source`, `comparison`)만 표시한다. `idea`, `experiment`, harness, prompts, docs, raw, archive는 기본 graph에서 제외하되 local graph와 Bases에서는 조회할 수 있다. orphan 표시는 끄고 `exports/research-communities.json`에서 점검한다.
 
-## Tier 색상
+research 타입의 색은 `[type:paper]` 같은 property query로 구분한다. harness/docs의 기존 `tier/*`는 운용 계층 표시에만 남길 수 있고 research note의 분류 계약으로 사용하지 않는다.
 
-색은 폴더가 아니라 frontmatter `tier/*` 태그로 결정한다. 새 노트는 깊이에 맞는 태그를 부여한다: `tier/top`(섬 root) → `tier/upper` → `tier/mid` → `tier/low`. colorGroups가 태그로 매칭한다(빨강→노랑→초록→파랑). root docs는 `path:` 절로 upper 색을 받는다.
+## Research Map
 
-## Research Rules
-
-- research-map은 category를 직접 링크하지 않는다. idea가 관련 category로 fanout하고, paper의 graph 등록은 primary category 1개가 full-path wikilink로 담당한다.
-- idea/harness/state/pattern 문서에서 paper를 언급할 때는 plaintext path/name을 사용한다. paper 내부의 paper-to-paper wikilink는 허용한다.
-- source/repo/code 노트는 `resources`(research 섬의 상위 가지) 아래에 둔다.
+`research-map`은 Bases 진입점과 소수의 안정적 anchor만 연결한다. topic별 전수 목록, idea fanout, paper 자동 backlink는 만들지 않는다. research 관계는 의미가 있을 때만 노트 본문의 `## Relations`에 전체 경로 wikilink로 둔다.
 
 ## Boundaries
 
-- raw 파일은 graph-visible node로 만들지 않는다(filter와 wikilink 양쪽에서 제외).
-- 섬끼리 wikilink로 연결하지 않는다. architecture는 docs 섬 소속이며 다른 섬 root를 일반 텍스트로만 가리킨다.
-- harness 노트는 research 노트로 wikilink하지 않고 plaintext path로만 가리킨다.
-- 새 graph-visible 노트는 해당 섬의 hub에서 연결하고 `tier/*` 태그를 부여한다.
-- `.obsidian/graph.json`은 Obsidian 실행 중 덮어써질 수 있으므로 종료한 상태에서 수정한다.
+- raw 파일은 기본 graph와 research relation에서 제외한다.
+- active와 같은 basename의 vault 내 백업 사본을 만들지 않는다. 복구는 Git 이력을 사용한다.
+- `.obsidian/graph.json`은 Obsidian을 종료한 상태에서 수정한다.
+- harness 문서의 등록은 각 harness hub가 담당한다. typed research note는 경로와 frontmatter만 맞으면 Bases에 자동 노출된다.
 
 ## Registration
 
-새 active 문서는 생성만 하지 않고 적절한 hub에 wikilink로 등록한다. `wiki_doctor` C15가 harness 하위 문서의 hub 등록을 검사한다.
-
 | New document type | Register in |
 |---|---|
-| paper | research.md inventory + idea-linked primary category note full-path wikilink |
-| source | AI-Sessions/wiki/maps/resources.md |
-| idea | AI-Sessions/wiki/maps/research-map.md |
-| experiment | AI-Sessions/wiki/research/experiments/experiments.md |
-| decision | AI-Sessions/wiki/harness/decisions/decisions.md |
-| error | AI-Sessions/wiki/harness/errors/errors.md |
-| pattern | AI-Sessions/wiki/harness/patterns/patterns.md |
-| policy | AI-Sessions/wiki/harness/policies/policies.md |
-| template | AI-Sessions/wiki/harness/templates/templates.md |
-| eval | AI-Sessions/wiki/harness/evals/evals.md |
-| prompt | prompts/prompts.md + AI-Sessions/wiki/maps/docs-map.md |
-| map | architecture.md |
+| concept/method/task/paper/source/comparison/idea/experiment | 올바른 folder + frontmatter; Bases 자동 조회 |
+| decision/error/pattern/policy/template/eval | 해당 harness hub |
+| prompt | `prompts/prompts.md` + `AI-Sessions/wiki/maps/docs-map.md` |
+| map | `architecture.md` |
 
 ## Migration Workflow
 
-vault 구조, 경로, graph, command routing, status lifecycle, prompt routing을 바꾸는 작업은 migration이다. 트리거: 폴더 구조 변경, map/index backbone 변경, prompt routing 변경, raw/wiki boundary 변경, category promotion rule 변경, archive/obsolete 정책 변경, wiki_doctor 검사 기준 변경, graph registration rule 변경.
+폴더 구조, schema, graph, Bases, prompt routing, raw/wiki boundary, archive 정책, doctor 기준을 바꾸면 migration으로 취급한다.
 
-1. Problem 정의 → 2. Before/After 명시 → 3. 영향 파일 목록 → 4. Link migration 계획 → 5. Risk와 rollback plan → 6. 변경 수행 → 7. `scripts/wiki_doctor.sh` → 8. brief/handoff 갱신 → 9. log.md 1줄.
+1. 문제와 Before/After를 기록한다.
+2. 영향 파일과 rollback 수단을 확인한다.
+3. 링크·property migration을 수행한다.
+4. `scripts/wiki_doctor.sh`와 unit tests를 실행한다.
+5. brief/handoff/log에 필요한 고신호 상태만 반영한다.
 
-규칙: raw 미수정, 삭제보다 archive/status, 같은 basename archive 금지, migration decision에 Final State 명시, rollback plan 없이 큰 변경 금지.
+raw는 수정하지 않는다. 큰 삭제는 대상이 명확해야 하며 Git 이력을 복구 수단으로 남긴다.
 
-## Tier Maintenance Contract
+## Maintenance Contract
 
-MD 계층별 역할 계약. 시간이 지나도 최상위 문서가 detail DB로 비대해지지 않게 한다. 한 사실/규칙은 **정본 한 곳**에 두고 다른 tier는 restate 대신 링크한다(근거: [[AI-Sessions/wiki/harness/patterns/agent-patterns|agent-patterns]] "정본 한 곳+링크"). lint의 [계층 감사]가 이를 수동 점검한다.
-
-- **최상위 (AGENTS·CLAUDE·architecture·harness·research·log)** — 시작 순서·구조 지도·영역 라우팅·현재 포인터만. 금지: 세부 policy 복붙, doctor C번호 전체 나열, paper/source 전체 설명, 과거 이력 장문. 크기 가이드 ~60줄 안팎. init pattern/state는 C14 cap(brief 80/handoff 120/log 30).
-- **차상위 hub/router (maps/\*, prompts/\*, harness/{dir}/{dir}.md)** — graph backbone + routing만. 대표 링크 + 짧은 판단 기준만, 세부는 mid/leaf로. prompt 문서는 실행 절차만 담고 기계 검사 항목 목록은 `wiki_doctor`(script 출력)에 위임한다.
-- **중간 정본 (policy·pattern·state)** — `agent`/`research`/`obsidian`-policy = 정책 정본. `agent-patterns` = init용 보편 패턴만, 도메인 패턴은 `research-patterns` 등 on-demand. `brief`/`handoff` = compact current pointer, 과거 이력은 `log.md`/archive 링크로만.
-- **leaf (paper·source·idea·experiment)** — 실제 지식 정본. category는 중위 분류 hub로 둔다. paper는 primary category의 full-path wikilink로 research graph에 등록하고, harness와 잇는 관계는 plaintext로 표현한다(Research Rules 참조).
+- 최상위 문서는 시작 순서와 라우팅만 둔다.
+- hub는 목록을 수기로 복제하지 않고 조회 진입점과 판단 기준만 둔다.
+- policy/pattern/state는 한 규칙의 정본 한 곳만 유지한다.
+- research leaf는 실제 근거와 분석을 소유하고, topic 목록이나 backlink를 본문에 반복하지 않는다.

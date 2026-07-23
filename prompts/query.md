@@ -7,12 +7,14 @@ tags: [tier/low]
 ```text
 위키에서 다음 질문에 대한 답을 찾아줘(query).
 
-먼저 architecture.md로 영역을 잡고, 연구 질문이면 research.md 인벤토리로 관련 후보를 좁혀줘. 필요한 경우 AI-Sessions/wiki/maps, AI-Sessions/wiki/research, AI-Sessions/wiki/harness 안의 해당 노트만 읽어서 질문에 직접 답해줘.
+먼저 architecture.md로 영역을 잡고, 연구 질문이면 Research Library와 research.md 라우터로 관련 후보를 좁혀줘. 필요한 경우 AI-Sessions/wiki/maps, AI-Sessions/wiki/research, AI-Sessions/wiki/harness 안의 해당 노트만 읽어서 질문에 직접 답해줘.
 
-논문·구현·아이디어에 관한 질문이면 세 레이어를 함께 읽어라:
+질문에 맞는 타입을 함께 읽어라:
+- `research/concepts|methods|tasks/<slug>.md` (안정 지식과 문제 설정)
 - `research/papers/<slug>.md` (논문 내용·abstract)
 - `research/sources/<slug>-code.md` (구현 분석·URL·패턴)
-- `research/idea-physical-feature-graph.md` (연결된 아이디어·가설)
+- `research/comparisons/<slug>.md` (선택 기준과 종합)
+- `research/ideas/<slug>.md`, `research/experiments/<slug>.md` (가설과 판정)
 
 wiki note는 스냅샷이라 불완전할 수 있다. 논문의 메커니즘·수식·실험 설계를 단정하기 전에 항상 source of truth를 직접 확인해라:
 - `AI-Sessions/raw/papers/<...>.pdf` (논문 원문) — actor/critic 통합, 변형 선택, 수치 같은 디테일은 PDF로 검증한다.

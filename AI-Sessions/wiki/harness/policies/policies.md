@@ -17,4 +17,4 @@ status: active
 
 ## Summary
 
-도메인별 운용 규칙을 담는 policies 폴더 hub다. 파일명은 `{도메인}-policy`: `agent-policy`(init 운용 본체), `obsidian-policy`(graph·구조·migration), `error-policy`(에러 작성), `research-policy`(category/ingest), `archive-policy`(보존·정리). entry 문서(CLAUDE/AGENTS)는 얇게 유지하고, 상세 규칙은 on demand로 여기서 읽는다.
+도메인별 운용 규칙을 담는 policies 폴더 hub다. 파일명은 `{도메인}-policy`: `agent-policy`(init 운용 본체), `obsidian-policy`(graph·Bases·migration), `error-policy`(에러 작성), `research-policy`(typed schema/topic/ingest), `archive-policy`(보존·정리). entry 문서(CLAUDE/AGENTS)는 얇게 유지하고, 상세 규칙은 on demand로 여기서 읽는다.

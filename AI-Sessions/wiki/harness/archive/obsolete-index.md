@@ -9,9 +9,9 @@ status: active
 
 ## Obsolete Documents
 
-- concept-template 삭제됨 — category 기반 research 계층으로 대체.
-- `AI-Sessions/wiki/research/concepts/` 삭제됨 — active graph 분류는 categories로 대체.
-- `AI-Sessions/wiki/research/ideas/` 삭제됨 — 단일 idea note는 `AI-Sessions/wiki/research/idea-physical-feature-graph.md`.
+- 2026-06-24의 category 기반 계층과 단일 idea 배치는 2026-07-24 typed research model로 대체되었다.
+- category 7개는 active tree에서 삭제했으며 별도 archive 사본을 만들지 않는다. 필요하면 Git 이력에서 복구한다.
+- concept와 독립 idea 폴더는 typed research 객체로 복원되었다.
 
 ## Archived Documents
 

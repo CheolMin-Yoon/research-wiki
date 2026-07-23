@@ -41,5 +41,5 @@ related_experiments:
 관련 실험 링크.
 
 ## Links
-관련 paper/source/category/decision/anti-pattern 링크.
+관련 research object/decision/anti-pattern 링크. research 관계는 전체 경로를 사용한다.
 ```

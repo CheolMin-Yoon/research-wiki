@@ -13,6 +13,8 @@ target_type: source
 type: source
 date: YYYY-MM-DD
 status: draft | active | superseded
+topics:
+  - canonical-topic
 source:
 ---
 
@@ -33,6 +35,6 @@ source:
 ## 주의점
 <의존성, 프레임워크, 이식 리스크, 실행상 핵심 주의사항>
 
-## Links
-<관련 paper/source/category/idea/experiment를 [[wikilink]]로 연결. `related_*` frontmatter를 쓰면 여기에 mirror. raw는 wikilink 금지>
+## Relations
+<설명 가치가 있는 concept/method/task/paper/comparison 관계만 전체 경로 [[wikilink]]로 연결. topic 중복은 relation으로 만들지 않고 raw는 wikilink 금지>
 ```

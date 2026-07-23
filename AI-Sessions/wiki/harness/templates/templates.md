@@ -11,6 +11,10 @@ status: active
 
 - [[AI-Sessions/wiki/harness/templates/paper-template|paper-template]]
 - [[AI-Sessions/wiki/harness/templates/source-template|source-template]]
+- [[AI-Sessions/wiki/harness/templates/concept-template|concept-template]]
+- [[AI-Sessions/wiki/harness/templates/method-template|method-template]]
+- [[AI-Sessions/wiki/harness/templates/task-template|task-template]]
+- [[AI-Sessions/wiki/harness/templates/comparison-template|comparison-template]]
 - [[AI-Sessions/wiki/harness/templates/idea-template|idea-template]]
 - [[AI-Sessions/wiki/harness/templates/experiment-template|experiment-template]]
 - [[AI-Sessions/wiki/harness/templates/decision-template|decision-template]]

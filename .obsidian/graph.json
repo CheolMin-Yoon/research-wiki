@@ -1,39 +1,39 @@
 {
   "collapse-filter": false,
-  "search": "path:architecture.md OR path:harness.md OR path:research.md OR path:README.md OR path:AGENTS.md OR path:CLAUDE.md OR path:log.md OR path:prompts/ OR path:AI-Sessions/wiki/maps/ OR path:AI-Sessions/wiki/research/idea-physical-feature-graph.md OR path:AI-Sessions/wiki/research/categories/ OR path:AI-Sessions/wiki/research/papers/ OR path:AI-Sessions/wiki/research/experiments/ OR path:AI-Sessions/wiki/research/sources/ OR path:AI-Sessions/wiki/harness/",
+  "search": "path:AI-Sessions/wiki/maps/research-map.md OR (path:AI-Sessions/wiki/research/ ([type:concept] OR [type:method] OR [type:task] OR [type:paper] OR [type:source] OR [type:comparison]))",
   "showTags": false,
   "showAttachments": false,
-  "hideUnresolved": false,
-  "showOrphans": true,
+  "hideUnresolved": true,
+  "showOrphans": false,
   "collapse-color-groups": false,
   "colorGroups": [
     {
-      "query": "tag:#tier/top",
-      "color": {
-        "a": 1,
-        "rgb": 16726832
-      }
+      "query": "path:AI-Sessions/wiki/maps/research-map.md",
+      "color": { "a": 1, "rgb": 16726832 }
     },
     {
-      "query": "tag:#tier/upper OR path:architecture.md OR path:harness.md OR path:research.md OR path:README.md OR path:CLAUDE.md OR path:AGENTS.md OR path:log.md",
-      "color": {
-        "a": 1,
-        "rgb": 16763904
-      }
+      "query": "[type:concept]",
+      "color": { "a": 1, "rgb": 16749824 }
     },
     {
-      "query": "tag:#tier/mid",
-      "color": {
-        "a": 1,
-        "rgb": 3458905
-      }
+      "query": "[type:method]",
+      "color": { "a": 1, "rgb": 3458905 }
     },
     {
-      "query": "tag:#tier/low",
-      "color": {
-        "a": 1,
-        "rgb": 689407
-      }
+      "query": "[type:task]",
+      "color": { "a": 1, "rgb": 16763904 }
+    },
+    {
+      "query": "[type:paper]",
+      "color": { "a": 1, "rgb": 689407 }
+    },
+    {
+      "query": "[type:source]",
+      "color": { "a": 1, "rgb": 11490014 }
+    },
+    {
+      "query": "[type:comparison]",
+      "color": { "a": 1, "rgb": 6607615 }
     }
   ],
   "collapse-display": false,

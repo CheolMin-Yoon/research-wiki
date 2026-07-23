@@ -28,6 +28,6 @@ tags: [tier/upper]
 | `reference` | 작업 시작 전 맥락 복원·조언 | 읽기 전용 | index·log·brief·관련 노트로 결정/함정/패턴 복원 |
 | `save` | 세션 산출물 저장 | 쓰기 | Save Filter 통과분만 저장 (저장 여부 판단) |
 | `reflect` | 실험·구현·ingest 후 배운 점 | 쓰기 | experiment/error/anti-pattern/decision으로 분류·승격 |
-| `ingest` | raw/source를 wiki로 | 쓰기 | 중복 회피하며 papers/sources/category 또는 단일 idea note로 컴파일 |
+| `ingest` | raw/source를 wiki로 | 쓰기 | 중복을 피하며 typed research object와 canonical topics로 컴파일 |
 | `lint` | 문제 발견·보고 | 보고 | `wiki_doctor` 실행 + 의미 점검. 수정은 승인 후 |
 | `archive` | obsolete/archive 실제 정리 | 쓰기 | 삭제 대신 보존·status 처리 |

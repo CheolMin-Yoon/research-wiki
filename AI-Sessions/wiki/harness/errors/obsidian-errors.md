@@ -14,7 +14,7 @@ related_experiments:
 
 ## Symptom
 
-graph view에서 concept→paper 엣지가 일부만 그려지고 여러 논문(body-transformer, footstep, arm-cam, mjlab, rsl-rl)이 미연결 노드로 떴다. 파일에는 wikilink가 있는데도 graph 엣지가 붙지 않았다.
+graph view에서 research relation 일부가 끊기고 여러 논문(body-transformer, footstep, arm-cam, mjlab, rsl-rl)이 미연결 노드로 떴다. 파일에는 wikilink가 있는데도 graph 엣지가 붙지 않았다.
 
 `.obsidian/graph.json`을 외부에서 수정해도 Obsidian 실행 상태에 따라 설정이 되돌아갔고, 파일 이동/삭제 후에도 graph 캐시가 즉시 갱신되지 않았다.
 
@@ -39,11 +39,11 @@ Obsidian은 실행 중 graph view 설정을 만지거나 종료할 때 메모리
 
 ## Fix
 
-category→paper 링크를 전체 경로로 바꾸고, active와 같은 basename의 archive 사본을 graph-visible 위치에 두지 않는다. graph 설정은 Obsidian을 종료한 상태에서만 수정한다.
+research relation을 전체 경로로 바꾸고, active와 같은 basename의 archive 사본을 graph-visible 위치에 두지 않는다. graph 설정은 Obsidian을 종료한 상태에서만 수정한다.
 
 ## Prevention Rule
 
-- **category→paper는 primary category 1개에서 full-path wikilink로 등록한다.** 짧은 `[[<slug>]]`는 raw/repos stub과 충돌해 graph에서 끊길 수 있으므로 쓰지 않는다. harness에서 paper/research 노트를 언급할 때는 plaintext path/name을 쓴다.
+- **설명 가치가 있는 research relation은 `## Relations`에서 full-path wikilink로 기록한다.** 짧은 `[[<slug>]]`는 raw/repos stub과 충돌해 graph에서 끊길 수 있으므로 쓰지 않는다. topic membership은 relation으로 만들지 않는다.
 - vault 안에 active와 같은 basename 사본(archive, 백업)을 두지 않는다. 보존이 필요하면 다른 slug의 archive 문서에 내용을 옮기거나 git history를 사용한다.
 - `.obsidian/graph.json`, `app.json` 등 설정 파일은 **Obsidian을 완전히 종료한 상태에서** 수정한다. 켜진 채 고치면 종료 시 덮어써진다.
 - 색상 그룹 같은 건 차라리 UI에서 직접 설정하는 게 안전하다.

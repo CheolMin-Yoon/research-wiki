@@ -1,0 +1,71 @@
+filters:
+  and:
+    - file.inFolder("AI-Sessions/wiki/research")
+    - 'file.ext == "md"'
+views:
+  - type: table
+    name: Stable Knowledge
+    filters:
+      or:
+        - 'type == "concept"'
+        - 'type == "method"'
+        - 'type == "task"'
+    order:
+      - file.name
+      - type
+      - topics
+      - status
+  - type: table
+    name: Evidence
+    filters:
+      or:
+        - 'type == "paper"'
+        - 'type == "source"'
+    groupBy:
+      property: note.topics
+      direction: ASC
+    order:
+      - file.name
+      - type
+      - topics
+      - source
+  - type: table
+    name: Comparisons
+    filters:
+      and:
+        - 'type == "comparison"'
+    order:
+      - file.name
+      - topics
+      - status
+  - type: table
+    name: Active Ideas
+    filters:
+      and:
+        - 'type == "idea"'
+        - 'status == "active"'
+    order:
+      - file.name
+      - topics
+      - status
+  - type: table
+    name: Experiments
+    filters:
+      and:
+        - 'type == "experiment"'
+    order:
+      - file.name
+      - topics
+      - status
+      - date
+  - type: table
+    name: Draft/Curator Review
+    filters:
+      or:
+        - 'status == "draft"'
+        - 'status == "curator-review"'
+    order:
+      - file.name
+      - type
+      - topics
+      - status
